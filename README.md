@@ -1,0 +1,1 @@
+# sprint-shop-profile-ad-generator
