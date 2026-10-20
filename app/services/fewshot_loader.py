@@ -41,9 +41,9 @@ def _jsonl_rows(path: Path) -> list[dict]:
 def load_fewshot_examples(data_dir: Path | None = None) -> list[dict]:
     """split을 검증한 다음 train 원문과 수동 답안 5개만 결합한다."""
     data_dir = data_dir if data_dir is not None else PROJECT_ROOT / "data"
-    answers = _jsonl_rows(data_dir / "answers" / "fewshot_profiles.jsonl")
+    answers = _jsonl_rows(data_dir / "samples" / "answer_profiles_gold.jsonl")
     try:
-        split = json.loads(_read_text(data_dir / "split.json"))
+        split = json.loads(_read_text(data_dir / "samples" / "split.json"))
     except json.JSONDecodeError as exc:
         raise FewShotError("split.json은 train, eval ID 목록을 가진 JSON이어야 합니다.") from exc
     if not isinstance(split, dict):
@@ -63,17 +63,17 @@ def load_fewshot_examples(data_dir: Path | None = None) -> list[dict]:
     for row in answers:
         row_id = row["id"]
         if row_id not in TRAIN_IDS:
-            raise FewShotError(f"fewshot_profiles.jsonl의 ID {row_id}는 허용된 train ID가 아닙니다.")
+            continue  # gold의 eval 답안은 검증하거나 프롬프트에 넣지 않는다.
         if row_id in profiles:
-            raise FewShotError(f"fewshot_profiles.jsonl에 ID {row_id}가 중복되었습니다.")
+            raise FewShotError(f"answer_profiles_gold.jsonl에 ID {row_id}가 중복되었습니다.")
         try:
             profile = ShopProfile.model_validate(row.get("profile"))
         except ValidationError as exc:
             fields = ", ".join(".".join(map(str, error["loc"])) for error in exc.errors())
-            raise FewShotError(f"fewshot_profiles.jsonl의 ID {row_id} 프로필 스키마를 확인해 주세요: {fields}") from exc
+            raise FewShotError(f"answer_profiles_gold.jsonl의 ID {row_id} 프로필 스키마를 확인해 주세요: {fields}") from exc
         profiles[row_id] = profile.model_dump()
     if set(profiles) != set(TRAIN_IDS):
-        raise FewShotError(f"fewshot_profiles.jsonl에 train ID {TRAIN_IDS}의 답안 5개가 모두 필요합니다.")
+        raise FewShotError(f"answer_profiles_gold.jsonl에 train ID {TRAIN_IDS}의 답안 5개가 모두 필요합니다.")
 
     texts = {}
     for row in _jsonl_rows(data_dir / "samples" / "shop_texts.jsonl"):

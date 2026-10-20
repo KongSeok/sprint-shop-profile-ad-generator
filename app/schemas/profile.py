@@ -13,10 +13,10 @@ class Menu(ProfileModel):
 
 
 class ShopProfile(ProfileModel):
-    """사장님이 제공한 정보만 기록하며, 누락된 값은 추측하지 않는다."""
+    """사장님 원문을 보존하며, 업종은 메뉴로 분명할 때만 판단한다."""
 
     shop_name: str | None = Field(description="가게 이름. 글에 없으면 null, 지어내지 않기")
-    business_type: str | None = Field(description="업종. 글에 없으면 null, 메뉴로 추측하지 않기")
+    business_type: str | None = Field(description="업종이 글에 직접 없어도 메뉴로 분명하면 적고(예: 삼겹살·항정살 → 고깃집), 애매하면 null")
     location: str | None = Field(default=None, description="위치. 주소와 찾아오는 조건을 원문 그대로")
     hours: str | None = Field(default=None, description="영업시간. 요일, 브레이크 타임 등 조건까지 원문 그대로")
     closed_days: str | None = Field(default=None, description="휴무일. 예외와 조건까지 원문 그대로")
@@ -28,6 +28,8 @@ class ShopProfile(ProfileModel):
     avoid_expressions: list[str] | None = Field(default=None, description="피할 표현. 사장님이 명시한 표현만 기록")
     owner_phrases: list[str] | None = Field(default=None, description="사장님 꾸밈말 원문 그대로. 사실로 단정하거나 다른 표현으로 고치지 않기")
     needs_check: list[str] | None = Field(default=None, description="글 안에서 부딪히는 내용. 양쪽 내용을 보존하고 충돌마다 한 줄로 기록")
+
+    other_info: list[str] | None = Field(default=None, description="기타 정보. 원산지·예약·좌석·사진 요청처럼 다른 칸에 안 맞는 사실, 원문 그대로")
 
 
 class ProfileExtractRequest(ProfileModel):

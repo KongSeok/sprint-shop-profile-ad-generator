@@ -32,7 +32,9 @@ PowerShell 호출 예시 (curl.exe, 데이터 없이 쓸 수 있는 v1):
 curl.exe --json '{"text":"카페입니다. 평일 오전 10시부터 오후 6시까지 열어요.","prompt_version":"v1"}' http://localhost:8000/profile/extract
 ```
 
-v1은 규칙만, v2는 규칙과 train ID `1, 7, 13, 19, 25`의 예시 5개를 사용합니다. v2를 쓰려면 `data/samples/shop_texts.jsonl`, `data/split.json`, 수동 정답 `data/answers/fewshot_profiles.jsonl`을 준비하세요. 현재 정답 파일은 비어 있으며, 없거나 비어 있으면 `503 FEWSHOT_NOT_READY`를 반환합니다. 형식은 [데이터 안내](data/answers/README.md)를 참고하세요. eval 글은 예시에 넣지 않습니다.
+v1은 규칙만, v2는 규칙과 train ID `1, 7, 13, 19, 25`의 예시 5개를 사용합니다. 원문은 `data/samples/shop_texts.jsonl`, 분할은 `data/samples/split.json`, 정답은 `data/samples/answer_profiles_gold.jsonl`에서 읽습니다. gold에는 30개 정답을 함께 보관하고, 로더는 train 5개만 선택하며 나머지 eval 답안은 무시합니다. 파일이 없거나 비어 있으면 `503 FEWSHOT_NOT_READY`를 반환합니다. 형식은 [데이터 안내](data/answers/README.md)를 참고하세요.
+
+`other_info`에는 원산지·예약·좌석·사진 요청 등 다른 칸에 안 맞는 사실을 원문 그대로 담습니다. 업종은 직접 적혀 있지 않아도 메뉴로 분명할 때만 판단하고, 애매하면 `null`로 둡니다. 가게 이름은 지어내지 않습니다.
 
 오류 응답은 `{"detail":{"code":"...","message":"원인"}}` 형식입니다. 키/데이터 누락은 503, Gemini 호출·응답 검증 실패는 502, 요청 형식 오류는 FastAPI 기본 422입니다. 테스트는 Gemini를 mock 처리하여 실제 API를 호출하지 않습니다.
 

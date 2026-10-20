@@ -23,7 +23,8 @@ def test_real_sdk_serializes_pydantic_schema_with_mock_transport(api_client, mon
         return httpx.Response(200, json={
             "candidates": [{
                 "content": {"role": "model", "parts": [{"text": json.dumps({
-                    "shop_name": None, "business_type": None, "parking": "주말만 무료"
+                    "shop_name": None, "business_type": None, "parking": "주말만 무료",
+                    "other_info": ["국내산 한돈만 사용", "고기 사진 요청"],
                 })}]},
                 "finishReason": "STOP",
             }],
@@ -37,10 +38,12 @@ def test_real_sdk_serializes_pydantic_schema_with_mock_transport(api_client, mon
     response = api_client.post("/profile/extract", json={"text": "주말만 무료", "prompt_version": "v1"})
     assert response.status_code == 200
     assert response.json()["parking"] == "주말만 무료"
+    assert response.json()["other_info"] == ["국내산 한돈만 사용", "고기 사진 요청"]
     assert len(sent) == 1
     generation = sent[0]["generationConfig"]
     assert generation["responseMimeType"] == "application/json"
     assert "shop_name" in generation["responseSchema"]["properties"]
+    assert "other_info" in generation["responseSchema"]["properties"]
 
 
 def test_health_still_works(api_client):
@@ -65,6 +68,7 @@ def test_default_v2_uses_train_examples(api_client, gemini_mock, fewshot_data, m
     assert api_client.post("/profile/extract", json={"text": "소개 글"}).status_code == 200
     prompt = gemini_mock.return_value.__enter__.return_value.models.generate_content.call_args.kwargs["config"].system_instruction
     assert "EVAL_MUST_NEVER_APPEAR" not in prompt
+    assert "EVAL_GOLD_MUST_NEVER_APPEAR" not in prompt
     for value in (1, 7, 13, 19, 25):
         assert f"테스트 원문 {value}" in prompt
 
@@ -90,13 +94,13 @@ def test_missing_key_has_clear_error(api_client, gemini_mock, monkeypatch):
 def test_unready_v2_never_calls_gemini(api_client, gemini_mock, tmp_path, monkeypatch, blank):
     data_dir = tmp_path / "data"
     if blank:
-        (data_dir / "answers").mkdir(parents=True)
-        (data_dir / "answers" / "fewshot_profiles.jsonl").write_text("", encoding="utf-8")
+        (data_dir / "samples").mkdir(parents=True)
+        (data_dir / "samples" / "answer_profiles_gold.jsonl").write_text("", encoding="utf-8")
     monkeypatch.setattr(profile_extractor, "load_fewshot_examples", lambda: load_fewshot_examples(data_dir))
     response = api_client.post("/profile/extract", json={"text": "소개"})
     assert response.status_code == 503
     assert response.json()["detail"]["code"] == "FEWSHOT_NOT_READY"
-    assert "fewshot_profiles.jsonl" in response.json()["detail"]["message"]
+    assert "answer_profiles_gold.jsonl" in response.json()["detail"]["message"]
     gemini_mock.assert_not_called()
 
 

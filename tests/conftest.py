@@ -34,16 +34,16 @@ def api_client():
 @pytest.fixture
 def fewshot_data(tmp_path):
     data_dir = tmp_path / "data"
-    (data_dir / "answers").mkdir(parents=True)
-    (data_dir / "samples").mkdir()
+    (data_dir / "samples").mkdir(parents=True)
     ids = [1, 7, 13, 19, 25]
-    (data_dir / "split.json").write_text(json.dumps({"train": ids, "eval": [2, 3]}), encoding="utf-8")
+    (data_dir / "samples" / "split.json").write_text(json.dumps({"train": ids, "eval": [2, 3]}), encoding="utf-8")
     # Synthetic fixtures stay in temporary directories, never production data/.
     answers = [{"id": value, "profile": ShopProfile(shop_name=None, business_type=None).model_dump()} for value in reversed(ids)]
+    answers.append({"id": 2, "profile": {"other_info": ["EVAL_GOLD_MUST_NEVER_APPEAR"]}})
     texts = [{"id": value, "text": f"테스트 원문 {value}"} for value in ids]
     texts.append({"id": 2, "text": "EVAL_MUST_NEVER_APPEAR"})
     for path, rows in [
-        (data_dir / "answers" / "fewshot_profiles.jsonl", answers),
+        (data_dir / "samples" / "answer_profiles_gold.jsonl", answers),
         (data_dir / "samples" / "shop_texts.jsonl", texts),
     ]:
         path.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
