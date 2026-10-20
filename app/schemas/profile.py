@@ -1,38 +1,42 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ProfileModel(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", strict=True)
 
 
-class Fact(ProfileModel):
-    item: str
-    content: str
-
-
-class Design(ProfileModel):
-    main_color: str | None = None
-    font_mood: str | None = None
-
-
-class AmbiguousStatement(ProfileModel):
-    sentence: str
-    reason: str
+class Menu(ProfileModel):
+    name: str = Field(description="대표 메뉴 이름. 사장님이 쓴 원문 그대로")
+    price: str | None = Field(default=None, description="메뉴 가격. 단위와 적용 조건까지 원문 그대로, 없으면 null")
 
 
 class ShopProfile(ProfileModel):
     """사장님이 제공한 정보만 기록하며, 누락된 값은 추측하지 않는다."""
 
-    shop_name: str | None
-    business_type: Literal["카페", "분식", "고깃집", "베이커리"] | None
-    one_line_intro: str | None = None
-    facts: list[Fact] = Field(default_factory=list)
-    mood_keywords: list[str] = Field(default_factory=list)
-    tone: Literal["존댓말", "반말", "섞음"] | None = None
-    length: Literal["짧게", "보통", "길게"] | None = None
-    banned_words: list[str] = Field(default_factory=list)
-    prohibitions: list[str] = Field(default_factory=list)
-    design: Design | None = None
-    ambiguous: list[AmbiguousStatement] = Field(default_factory=list)
+    shop_name: str | None = Field(description="가게 이름. 글에 없으면 null, 지어내지 않기")
+    business_type: str | None = Field(description="업종. 글에 없으면 null, 메뉴로 추측하지 않기")
+    location: str | None = Field(default=None, description="위치. 주소와 찾아오는 조건을 원문 그대로")
+    hours: str | None = Field(default=None, description="영업시간. 요일, 브레이크 타임 등 조건까지 원문 그대로")
+    closed_days: str | None = Field(default=None, description="휴무일. 예외와 조건까지 원문 그대로")
+    menus: list[Menu] | None = Field(default=None, description="대표 메뉴·가격. 글에 있는 메뉴만 기록하고 없으면 null")
+    takeout_delivery: str | None = Field(default=None, description="포장·배달. 가능 여부와 최소 금액 등 조건까지 원문 그대로")
+    parking: str | None = Field(default=None, description="주차. 가능 여부, 시간, 요금과 조건까지 원문 그대로")
+    mood_strengths: str | None = Field(default=None, description="분위기·강점. 사장님이 쓴 표현만 원문 그대로")
+    tone: str | None = Field(default=None, description="원하는 말투. 사장님이 지정하지 않으면 null")
+    avoid_expressions: list[str] | None = Field(default=None, description="피할 표현. 사장님이 명시한 표현만 기록")
+    owner_phrases: list[str] | None = Field(default=None, description="사장님 꾸밈말 원문 그대로. 사실로 단정하거나 다른 표현으로 고치지 않기")
+    needs_check: list[str] | None = Field(default=None, description="글 안에서 부딪히는 내용. 양쪽 내용을 보존하고 충돌마다 한 줄로 기록")
+
+
+class ProfileExtractRequest(ProfileModel):
+    text: str = Field(min_length=1, description="사장님 소개 글")
+    prompt_version: Literal["v1", "v2"] = "v2"
+
+    @field_validator("text")
+    @classmethod
+    def reject_blank_text(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("사장님 소개 글을 입력해 주세요.")
+        return value
