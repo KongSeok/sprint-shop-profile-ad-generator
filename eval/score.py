@@ -84,11 +84,13 @@ def split_facts(profile: dict) -> list[Fact]:
     return facts
 
 
-def match_score(gold: Fact, pred: Fact) -> tuple[bool, float]:
+def match_score(gold: Fact, pred: Fact, text: str = "") -> tuple[bool, float]:
     if gold.field != pred.field:
         return False, 0.0
     if gold.field == "menus.price":
-        exact = numbers(gold.value) == numbers(pred.value)
+        gold_numbers, pred_numbers = Counter(numbers(gold.value)), Counter(numbers(pred.value))
+        exact = (gold_numbers == pred_numbers if gold_numbers or pred_numbers
+                 else normalize(gold.value) == normalize(pred.value))
         return exact, float(exact)
     if gold.field in STRICT_FIELDS:
         first, second = normalize(gold.value), normalize(pred.value)
@@ -96,13 +98,18 @@ def match_score(gold: Fact, pred: Fact) -> tuple[bool, float]:
             return True, 1.0
         if gold.field == "menus.name" and first and second and (first in second or second in first):
             return True, dice(gold.value, pred.value)
+        if gold.field == "owner_phrases" and first and second and first in second and second in normalize(text):
+            return True, dice(gold.value, pred.value)
         return False, 0.0
     overlap = dice(gold.value, pred.value)
     return overlap >= MATCH_DICE_THRESHOLD and contains_numbers(gold.value, pred.value), overlap
 
 
 def source_evidence(fact: Fact, text: str) -> tuple[bool, float]:
-    if fact.field in STRICT_FIELDS or fact.field == "menus.price":
+    if fact.field == "menus.price":
+        supported = contains_numbers(fact.value, text)
+        return supported, float(supported)
+    if fact.field in STRICT_FIELDS:
         supported = normalize(fact.value) in normalize(text)
         return supported, float(supported)
     pieces = bigrams(fact.value)
@@ -120,7 +127,7 @@ def score_profile(row_id: int, gold: dict, pred: dict, text: str) -> tuple[list[
         if expected.field == "menus.price":
             continue
         for pi, actual in enumerate(pred_facts):
-            accepted, similarity = match_score(expected, actual)
+            accepted, similarity = match_score(expected, actual, text)
             if accepted:
                 candidates.append((-similarity, gi, pi))
     for negative_score, gi, pi in sorted(candidates):
@@ -137,7 +144,7 @@ def score_profile(row_id: int, gold: dict, pred: dict, text: str) -> tuple[list[
         pred_price = next((i for i, fact in enumerate(pred_facts)
                            if fact.field == "menus.price" and fact.menu_index == pred_facts[pi].menu_index), None)
         if gold_price is not None and pred_price is not None:
-            accepted, similarity = match_score(gold_facts[gold_price], pred_facts[pred_price])
+            accepted, similarity = match_score(gold_facts[gold_price], pred_facts[pred_price], text)
             if accepted:
                 matched_gold.add(gold_price)
                 matched_pred.add(pred_price)

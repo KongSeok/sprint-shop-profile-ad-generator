@@ -1,2 +1,2 @@
 ﻿run_name,prompt_version,model,prompt_sha1,scored_at,n_scored,n_missing,recall_micro,recall_macro,invented_total,invented_per_id,extra_total,conflict_hit_rate,recall_shop_name,recall_business_type,recall_location,recall_hours,recall_closed_days,recall_takeout_delivery,recall_parking,recall_tone,recall_mood_strengths,recall_menus,recall_avoid_expressions,recall_owner_phrases,recall_other_info
-gold,gold,gold,,2026-10-21T04:48:33.443792+00:00,25,0,1.0,1.0,0,0.0,0,1.0,1.0,1.0,,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+gold,gold,gold,,2026-10-21T07:21:43.375863+00:00,25,0,1.0,1.0,0,0.0,0,1.0,1.0,1.0,,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0

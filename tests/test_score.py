@@ -70,6 +70,42 @@ def test_menu_containment_and_numeric_price_match():
     assert score_profile(2, gold, pred, "")[1]["recall"] == 1.0
 
 
+@pytest.mark.parametrize("gold_price,pred_price,hit", [
+    ("150g 39,000원", "39,000원 (150g)", True),
+    ("150g 39,000원", "39,000원 (150g, 150g)", False),
+    ("무료", "무료!", True),
+    ("무료", "싯가", False),
+    ("39,000원", "무료", False),
+])
+def test_price_uses_number_counts_or_exact_text_when_numberless(gold_price, pred_price, hit):
+    gold = profile(menus=[{"name": "등심", "price": gold_price}])
+    pred = profile(menus=[{"name": "등심", "price": pred_price}])
+    rows, _ = score_profile(2, gold, pred, "")
+    assert any(row["field"] == "menus.price" and row["result"] == "hit" for row in rows) is hit
+
+
+def test_reordered_unmatched_price_is_supported_by_source_numbers():
+    gold = profile(menus=[{"name": "등심", "price": None}])
+    pred = profile(menus=[{"name": "등심", "price": "39,000원 (150g)"}])
+    rows, count = score_profile(2, gold, pred, "등심 150g 39,000원")
+    assert count["extra"] == 1 and count["invented"] == 0
+    assert any(row["field"] == "menus.price" and row["result"] == "extra" for row in rows)
+
+
+@pytest.mark.parametrize("source,hit", [
+    ("저희는 그냥 동네 빵집이고 편하게 오세요", True),
+    ("저희는 그냥 동네 빵집입니다", False),
+])
+def test_longer_owner_phrase_requires_exact_source_excerpt(source, hit):
+    gold = profile(owner_phrases=["그냥 동네 빵집"])
+    pred = profile(owner_phrases=["그냥 동네 빵집이고"])
+    rows, count = score_profile(2, gold, pred, source)
+    assert count["hit"] == int(hit)
+    if hit:
+        assert count["extra"] == count["invented"] == 0
+        assert rows[0]["score"] == dice("그냥 동네 빵집", "그냥 동네 빵집이고")
+
+
 @pytest.mark.parametrize("prediction,expected_hit", [("동네 맛집", 1), ("지역 맛집", 0)])
 def test_owner_phrases_are_normalized_exact_only(prediction, expected_hit):
     gold = profile(owner_phrases=["동네맛집"])
