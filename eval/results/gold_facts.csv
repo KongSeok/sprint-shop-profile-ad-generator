@@ -1,0 +1,249 @@
+﻿id,field,gold_value,pred_value,score,result
+2,shop_name,불꽃한점,불꽃한점,1.0,hit
+2,business_type,고깃집,고깃집,1.0,hit
+2,tone,퇴근하고 소주 한잔하기 좋은 편안한 가게라는 느낌,퇴근하고 소주 한잔하기 좋은 편안한 가게라는 느낌,1.0,hit
+2,mood_strengths,숯불에 구운 소갈비살이 대표 메뉴,숯불에 구운 소갈비살이 대표 메뉴,1.0,hit
+2,menus.name,소갈비살,소갈비살,1.0,hit
+2,owner_phrases,퇴근하고 소주 한잔하기 좋은 편안한 가게,퇴근하고 소주 한잔하기 좋은 편안한 가게,1.0,hit
+3,shop_name,고기굽는달,고기굽는달,1.0,hit
+3,business_type,고깃집,고깃집,1.0,hit
+3,tone,손님들이 시끄럽지 않고 편하게 먹고 갈수있는 곳,손님들이 시끄럽지 않고 편하게 먹고 갈수있는 곳,1.0,hit
+3,mood_strengths,가게가 막 크진 않은데 테이블 간격은 넓게 해놨음,가게가 막 크진 않은데 테이블 간격은 넓게 해놨음,1.0,hit
+3,menus.name,삼겹살,삼겹살,1.0,hit
+3,menus.name,항정살,항정살,1.0,hit
+3,owner_phrases,시끄럽지 않고 편하게 먹고 갈수있는 곳,시끄럽지 않고 편하게 먹고 갈수있는 곳,1.0,hit
+3,other_info,오픈한지 8개월,오픈한지 8개월,1.0,hit
+3,other_info,고기를 직원이 다 구워주는건 아니고 바쁠때 빼곤 도와드림,고기를 직원이 다 구워주는건 아니고 바쁠때 빼곤 도와드림,1.0,hit
+4,shop_name,육향정원,육향정원,1.0,hit
+4,business_type,고깃집,고깃집,1.0,hit
+4,hours,"11:30~22:00, 브레이크타임 15:00~17:00","11:30~22:00, 브레이크타임 15:00~17:00",1.0,hit
+4,closed_days,매주 월요일,매주 월요일,1.0,hit
+4,parking,건물 지하 2시간 무료,건물 지하 2시간 무료,1.0,hit
+4,menus.name,한우 등심,한우 등심,1.0,hit
+4,menus.price,"150g 39,000원","150g 39,000원",1.0,hit
+4,menus.name,한우 안심,한우 안심,1.0,hit
+4,menus.price,"150g 45,000원","150g 45,000원",1.0,hit
+4,menus.name,육회,육회,1.0,hit
+4,menus.price,"180g 28,000원","180g 28,000원",1.0,hit
+4,other_info,소고기는 국내산 한우 1++ 등급 사용,소고기는 국내산 한우 1++ 등급 사용,1.0,hit
+4,other_info,예약 가능,예약 가능,1.0,hit
+4,other_info,단체석 최대 12명,단체석 최대 12명,1.0,hit
+5,shop_name,연기담,연기담,1.0,hit
+5,business_type,숙성 돼지고기 전문점,숙성 돼지고기 전문점,1.0,hit
+5,tone,차분하고 조금 묵직한 분위기,차분하고 조금 묵직한 분위기,1.0,hit
+5,mood_strengths,14일 정도 저온 숙성,14일 정도 저온 숙성,1.0,hit
+5,mood_strengths,검은색 돌판에 고기를 구워 먹는 방식,검은색 돌판에 고기를 구워 먹는 방식,1.0,hit
+5,mood_strengths,내부는 어두운 우드톤,내부는 어두운 우드톤,1.0,hit
+5,mood_strengths,씹는 맛이 있는 고기,씹는 맛이 있는 고기,1.0,hit
+5,avoid_expressions,고기가 입에서 녹는다는 표현,고기가 입에서 녹는다는 표현,1.0,hit
+5,owner_phrases,씹는 맛이 있는 고기,씹는 맛이 있는 고기,1.0,hit
+5,other_info,고급스럽다고 해서 금색 글씨나 화려한 장식은 넣지 않았으면 함,고급스럽다고 해서 금색 글씨나 화려한 장식은 넣지 않았으면 함,1.0,hit
+6,shop_name,밀가루의오후,밀가루의오후,1.0,hit
+6,business_type,동네 빵집,동네 빵집,1.0,hit
+6,takeout_delivery,대부분 포장해 감,대부분 포장해 감,1.0,hit
+6,tone,"버터 향이 나는 따뜻한 빵집 느낌, 출근길에 잠깐 들러서 빵 하나 사 가는 모습이 자연스럽게 떠오르게","버터 향이 나는 따뜻한 빵집 느낌, 출근길에 잠깐 들러서 빵 하나 사 가는 모습이 자연스럽게 떠오르게",1.0,hit
+6,mood_strengths,작은 동네 빵집,작은 동네 빵집,1.0,hit
+6,mood_strengths,테이블은 두 개뿐,테이블은 두 개뿐,1.0,hit
+6,mood_strengths,화려한 디저트보다는 매일 먹기 좋은 담백한 빵들,화려한 디저트보다는 매일 먹기 좋은 담백한 빵들,1.0,hit
+6,menus.name,소금빵,소금빵,1.0,hit
+6,menus.name,치아바타,치아바타,1.0,hit
+6,owner_phrases,버터 향이 나는 따뜻한 빵집,버터 향이 나는 따뜻한 빵집,1.0,hit
+6,owner_phrases,매일 먹기 좋은 담백한 빵들,매일 먹기 좋은 담백한 빵들,1.0,hit
+6,other_info,아침 7시부터 빵을 굽고 있음,아침 7시부터 빵을 굽고 있음,1.0,hit
+8,shop_name,빵굽는모퉁이,빵굽는모퉁이,1.0,hit
+8,business_type,동네 빵집,동네 빵집,1.0,hit
+8,tone,"너무 프랑스 빵집처럼 나오지 않게, 그냥 동네 빵집","너무 프랑스 빵집처럼 나오지 않게, 그냥 동네 빵집",1.0,hit
+8,mood_strengths,식빵이 메인,식빵이 메인,1.0,hit
+8,mood_strengths,빵은 매일 만들고 남은거 다음날 팔지 않음,빵은 매일 만들고 남은거 다음날 팔지 않음,1.0,hit
+8,mood_strengths,가격도 부담없게,가격도 부담없게,1.0,hit
+8,menus.name,우유식빵,우유식빵,1.0,hit
+8,menus.name,밤식빵,밤식빵,1.0,hit
+8,owner_phrases,그냥 동네 빵집,그냥 동네 빵집,1.0,hit
+8,other_info,오후 2시쯤 되면 거의 다 나감,오후 2시쯤 되면 거의 다 나감,1.0,hit
+8,other_info,사진도 너무 반짝반짝하게 보정하지 말 것,사진도 너무 반짝반짝하게 보정하지 말 것,1.0,hit
+9,shop_name,오븐서랍,오븐서랍,1.0,hit
+9,business_type,베이커리,베이커리,1.0,hit
+9,hours,09:00~20:00,09:00~20:00,1.0,hit
+9,closed_days,화요일,화요일,1.0,hit
+9,mood_strengths,당일 생산 제품 위주로 판매,당일 생산 제품 위주로 판매,1.0,hit
+9,menus.name,소금빵,소금빵,1.0,hit
+9,menus.price,"3,200원","3,200원",1.0,hit
+9,menus.name,바게트,바게트,1.0,hit
+9,menus.price,"4,500원","4,500원",1.0,hit
+9,menus.name,무화과 깜빠뉴,무화과 깜빠뉴,1.0,hit
+9,menus.price,"7,800원","7,800원",1.0,hit
+9,menus.name,레몬 파운드,레몬 파운드,1.0,hit
+9,menus.price,"4,200원","4,200원",1.0,hit
+9,other_info,"밀가루는 프랑스산과 국내산을 제품에 따라 사용, 버터는 프랑스산","밀가루는 프랑스산과 국내산을 제품에 따라 사용, 버터는 프랑스산",1.0,hit
+9,other_info,"홀 이용 가능, 좌석 8석","홀 이용 가능, 좌석 8석",1.0,hit
+10,shop_name,달빛반죽,달빛반죽,1.0,hit
+10,business_type,베이커리 카페,베이커리 카페,1.0,hit
+10,tone,귀엽고 포근한 분위기,귀엽고 포근한 분위기,1.0,hit
+10,mood_strengths,케이크 주문 제작,케이크 주문 제작,1.0,hit
+10,mood_strengths,디자인은 심플한 편이고 파스텔톤 색상,디자인은 심플한 편이고 파스텔톤 색상,1.0,hit
+10,mood_strengths,손님이 보내주신 문구를 케이크 위에 직접 적어드림,손님이 보내주신 문구를 케이크 위에 직접 적어드림,1.0,hit
+10,menus.name,생일 케이크(주문 제작),생일 케이크(주문 제작),1.0,hit
+10,avoid_expressions,세상에 하나뿐인 케이크,세상에 하나뿐인 케이크,1.0,hit
+11,shop_name,느린잔,느린잔,1.0,hit
+11,business_type,카페,카페,1.0,hit
+11,tone,너무 감성적인 문장만 늘어놓지 말고 실제 가게 분위기가 느껴지게,너무 감성적인 문장만 늘어놓지 말고 실제 가게 분위기가 느껴지게,1.0,hit
+11,mood_strengths,오래된 주택을 개조,오래된 주택을 개조,1.0,hit
+11,mood_strengths,마당에 작은 나무가 한 그루,마당에 작은 나무가 한 그루,1.0,hit
+11,mood_strengths,산미가 강하지 않은 원두,산미가 강하지 않은 원두,1.0,hit
+11,mood_strengths,혼자 책 읽으러 오는 손님이 많음,혼자 책 읽으러 오는 손님이 많음,1.0,hit
+11,mood_strengths,특별한 이벤트나 화려한 디저트는 없지만 조용히 앉아 있기 좋음,특별한 이벤트나 화려한 디저트는 없지만 조용히 앉아 있기 좋음,1.0,hit
+11,owner_phrases,조용히 앉아 있기 좋습니다,조용히 앉아 있기 좋습니다,1.0,hit
+11,other_info,노트북 사용 가능,노트북 사용 가능,1.0,hit
+12,shop_name,모닝페이퍼,모닝페이퍼,1.0,hit
+12,business_type,카페,카페,1.0,hit
+12,hours,오전 8시에 문 엶,오전 8시에 문 엶,1.0,hit
+12,takeout_delivery,출근길 테이크아웃 손님이 많음,출근길 테이크아웃 손님이 많음,1.0,hit
+12,menus.name,아메리카노,아메리카노,1.0,hit
+12,menus.price,"4,000원","4,000원",1.0,hit
+12,menus.name,라테,라테,1.0,hit
+12,menus.price,"4,500원","4,500원",1.0,hit
+14,shop_name,원두기록실,원두기록실,1.0,hit
+14,business_type,카페,카페,1.0,hit
+14,hours,10:00~21:00,10:00~21:00,1.0,hit
+14,closed_days,매주 수요일,매주 수요일,1.0,hit
+14,mood_strengths,에티오피아,에티오피아,1.0,hit
+14,mood_strengths,콜롬비아,콜롬비아,1.0,hit
+14,mood_strengths,과테말라 원두 취급,과테말라 원두 취급,1.0,hit
+14,menus.name,에스프레소,에스프레소,1.0,hit
+14,menus.price,"3,800원","3,800원",1.0,hit
+14,menus.name,아메리카노,아메리카노,1.0,hit
+14,menus.price,"4,300원","4,300원",1.0,hit
+14,menus.name,플랫화이트,플랫화이트,1.0,hit
+14,menus.price,"5,000원","5,000원",1.0,hit
+14,menus.name,필터커피,필터커피,1.0,hit
+14,menus.price,"6,500원부터","6,500원부터",1.0,hit
+14,other_info,원두 판매,원두 판매,1.0,hit
+14,other_info,좌석 16석,좌석 16석,1.0,hit
+14,other_info,콘센트 일부 제공,콘센트 일부 제공,1.0,hit
+14,other_info,반려동물 동반 불가,반려동물 동반 불가,1.0,hit
+15,shop_name,숲속우편함,숲속우편함,1.0,hit
+15,business_type,카페,카페,1.0,hit
+15,tone,사진 찍기 좋은 카페라는 말보다는 차분하게 시간을 보내기 좋은 곳으로,사진 찍기 좋은 카페라는 말보다는 차분하게 시간을 보내기 좋은 곳으로,1.0,hit
+15,mood_strengths,내부에 식물이 많고 창문이 커서 낮에는 햇빛이 잘 들어옴,내부에 식물이 많고 창문이 커서 낮에는 햇빛이 잘 들어옴,1.0,hit
+15,menus.name,말차 음료,말차 음료,1.0,hit
+15,menus.name,수제 푸딩,수제 푸딩,1.0,hit
+15,avoid_expressions,인스타 감성,인스타 감성,1.0,hit
+15,avoid_expressions,핫플,핫플,1.0,hit
+15,avoid_expressions,SNS 인증 필수,SNS 인증 필수,1.0,hit
+15,owner_phrases,차분하게 시간을 보내기 좋은 곳,차분하게 시간을 보내기 좋은 곳,1.0,hit
+16,shop_name,온기밥상,온기밥상,1.0,hit
+16,business_type,한식집,한식집,1.0,hit
+16,tone,엄청 특별한 요리를 하는 곳은 아니고 매일 먹어도 질리지 않는 밥,엄청 특별한 요리를 하는 곳은 아니고 매일 먹어도 질리지 않는 밥,1.0,hit
+16,mood_strengths,집밥 메뉴,집밥 메뉴,1.0,hit
+16,mood_strengths,반찬은 매일 아침 준비하고 계절에 따라 조금씩 달라짐,반찬은 매일 아침 준비하고 계절에 따라 조금씩 달라짐,1.0,hit
+16,mood_strengths,점심에는 근처 회사원,점심에는 근처 회사원,1.0,hit
+16,mood_strengths,저녁에는 동네 주민 가족 손님,저녁에는 동네 주민 가족 손님,1.0,hit
+16,mood_strengths,사장님이 직접 요리,사장님이 직접 요리,1.0,hit
+16,menus.name,제육볶음,제육볶음,1.0,hit
+16,menus.name,된장찌개,된장찌개,1.0,hit
+16,menus.name,고등어구이,고등어구이,1.0,hit
+16,avoid_expressions,엄마 손맛,엄마 손맛,1.0,hit
+16,owner_phrases,매일 먹어도 질리지 않는 밥,매일 먹어도 질리지 않는 밥,1.0,hit
+16,other_info,따뜻한 밥과 반찬이 차려진 식탁을 보여주면 좋겠음,따뜻한 밥과 반찬이 차려진 식탁을 보여주면 좋겠음,1.0,hit
+17,shop_name,소담한끼,소담한끼,1.0,hit
+17,business_type,한식집,한식집,1.0,hit
+17,mood_strengths,혼자 오셔도 편하게 식사할 수 있음,혼자 오셔도 편하게 식사할 수 있음,1.0,hit
+17,menus.name,소불고기 정식,소불고기 정식,1.0,hit
+17,menus.name,순두부찌개,순두부찌개,1.0,hit
+17,owner_phrases,혼자 오셔도 편하게 식사할 수 있는 한식집,혼자 오셔도 편하게 식사할 수 있는 한식집,1.0,hit
+18,shop_name,밥짓는하루,밥짓는하루,1.0,hit
+18,business_type,백반집,백반집,1.0,hit
+18,tone,가격이 싸다고만 광고하지 말고 반찬을 직접 만든다는 점이 잘 보이게,가격이 싸다고만 광고하지 말고 반찬을 직접 만든다는 점이 잘 보이게,1.0,hit
+18,mood_strengths,반찬은 보통 6가지,반찬은 보통 6가지,1.0,hit
+18,mood_strengths,매일 조금씩 바뀜,매일 조금씩 바뀜,1.0,hit
+18,mood_strengths,국도 매일 달라짐,국도 매일 달라짐,1.0,hit
+18,mood_strengths,반찬을 직접 만듦,반찬을 직접 만듦,1.0,hit
+18,mood_strengths,점심시간엔 최대한 빨리 음식 내드리려고 함,점심시간엔 최대한 빨리 음식 내드리려고 함,1.0,hit
+18,other_info,작년에 오픈,작년에 오픈,1.0,hit
+20,shop_name,담백한계절,담백한계절,1.0,hit
+20,business_type,한식집,한식집,1.0,hit
+20,tone,그냥 편안하게 먹을 수 있는 한 끼라는 점을 강조,그냥 편안하게 먹을 수 있는 한 끼라는 점을 강조,1.0,hit
+20,mood_strengths,자극적인 양념보다는 재료 자체의 맛을 살림,자극적인 양념보다는 재료 자체의 맛을 살림,1.0,hit
+20,mood_strengths,밝은 나무색 가구와 흰색 벽,밝은 나무색 가구와 흰색 벽,1.0,hit
+20,mood_strengths,조용한 분위기,조용한 분위기,1.0,hit
+20,mood_strengths,연세가 있으신 손님들도 자주 옴,연세가 있으신 손님들도 자주 옴,1.0,hit
+20,menus.name,나물밥,나물밥,1.0,hit
+20,menus.name,들깨수제비,들깨수제비,1.0,hit
+20,avoid_expressions,건강을 치료하는 음식,건강을 치료하는 음식,1.0,hit
+20,avoid_expressions,몸속 독소 제거,몸속 독소 제거,1.0,hit
+20,owner_phrases,편안하게 먹을 수 있는 한 끼,편안하게 먹을 수 있는 한 끼,1.0,hit
+21,shop_name,하루초밥,하루초밥,1.0,hit
+21,business_type,일식집,일식집,1.0,hit
+21,tone,너무 비싼 오마카세 식당처럼 보이기보다는 특별한 날이 아니어도 편하게 들를 수 있는 초밥집,너무 비싼 오마카세 식당처럼 보이기보다는 특별한 날이 아니어도 편하게 들를 수 있는 초밥집,1.0,hit
+21,mood_strengths,생선은 매일 상태를 확인하고 그날 사용할 만큼 손질,생선은 매일 상태를 확인하고 그날 사용할 만큼 손질,1.0,hit
+21,mood_strengths,손님 앞에서 초밥을 쥠,손님 앞에서 초밥을 쥠,1.0,hit
+21,menus.name,초밥,초밥,1.0,hit
+21,menus.name,사시미,사시미,1.0,hit
+21,menus.name,초밥 세트(점심),초밥 세트(점심),1.0,hit
+21,owner_phrases,특별한 날이 아니어도 편하게 들를 수 있는 초밥집,특별한 날이 아니어도 편하게 들를 수 있는 초밥집,1.0,hit
+21,other_info,바 좌석 8개와 테이블 4개,바 좌석 8개와 테이블 4개,1.0,hit
+21,other_info,손님 앞에서 초밥을 쥐는 모습을 보여주고 싶음,손님 앞에서 초밥을 쥐는 모습을 보여주고 싶음,1.0,hit
+22,shop_name,우동한그릇,우동한그릇,1.0,hit
+22,business_type,우동집,우동집,1.0,hit
+22,mood_strengths,가쓰오 육수로 만든 우동,가쓰오 육수로 만든 우동,1.0,hit
+22,mood_strengths,혼밥 손님이 많음,혼밥 손님이 많음,1.0,hit
+22,mood_strengths,음식이 비교적 빨리 나옴,음식이 비교적 빨리 나옴,1.0,hit
+22,menus.name,우동,우동,1.0,hit
+22,menus.name,새우튀김,새우튀김,1.0,hit
+23,shop_name,스시노을,스시노을,1.0,hit
+23,business_type,초밥집,초밥집,1.0,hit
+23,tone,"너무 고급집인줄 알고 부담스러워 하지 않게, 그냥 신선한 초밥 편하게 먹으러 오는 곳","너무 고급집인줄 알고 부담스러워 하지 않게, 그냥 신선한 초밥 편하게 먹으러 오는 곳",1.0,hit
+23,menus.name,연어초밥,연어초밥,1.0,hit
+23,menus.name,광어초밥,광어초밥,1.0,hit
+23,menus.name,점심세트(미니우동 포함),점심세트(미니우동 포함),1.0,hit
+23,menus.price,만이천원,만이천원,1.0,hit
+23,owner_phrases,그냥 신선한 초밥 편하게 먹으러 오는곳,그냥 신선한 초밥 편하게 먹으러 오는곳,1.0,hit
+23,other_info,가게가 작아서 예약은 안받음,가게가 작아서 예약은 안받음,1.0,hit
+24,shop_name,면옥하루,면옥하루,1.0,hit
+24,business_type,라멘집,라멘집,1.0,hit
+24,hours,"11:30~21:00, 브레이크타임 15:00~17:00","11:30~21:00, 브레이크타임 15:00~17:00",1.0,hit
+24,closed_days,월요일,월요일,1.0,hit
+24,takeout_delivery,"포장 가능, 배달 불가","포장 가능, 배달 불가",1.0,hit
+24,menus.name,돈코츠라멘,돈코츠라멘,1.0,hit
+24,menus.price,"10,000원","10,000원",1.0,hit
+24,menus.name,쇼유라멘,쇼유라멘,1.0,hit
+24,menus.price,"9,500원","9,500원",1.0,hit
+24,menus.name,매운미소라멘,매운미소라멘,1.0,hit
+24,menus.price,"11,000원","11,000원",1.0,hit
+24,menus.name,차슈 추가,차슈 추가,1.0,hit
+24,menus.price,"3,000원","3,000원",1.0,hit
+24,other_info,"면은 국내 제조 생면, 돼지고기는 국내산","면은 국내 제조 생면, 돼지고기는 국내산",1.0,hit
+24,other_info,좌석 14석,좌석 14석,1.0,hit
+24,other_info,주문은 키오스크로 받음,주문은 키오스크로 받음,1.0,hit
+26,shop_name,오후의창가,오후의창가,1.0,hit
+26,business_type,카페,카페,1.0,hit
+26,hours,오전 10시부터 밤 9시까지,오전 10시부터 밤 9시까지,1.0,hit
+26,closed_days,매주 월요일 쉼 / 월요일에도 오후에는 문 엶,매주 월요일 쉼 / 월요일에도 오후에는 문 엶,1.0,hit
+26,tone,조용하고 밝은 분위기,조용하고 밝은 분위기,1.0,hit
+26,mood_strengths,스콘은 직접 구움,스콘은 직접 구움,1.0,hit
+26,menus.name,흑임자라테(시그니처),흑임자라테(시그니처),1.0,hit
+26,menus.price,"5,500원","5,500원",1.0,hit
+26,menus.name,스콘,스콘,1.0,hit
+27,shop_name,화로정,화로정,1.0,hit
+27,business_type,갈빗집,갈빗집,1.0,hit
+27,parking,가게 앞에 2대 가능 / 주차 공간이 없어서 근처 공영주차장 이용,가게 앞에 2대 가능 / 주차 공간이 없어서 근처 공영주차장 이용,1.0,hit
+27,tone,가족 단위로 편하게 오는 갈빗집이라는 느낌,가족 단위로 편하게 오는 갈빗집이라는 느낌,1.0,hit
+27,menus.name,양념소갈비,양념소갈비,1.0,hit
+27,menus.price,"300g 32,000원","300g 32,000원",1.0,hit
+27,menus.name,돼지갈비,돼지갈비,1.0,hit
+27,owner_phrases,가족 단위로 편하게 오는 갈빗집,가족 단위로 편하게 오는 갈빗집,1.0,hit
+27,other_info,"국내산 고기만 씀 / 소갈비는 미국산, 돼지갈비는 국내산","국내산 고기만 씀 / 소갈비는 미국산, 돼지갈비는 국내산",1.0,hit
+28,shop_name,든든국밥집,든든국밥집,1.0,hit
+28,business_type,국밥집,국밥집,1.0,hit
+28,menus.name,국밥,국밥,1.0,hit
+29,shop_name,꼬마분식,꼬마분식,1.0,hit
+29,business_type,분식집,분식집,1.0,hit
+29,takeout_delivery,매장은 좁아서 포장만 됨 / 배민이랑 쿠팡이츠에도 올려놨음,매장은 좁아서 포장만 됨 / 배민이랑 쿠팡이츠에도 올려놨음,1.0,hit
+29,parking,"건물 주차장 1시간 무료, 영수증 보여주셔야 함","건물 주차장 1시간 무료, 영수증 보여주셔야 함",1.0,hit
+29,menus.name,떡볶이,떡볶이,1.0,hit
+29,menus.name,김밥,김밥,1.0,hit
+30,shop_name,한판,한판,1.0,hit
+30,business_type,돼지구이집,돼지구이집,1.0,hit
+30,tone,"과장 없이, 그래도 동네에서 제일 맛있는 집이라는 느낌","과장 없이, 그래도 동네에서 제일 맛있는 집이라는 느낌",1.0,hit
+30,avoid_expressions,과장된 표현,과장된 표현,1.0,hit
+30,owner_phrases,동네에서 제일 맛있는 집,동네에서 제일 맛있는 집,1.0,hit

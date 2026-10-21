@@ -11,10 +11,13 @@ from app.services.fewshot_loader import FewShotError, load_fewshot_examples
 
 
 class ProfileExtractionError(Exception):
-    def __init__(self, code: str, message: str, status_code: int = 503):
+    def __init__(self, code: str, message: str, status_code: int = 503,
+                 upstream_status: int | None = None, raw_text: str | None = None):
         super().__init__(message)
         self.code = code
         self.status_code = status_code
+        self.upstream_status = upstream_status
+        self.raw_text = raw_text
 
 
 def build_prompt(prompt_version: Literal["v1", "v2"]) -> str:
@@ -35,8 +38,15 @@ def build_prompt(prompt_version: Literal["v1", "v2"]) -> str:
 
 
 def extract_profile(text: str, prompt_version: Literal["v1", "v2"] = "v2") -> ShopProfile:
+    return extract_profile_raw(text, prompt_version)[1]
+
+
+def extract_profile_raw(
+    text: str, prompt_version: Literal["v1", "v2"] = "v2", *,
+    system_prompt: str | None = None,
+) -> tuple[str, ShopProfile]:
     # Validate prompt data before creating a client, especially for incomplete v2.
-    prompt = build_prompt(prompt_version)
+    prompt = system_prompt if system_prompt is not None else build_prompt(prompt_version)
     api_key = config.GEMINI_API_KEY.strip()
     if not api_key:
         raise ProfileExtractionError("GEMINI_KEY_MISSING", "GEMINI_API_KEY가 없습니다. .env 또는 환경변수를 설정해 주세요.")
@@ -66,6 +76,7 @@ def extract_profile(text: str, prompt_version: Literal["v1", "v2"] = "v2") -> Sh
             "GEMINI_CALL_FAILED",
             f"Gemini 호출 실패 (HTTP {exc.code}): {reason}",
             502,
+            upstream_status=exc.code,
         ) from exc
     except Exception as exc:
         raise ProfileExtractionError(
@@ -73,13 +84,17 @@ def extract_profile(text: str, prompt_version: Literal["v1", "v2"] = "v2") -> Sh
             f"Gemini 호출 실패 ({type(exc).__name__}). 네트워크와 SDK 설정을 확인해 주세요.",
             502,
         ) from exc
-    if not response.text:
-        raise ProfileExtractionError("GEMINI_EMPTY_RESPONSE", "Gemini가 프로필 JSON을 반환하지 않았습니다. 차단 여부나 응답 종료 상태를 확인해 주세요.", 502)
+    raw_text = response.text
+    if not raw_text:
+        raise ProfileExtractionError("GEMINI_EMPTY_RESPONSE", "Gemini가 프로필 JSON을 반환하지 않았습니다. 차단 여부나 응답 종료 상태를 확인해 주세요.", 502, raw_text=raw_text)
     try:
-        return ShopProfile.model_validate_json(response.text)
+        return raw_text, ShopProfile.model_validate_json(raw_text)
     except ValidationError as exc:
         fields = ", ".join(
             f"{'.'.join(map(str, error['loc'])) or 'JSON'}: {error['type']}"
             for error in exc.errors()
         )
-        raise ProfileExtractionError("PROFILE_VALIDATION_FAILED", f"Gemini 응답의 프로필 스키마 검증 실패: {fields}", 502) from exc
+        raise ProfileExtractionError(
+            "PROFILE_VALIDATION_FAILED", f"Gemini 응답의 프로필 스키마 검증 실패: {fields}",
+            502, raw_text=raw_text,
+        ) from exc
