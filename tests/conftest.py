@@ -12,7 +12,7 @@ from app.services import profile_extractor
 
 
 @pytest.fixture(autouse=True)
-def gemini_mock(monkeypatch):
+def gemini_mock(monkeypatch, tmp_path):
     """All tests are offline; no real key or Gemini call is used."""
     factory = MagicMock()
     client = factory.return_value.__enter__.return_value
@@ -22,6 +22,7 @@ def gemini_mock(monkeypatch):
     monkeypatch.setattr(profile_extractor.genai, "Client", factory)
     monkeypatch.setattr(config, "GEMINI_API_KEY", "test-only-gemini-key")
     monkeypatch.setattr(config, "GEMINI_MODEL", "gemini-3.8-flash")
+    monkeypatch.setattr(config, "SHOP_DB_PATH", tmp_path / "shops.db")
     return factory
 
 

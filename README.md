@@ -1,5 +1,15 @@
 # sprint-shop-profile-ad-generator
 
+확인·저장 화면 실행 (레포 폴더의 가상환경에서, 터미널 두 개):
+
+```powershell
+uvicorn app.api.main:app --reload
+streamlit run app/ui/main_ui.py
+```
+
+소개 글 정리 → 프로필 수정 → 저장 순서로 사용합니다. 이름·업종은 저장할 때 필수이며, 사이드바에서 불러온 가게는 같은 저장 번호로 수정합니다. 입력값은 Streamlit 세션의 rerun 동안 유지됩니다(브라우저 탭을 닫거나 세션이 새로 생기는 경우에는 저장된 가게를 다시 불러오세요).
+프로필은 FastAPI를 통해 SQLite에 저장되며 화면은 DB를 직접 읽지 않습니다. `SHOP_DB_PATH` 기본값은 `data/shops/shops.db`이고 서버 시작 시 테이블을 생성합니다. DB와 저널 파일은 Git에서 제외합니다.
+
 Python 3.11 / Windows PowerShell 기준. 레포 폴더에서 실행합니다.
 
 ```powershell
