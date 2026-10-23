@@ -16,7 +16,7 @@ from app.services.profile_extractor import (
 from eval.common import ROOT, check_run_name, load_eval_ids, read_json, read_rows, utc_now, write_json
 
 RETRY_DELAYS = (30, 60, 120)
-RETRY_STATUSES = (429, 503)
+RETRY_STATUSES = (429, 500, 503, 504)
 
 
 def select_ids(root: Path, requested: list[int] | None) -> list[int]:

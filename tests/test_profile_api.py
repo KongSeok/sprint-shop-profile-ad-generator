@@ -42,8 +42,11 @@ def test_real_sdk_serializes_pydantic_schema_with_mock_transport(api_client, mon
     assert len(sent) == 1
     generation = sent[0]["generationConfig"]
     assert generation["responseMimeType"] == "application/json"
-    assert "shop_name" in generation["responseSchema"]["properties"]
-    assert "other_info" in generation["responseSchema"]["properties"]
+    assert "responseSchema" not in generation
+    assert "additional_properties" not in json.dumps(generation)
+    assert generation["responseJsonSchema"]["additionalProperties"] is False
+    assert "shop_name" in generation["responseJsonSchema"]["properties"]
+    assert "other_info" in generation["responseJsonSchema"]["properties"]
 
 
 def test_health_still_works(api_client):
@@ -59,7 +62,7 @@ def test_v1_calls_gemini_with_schema_and_low_temperature(api_client, gemini_mock
     assert call["model"] == "gemini-3.8-flash"
     assert call["contents"] == "주말만 주차 가능"
     assert call["config"].response_mime_type == "application/json"
-    assert call["config"].response_schema is profile_extractor.ShopProfile
+    assert call["config"].response_json_schema == profile_extractor.ShopProfile.model_json_schema()
     assert 0 <= call["config"].temperature <= 0.2
 
 

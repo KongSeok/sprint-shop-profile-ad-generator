@@ -55,7 +55,7 @@ def extract_profile_raw(
             api_key=api_key,
             vertexai=False,
             http_options=types.HttpOptions(
-                timeout=30_000,
+                timeout=120_000,
                 retry_options=types.HttpRetryOptions(attempts=1),
             ),
         ) as client:
@@ -65,7 +65,7 @@ def extract_profile_raw(
                 config=types.GenerateContentConfig(
                     system_instruction=prompt,
                     response_mime_type="application/json",
-                    response_schema=ShopProfile,
+                    response_json_schema=ShopProfile.model_json_schema(),
                     temperature=0.1,
                 ),
             )

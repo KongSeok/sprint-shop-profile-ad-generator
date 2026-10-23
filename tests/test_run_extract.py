@@ -66,7 +66,7 @@ def test_error_or_invalid_cached_profile_is_retried(run_setup, bad):
     call.assert_called_once()
 
 
-@pytest.mark.parametrize("status", [429, 503])
+@pytest.mark.parametrize("status", [429, 500, 503, 504])
 def test_retry_then_success_and_interval(run_setup, status):
     root, call, sleep = run_setup
     success = call.return_value
@@ -76,15 +76,16 @@ def test_retry_then_success_and_interval(run_setup, status):
     assert [args.args[0] for args in sleep.call_args_list] == [30, 6]
 
 
-def test_exhausted_backoff_stops_and_preserves_resumable_errors(run_setup):
+@pytest.mark.parametrize("status", [429, 504])
+def test_exhausted_backoff_stops_and_preserves_resumable_errors(run_setup, status):
     root, call, sleep = run_setup
     success = call.return_value
-    call.side_effect = ProfileExtractionError("GEMINI_CALL_FAILED", "busy", 502, upstream_status=429)
+    call.side_effect = ProfileExtractionError("GEMINI_CALL_FAILED", "busy", 502, upstream_status=status)
     counts = runner.run_extract("v1", ids=[2, 3], root=root)
     assert counts["failed"] == 1 and counts["stopped"]
     assert call.call_count == 4
     assert [args.args[0] for args in sleep.call_args_list] == [30, 60, 120]
-    assert read_json(root / "experiments/runs/v1/2.json")["error"]["upstream_status"] == 429
+    assert read_json(root / "experiments/runs/v1/2.json")["error"]["upstream_status"] == status
     assert not (root / "experiments/runs/v1/3.json").exists()
     call.side_effect = None
     call.return_value = success
