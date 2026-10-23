@@ -55,7 +55,7 @@ def extract_profile_raw(
             api_key=api_key,
             vertexai=False,
             http_options=types.HttpOptions(
-                timeout=120_000,
+                timeout=config.GEMINI_TIMEOUT_MS,
                 retry_options=types.HttpRetryOptions(attempts=1),
             ),
         ) as client:
@@ -67,6 +67,7 @@ def extract_profile_raw(
                     response_mime_type="application/json",
                     response_json_schema=ShopProfile.model_json_schema(),
                     temperature=0.1,
+                    thinking_config=types.ThinkingConfig(thinking_level="medium"),
                 ),
             )
     except errors.APIError as exc:
