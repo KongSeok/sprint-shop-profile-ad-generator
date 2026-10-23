@@ -3,6 +3,7 @@ from unittest.mock import Mock
 import pytest
 from streamlit.testing.v1 import AppTest
 
+from app.core import config
 from app.schemas.profile import ShopProfile
 from app.ui import api_client
 from eval.common import ROOT
@@ -13,6 +14,7 @@ def button(view, label):
 
 
 def test_ui_extract_edit_rerun_save_reload_update(monkeypatch):
+    monkeypatch.setattr(config, "GEMINI_TIMEOUT_MS", 420_000)
     shops = {}
     extracted = ShopProfile(shop_name=None, business_type="카페", needs_check=["휴무일 확인 필요"]).model_dump()
 
@@ -21,6 +23,7 @@ def test_ui_extract_edit_rerun_save_reload_update(monkeypatch):
             return [{"id": key, "shop_name": row["profile"]["shop_name"], "business_type": "카페", "updated_at": "now"} for key, row in shops.items()]
         if path == "/profile/extract":
             assert payload["prompt_version"] == "v2"
+            assert kwargs["timeout"] == 440
             return extracted
         if path == "/profile/save":
             shop_id = payload["shop_id"] or len(shops) + 1

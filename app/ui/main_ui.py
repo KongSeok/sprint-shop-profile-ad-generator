@@ -5,7 +5,7 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from app.core.config import API_BASE_URL
+from app.core.config import API_BASE_URL, GEMINI_TIMEOUT_MS
 from app.ui.api_client import UserApiError, request_api
 from app.ui.profile_form import LIST_FIELDS, TEXT_FIELDS, form_to_profile, list_to_lines
 
@@ -74,7 +74,7 @@ if st.button("정리하기", type="primary"):
     else:
         try:
             with st.spinner("가게 소개를 정리하고 있어요…"):
-                extracted = api("POST", "/profile/extract", payload={"text": source, "prompt_version": "v2"}, timeout=135)
+                extracted = api("POST", "/profile/extract", payload={"text": source, "prompt_version": "v2"}, timeout=GEMINI_TIMEOUT_MS / 1000 + 20)
             set_draft(extracted, source, st.session_state.get("shop_id"))
         except UserApiError as exc:
             st.error(str(exc))
