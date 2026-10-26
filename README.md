@@ -1,5 +1,11 @@
 # sprint-shop-profile-ad-generator
 
+광고 문구 생성: 화면의 **문구 만들기** 탭에서 저장된 가게와 메뉴명·가격·특징·이번만 요청을 입력합니다. `POST /copy/generate`는 `shop_id` 또는 `profile` 중 하나와 `menu`를 받습니다. 사진은 받지 않습니다.
+프로필 추출과 동일한 Gemini 모델·대기 시간·medium thinking을 사용하며 문구 생성 temperature는 0.7입니다. 서버는 자동 재시도하지 않습니다. 결과는 인스타그램(3~6줄, 해시태그 5~10개), 배달앱(1~2문장, 80자 이내), 네이버 플레이스(3~5문장)와 코드가 검사한 피할 표현 경고입니다. 사실·말투·문장 수 규칙은 `app/prompts/copy_v1.txt`에 분리되어 있습니다.
+
+확인용 샘플은 `python -m tools.copy_samples --ids 2,8,14,20,22`로 생성합니다. `data/copy_runs/copy_v1.jsonl`에 입력·출력을 저장하며 이미 있는 ID는 건너뛰고, 호출은 6초 간격, 실패 시 중단합니다. 샘플 결과의 사실 오류·피할 표현·꾸밈말 부풀림은 실제 게시 전에 직접 검토합니다.
+`sprint-copy` worktree에서 실행할 때도 해당 폴더의 `.env`를 설정하고 Python 의존성을 준비해야 합니다. 원래 체크아웃의 키나 DB는 자동 복사하지 않습니다. 원래 서버와 동시에 띄우려면 FastAPI는 `--port 8001`, Streamlit은 `--server.port 8502`를 쓰고 이 worktree의 `API_BASE_URL=http://localhost:8001`로 맞추세요.
+
 확인·저장 화면 실행 (레포 폴더의 가상환경에서, 터미널 두 개):
 
 ```powershell

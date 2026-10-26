@@ -21,7 +21,8 @@ def request_api(base_url: str, method: str, path: str, *, payload=None, timeout=
         elif code == "GEMINI_KEY_MISSING":
             message = "서비스 연결 설정을 확인해야 해요. 관리자에게 알려 주세요"
         elif response.status_code == 422:
-            message = "가게 이름과 업종은 꼭 적어 주세요. 메뉴를 입력했다면 메뉴 이름도 확인해 주세요"
+            message = ("가게 선택과 메뉴 이름을 확인해 주세요" if path == "/copy/generate"
+                       else "가게 이름과 업종은 꼭 적어 주세요. 메뉴를 입력했다면 메뉴 이름도 확인해 주세요")
         elif response.status_code == 404:
             message = "저장된 가게를 찾지 못했어요. 목록을 새로 불러와 주세요"
         else:
