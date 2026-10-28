@@ -4,6 +4,7 @@ from google import genai
 from google.genai import errors, types
 from pydantic import ValidationError
 
+from app.services.copy_examples import select_examples, example_warnings
 from app.core import config
 from app.schemas.copy import CopyGenerateResponse, CopyMenu, GeneratedCopy
 from app.schemas.profile import ShopProfile
@@ -17,16 +18,25 @@ class CopyGenerationError(Exception):
         self.upstream_status = upstream_status
 
 
-def build_copy_prompt(profile: ShopProfile, menu: CopyMenu) -> tuple[str, str]:
+def build_copy_prompt(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2") -> tuple[str, str]:
+    return prepare_copy_prompt(profile, menu, prompt_version)[:2]
+
+
+def prepare_copy_prompt(profile, menu, prompt_version="v2"):
+    if prompt_version not in ("v1", "v2"):
+        raise CopyGenerationError("INVALID_PROMPT_VERSION", "prompt_version은 v1 또는 v2여야 합니다", 422)
     try:
-        prompt = (config.PROJECT_ROOT / "app/prompts/copy_v1.txt").read_text(encoding="utf-8")
+        prompt = (config.PROJECT_ROOT / f"app/prompts/copy_{prompt_version}.txt").read_text(encoding="utf-8")
     except (OSError, UnicodeError) as exc:
         raise CopyGenerationError("COPY_PROMPT_NOT_READY", "문구 생성 준비를 확인해 주세요", 503) from exc
     contents = json.dumps({
         "profile": profile.model_dump(mode="json", exclude_none=True),
         "menu": menu.model_dump(mode="json", exclude_none=True),
     }, ensure_ascii=False)
-    return prompt, contents
+    examples = select_examples(config.PROJECT_ROOT / "data/copy_examples/examples.jsonl", profile.business_type) if prompt_version == "v2" else []
+    if examples:
+        prompt += "\n채널별 말투 예시:\n" + json.dumps({channel: [r["text"] for r in examples if r["channel"] == channel] for channel in ("instagram", "delivery_app", "naver_place")}, ensure_ascii=False)
+    return prompt, contents, examples
 
 
 def banned_expression_warnings(profile: ShopProfile, generated: GeneratedCopy) -> list[str]:
@@ -36,8 +46,8 @@ def banned_expression_warnings(profile: ShopProfile, generated: GeneratedCopy) -
             if word and any(word in text for text in texts)]
 
 
-def generate_copy(profile: ShopProfile, menu: CopyMenu) -> CopyGenerateResponse:
-    prompt, contents = build_copy_prompt(profile, menu)
+def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2") -> CopyGenerateResponse:
+    prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version)
     api_key = config.GEMINI_API_KEY.strip()
     if not api_key:
         raise CopyGenerationError("GEMINI_KEY_MISSING", "서비스 연결 설정을 확인해 주세요", 503)
@@ -66,4 +76,9 @@ def generate_copy(profile: ShopProfile, menu: CopyMenu) -> CopyGenerateResponse:
         generated = GeneratedCopy.model_validate_json(response.text or "")
     except ValidationError as exc:
         raise CopyGenerationError("COPY_VALIDATION_FAILED", "문구 응답의 형식을 확인하지 못했어요. 다시 눌러 주세요") from exc
-    return CopyGenerateResponse(**generated.model_dump(), warnings=banned_expression_warnings(profile, generated))
+    warnings = banned_expression_warnings(profile, generated)
+    if prompt_version == "v2":
+        if not examples:
+            warnings.append("문구 예시 파일이 없거나 비어 있어 예시 없이 만들었어요")
+        warnings.extend(example_warnings(examples, contents, generated.model_dump_json()))
+    return CopyGenerateResponse(**generated.model_dump(), warnings=list(dict.fromkeys(warnings)), example_ids=[str(row["id"]) for row in examples])

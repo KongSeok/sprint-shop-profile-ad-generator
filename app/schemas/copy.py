@@ -1,3 +1,4 @@
+from typing import Literal
 from pydantic import Field, field_validator, model_validator
 
 from app.schemas.profile import ProfileModel, ShopProfile
@@ -24,6 +25,7 @@ class CopyGenerateRequest(ProfileModel):
     shop_id: int | None = Field(default=None, gt=0)
     profile: ShopProfile | None = None
     menu: CopyMenu
+    prompt_version: Literal["v1", "v2"] = "v2"
 
     @model_validator(mode="after")
     def exactly_one_profile_source(self):
@@ -68,3 +70,5 @@ class GeneratedCopy(ProfileModel):
 
 class CopyGenerateResponse(GeneratedCopy):
     warnings: list[str] = Field(default_factory=list, description="서버가 검사한 피할 표현 경고")
+
+    example_ids: list[str] = Field(default_factory=list, description="사용한 예시 ID")

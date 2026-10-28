@@ -23,7 +23,7 @@ def generate(request: CopyGenerateRequest):
         except (sqlite3.Error, OSError, ValidationError) as exc:
             raise HTTPException(503, "가게 정보를 읽지 못했어요. 잠시 후 다시 눌러 주세요") from exc
     try:
-        return generate_copy(profile, request.menu)
+        return generate_copy(profile, request.menu, request.prompt_version)
     except CopyGenerationError as exc:
         raise HTTPException(exc.status_code, detail={
             "code": exc.code, "message": str(exc), "upstream_status": exc.upstream_status,
