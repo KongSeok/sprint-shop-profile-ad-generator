@@ -65,3 +65,11 @@ v1은 규칙만, v2는 규칙과 train ID `1, 7, 13, 19, 25`의 예시 5개를 �
 호출 결과는 `experiments/runs/{run_name}/{id}.json`에 원본·프로필·모델·시스템 프롬프트 SHA1과 함께 저장합니다. 같은 모델/해시의 성공 결과는 재사용하고, 실패 파일은 재시도합니다. 429/500/503/504는 30·60·120초 대기 후 최대 3번 재시도하고 중단하며, 같은 명령을 다시 실행하면 남은 결과만 호출합니다. 두 출력 폴더는 Git 추적 대상입니다. 자세한 판정·빈 분모 규칙은 [평가 안내](eval/README.md)를 참고하세요.
 
 프로필 추출은 v1·v2 모두 thinking을 `medium`으로 고정합니다. Gemini 대기 시간은 `GEMINI_TIMEOUT_MS` 환경변수(밀리초, 기본 `300000` = 300초)로 설정합니다. Streamlit의 정리하기 요청은 이 값보다 20초 길게 기다립니다(기본 320초). 환경변수를 바꾸면 API와 Streamlit을 모두 재시작하세요. `feat/eval-score`의 진단용 `tools/gemini_check.py`의 120초·low 비교 설정은 그대로 유지합니다.
+
+### 오프라인 PNG 렌더링
+`pip install -r requirements.txt` 다음 `playwright install chromium`을 한 번 실행합니다.
+`python -m tools.render_samples --ids 2,8,14,20,22`로 임시 광고 카드를 확인합니다.
+폰트와 템플릿은 로컬 파일을 사용하며 렌더 중 외부 네트워크 요청은 차단합니다.
+새 템플릿은 templates/ad_card/<이름>/ 안에 template.html, style.css, meta.json을 넣습니다.
+필수 칸 shop_name, menu_name, price, headline, body, photo_url과 CSS 변수를 유지합니다.
+POST /render/ad-card는 png_base64와 warnings를 반환합니다.

@@ -1,5 +1,6 @@
 import streamlit as st
 
+from app.ui.render_tab import render_ad_controls
 from app.core.config import GEMINI_TIMEOUT_MS
 from app.ui.api_client import UserApiError
 from app.ui.profile_form import blank_to_none
@@ -7,6 +8,9 @@ from app.ui.profile_form import blank_to_none
 
 def clear_copy_result():
     st.session_state.pop("copy_result", None)
+    st.session_state.pop("ad_png", None)
+    st.session_state.pop("ad_headline", None)
+    st.session_state.pop("ad_body", None)
 
 
 def render_copy_tab(api, shops):
@@ -45,3 +49,5 @@ def render_copy_tab(api, shops):
             st.text(result[field]["body"])
             if field == "instagram":
                 st.text(" ".join(result[field]["hashtags"]))
+
+        render_ad_controls(api, selected, {"name": name.strip(), "price": blank_to_none(price), "features": blank_to_none(features), "this_time": blank_to_none(this_time)}, result)
