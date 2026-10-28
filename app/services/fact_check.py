@@ -43,3 +43,16 @@ def fact_warnings(inputs: str, output: str) -> list[str]:
         if re.search(pattern, output) and not re.search(pattern, inputs):
             warnings.append(f"입력에 없는 원산지·등급 표현 '{word}'이 들어갔어요")
     return list(dict.fromkeys(warnings))
+
+
+def merge_warnings(warnings: list[str]) -> list[str]:
+    """Keep one warning per offending expression across all checkers."""
+    seen, merged = set(), []
+    for warning in warnings:
+        quoted = re.search(r"'([^']+)'", warning)
+        token = quoted.group(1) if quoted else warning.split(': ', 1)[-1]
+        identity = unicodedata.normalize('NFKC', token).replace(',', '').strip()
+        if identity not in seen:
+            seen.add(identity)
+            merged.append(warning)
+    return merged
