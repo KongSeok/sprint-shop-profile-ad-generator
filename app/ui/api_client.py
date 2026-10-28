@@ -20,6 +20,10 @@ def request_api(base_url: str, method: str, path: str, *, payload=None, timeout=
             message = "정리에 필요한 예시 데이터가 준비되지 않았어요. 관리자에게 알려 주세요"
         elif code == "GEMINI_KEY_MISSING":
             message = "서비스 연결 설정을 확인해야 해요. 관리자에게 알려 주세요"
+        elif response.status_code == 409 and path == "/profile/suggest-concept":
+            message = "이미 분위기·말투가 있어요"
+        elif path == "/profile/suggest-concept" and response.status_code == 422:
+            message = "입력한 프로필과 메뉴를 확인해 주세요"
         elif response.status_code == 422:
             message = ("가게 선택과 메뉴 이름을 확인해 주세요" if path == "/copy/generate"
                        else "가게 이름과 업종은 꼭 적어 주세요. 메뉴를 입력했다면 메뉴 이름도 확인해 주세요")

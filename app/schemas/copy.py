@@ -1,6 +1,7 @@
 from typing import Literal
 from pydantic import Field, field_validator, model_validator
 
+from app.schemas.concept import Concept
 from app.schemas.profile import ProfileModel, ShopProfile
 
 
@@ -25,6 +26,7 @@ class CopyGenerateRequest(ProfileModel):
     shop_id: int | None = Field(default=None, gt=0)
     profile: ShopProfile | None = None
     menu: CopyMenu
+    concept: Concept | None = None
     prompt_version: Literal["v1", "v2"] = "v2"
 
     @model_validator(mode="after")

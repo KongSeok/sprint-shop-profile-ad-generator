@@ -7,6 +7,7 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from app.core.config import API_BASE_URL, GEMINI_TIMEOUT_MS
 from app.ui.api_client import UserApiError, request_api
+from app.ui.concept_panel import render_concept_panel, selected_concept
 from app.ui.copy_tab import render_copy_tab
 from app.ui.profile_form import LIST_FIELDS, TEXT_FIELDS, form_to_profile, list_to_lines
 
@@ -17,7 +18,8 @@ def clear_saved_notice():
     st.session_state.pop("saved_notice", None)
 
 
-def set_draft(profile, source_text, shop_id=None, version="v2"):
+def set_draft(profile, source_text, shop_id=None, version="v2", concept=None):
+    st.session_state.draft_concept = concept
     st.session_state.draft = profile
     st.session_state.draft_source = source_text
     st.session_state.shop_id = shop_id
@@ -53,7 +55,7 @@ with st.sidebar:
     if st.button("불러오기", disabled=selected is None):
         try:
             saved = api("GET", f"/profile/{selected}")
-            set_draft(saved["profile"], saved["source_text"], saved["shop_id"], saved["prompt_version"])
+            set_draft(saved["profile"], saved["source_text"], saved["shop_id"], saved["prompt_version"], saved.get("concept"))
             st.session_state.source_input = saved["source_text"]
         except UserApiError as exc:
             st.error(str(exc))
@@ -109,6 +111,7 @@ with profile_tab:
             if key not in st.session_state:
                 st.session_state[key] = list_to_lines(draft.get(field))
             values[field] = st.text_area(f"{label} (한 줄에 하나씩)", key=key, placeholder="글에 없었어요", on_change=clear_saved_notice)
+        concept_panel = render_concept_panel(api, values, menu_rows, draft, revision)
         st.subheader("3. 저장")
         if st.button("저장", type="primary"):
             try:
@@ -116,11 +119,14 @@ with profile_tab:
                 if not profile["shop_name"] or not profile["business_type"]:
                     st.error("가게 이름과 업종은 꼭 적어 주세요")
                 else:
+                    concept = selected_concept(concept_panel)
                     result = api("POST", "/profile/save", payload={
                         "shop_id": st.session_state.get("shop_id"), "profile": profile,
                         "source_text": st.session_state.draft_source,
                         "prompt_version": st.session_state.prompt_version,
+                        "concept": concept,
                     })
+                    st.session_state.draft_concept = concept
                     st.session_state.shop_id = result["shop_id"]
                     st.session_state.saved_notice = result["shop_id"]
                     st.session_state.reload_shops = True

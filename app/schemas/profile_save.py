@@ -2,6 +2,7 @@ from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
 
+from app.schemas.concept import Concept
 from app.schemas.profile import ProfileModel, ShopProfile
 
 REQUIRED_MESSAGE = "가게 이름과 업종은 꼭 적어 주세요"
@@ -32,6 +33,7 @@ def normalize_saved_profile(profile: ShopProfile) -> ShopProfile:
 class ProfileSaveRequest(ProfileModel):
     shop_id: int | None = Field(default=None, gt=0)
     profile: ShopProfile
+    concept: Concept | None = None
     source_text: str
     prompt_version: Literal["v1", "v2"] = "v2"
 
@@ -65,6 +67,7 @@ class ShopListItem(ProfileModel):
 class SavedShop(ProfileModel):
     shop_id: int
     profile: ShopProfile
+    concept: Concept | None = None
     source_text: str
     prompt_version: Literal["v1", "v2"]
     created_at: str
