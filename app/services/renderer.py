@@ -45,7 +45,7 @@ def load_template(kind, template='placeholder', *, root=TEMPLATES):
         if missing:
             raise RenderError('템플릿 필수 칸이 없습니다: ' + ', '.join(sorted(missing)))
         return env.from_string(html), css, metadata
-    except (OSError, KeyError, ValueError) as exc:
+    except (OSError, KeyError, ValueError, TypeError) as exc:
         if isinstance(exc, RenderError):
             raise
         raise RenderError('템플릿 파일 또는 meta.json을 확인해 주세요') from exc
@@ -99,4 +99,26 @@ def render_ad_card(profile, menu, copy_text, template='placeholder', theme=None)
     if values['photo_url'] and not values['photo_url'].startswith(('data:image/png;base64,', 'data:image/jpeg;base64,')):
         raise RenderError('사진은 PNG 또는 JPEG 데이터만 사용할 수 있습니다')
     html, metadata = fill_html('ad_card', values, template=template, theme=theme, business_type=profile.business_type)
+    return screenshot(html, metadata)
+
+
+def menu_board_values(profile, menus=None):
+    chosen = menus if menus is not None else profile.menus
+    if not chosen:
+        raise RenderError('메뉴를 입력해 주세요')
+    if len(chosen) > 12:
+        raise RenderError('메뉴는 12개까지')
+    rows = [item.model_dump() if hasattr(item, 'model_dump') else dict(item) for item in chosen]
+    for row in rows:
+        if not isinstance(row.get('name'), str) or not row['name'].strip():
+            raise RenderError('메뉴 이름을 입력해 주세요')
+        row.setdefault('price', None)
+        row.setdefault('note', None)
+    footer = [value for value in (profile.hours, profile.closed_days, profile.takeout_delivery) if value]
+    return dict(shop_name=profile.shop_name or '', menus=rows, footer=footer)
+
+
+def render_menu_board(profile, menus=None, template='placeholder', theme=None):
+    values = menu_board_values(profile, menus)
+    html, metadata = fill_html('menu_board', values, template=template, theme=theme, business_type=profile.business_type)
     return screenshot(html, metadata)

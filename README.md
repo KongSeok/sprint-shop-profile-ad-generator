@@ -73,3 +73,6 @@ v1은 규칙만, v2는 규칙과 train ID `1, 7, 13, 19, 25`의 예시 5개를 �
 새 템플릿은 templates/ad_card/<이름>/ 안에 template.html, style.css, meta.json을 넣습니다.
 필수 칸 shop_name, menu_name, price, headline, body, photo_url과 CSS 변수를 유지합니다.
 POST /render/ad-card는 png_base64와 warnings를 반환합니다.
+
+`python -m tools.render_samples --kind menu_board --ids 4,9,14,24`로 메뉴판을 확인합니다.
+POST /render/menu-board: shop_id 또는 profile, 선택 menus(name/price/note), template, theme. 메뉴는 최대 12개입니다.

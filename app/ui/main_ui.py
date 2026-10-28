@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from app.core.config import API_BASE_URL, GEMINI_TIMEOUT_MS
 from app.ui.api_client import UserApiError, request_api
 from app.ui.copy_tab import render_copy_tab
+from app.ui.render_tab import render_menu_tab
 from app.ui.profile_form import LIST_FIELDS, TEXT_FIELDS, form_to_profile, list_to_lines
 
 st.set_page_config(page_title="가게 프로필", page_icon="🏪")
@@ -63,7 +64,7 @@ with st.sidebar:
         st.session_state.source_input = ""
         clear_saved_notice()
 
-profile_tab, copy_tab = st.tabs(["가게 프로필", "문구 만들기"])
+profile_tab, copy_tab, board_tab = st.tabs(["가게 프로필", "문구 만들기", "메뉴판 만들기"])
 with profile_tab:
     st.title("가게 프로필 만들기")
     if st.session_state.get("saved_notice"):
@@ -130,3 +131,6 @@ with profile_tab:
 
 with copy_tab:
     render_copy_tab(api, st.session_state.shops)
+
+with board_tab:
+    render_menu_tab(api, st.session_state.shops)

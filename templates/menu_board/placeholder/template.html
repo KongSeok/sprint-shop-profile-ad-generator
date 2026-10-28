@@ -1,0 +1,7 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css | safe }}
+{{ style_css | safe }}</style></head><body><main>
+<h1 data-field="shop_name">{{ shop_name }}</h1><div class="subtitle">메뉴</div>
+<section class="menus {% if menus|length > 6 %}two-columns{% endif %}" data-field="menus">
+{% for menu in menus %}<article data-field="menu_{{ loop.index }}"><div class="menu-line"><span class="name">{{ menu.name }}</span><span class="price">{{ menu.price or '' }}</span></div>{% if menu.note %}<div class="note">{{ menu.note }}</div>{% endif %}</article>{% endfor %}
+</section><footer data-field="footer">{% for line in footer %}<div>{{ line }}</div>{% endfor %}</footer>
+</main></body></html>
