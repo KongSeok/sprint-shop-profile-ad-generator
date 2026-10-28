@@ -4,7 +4,7 @@ from google import genai
 from google.genai import errors, types
 from pydantic import ValidationError
 
-from app.services.fact_check import fact_warnings, output_text
+from app.services.fact_check import fact_warnings, output_text, merge_warnings
 from app.services.copy_examples import select_examples, example_warnings
 from app.core import config
 from app.schemas.copy import CopyGenerateResponse, CopyMenu, GeneratedCopy
@@ -83,4 +83,4 @@ def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v
             warnings.append("문구 예시 파일이 없거나 비어 있어 예시 없이 만들었어요")
         warnings.extend(example_warnings(examples, contents, generated.model_dump_json()))
     warnings.extend(fact_warnings(contents, output_text(generated)))
-    return CopyGenerateResponse(**generated.model_dump(), warnings=list(dict.fromkeys(warnings)), example_ids=[str(row["id"]) for row in examples])
+    return CopyGenerateResponse(**generated.model_dump(), warnings=merge_warnings(warnings), example_ids=[str(row["id"]) for row in examples])
