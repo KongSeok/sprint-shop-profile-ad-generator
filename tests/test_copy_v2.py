@@ -6,6 +6,7 @@ from app.services.copy_generator import build_copy_prompt
 
 
 def test_categories():
+    assert business_category("고깃집") == "고깃집"
     assert [business_category(s) for s in ['베이커리 카페', '숙성 돼지고기 전문점', '일본 가정식집', '알 수 없음']] == ['빵집', '고깃집', '일식', None]
 
 
@@ -38,3 +39,14 @@ def test_bad_version(api_client, gemini_mock):
     result = api_client.post('/copy/generate', json={'profile': {'shop_name': None, 'business_type': None}, 'menu': {'name': '라떼'}, 'prompt_version': 'v3'})
     assert result.status_code == 422
     gemini_mock.assert_not_called()
+
+
+def test_v2_missing_file_warns_without_network(copy_mock, monkeypatch, tmp_path):
+    from app.core import config
+    from app.services.copy_generator import generate_copy
+    import shutil
+    shutil.copytree(config.PROJECT_ROOT / 'app/prompts', tmp_path / 'app/prompts')
+    monkeypatch.setattr(config, 'PROJECT_ROOT', tmp_path)
+    result = generate_copy(ShopProfile(shop_name=None, business_type=None), CopyMenu(name='라떼'))
+    assert result.example_ids == []
+    assert any('예시 파일' in value for value in result.warnings)
