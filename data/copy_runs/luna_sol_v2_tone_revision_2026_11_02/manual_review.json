@@ -1,0 +1,37 @@
+{
+  "checks_are_literal_not_semantic": true,
+  "summary": {
+    "old": {
+      "literal_invitation_count_all_channels": 15,
+      "owner_phrase_standalone_lines": 4,
+      "forbidden_explanation_hits": 3,
+      "hashtags_duplicated_in_body": 0,
+      "tag_target_8_15": 0
+    },
+    "new": {
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0,
+      "hashtags_duplicated_in_body": 1,
+      "tag_target_8_15": 12
+    }
+  },
+  "manual_review": [
+    {
+      "file": "gpt-6-luna_v2_noex_id2.json",
+      "issue": "인스타 본문에도 해시태그를 넣어 hashtags 필드와 중복. 본문 글자 수에 해시태그가 포함됨."
+    },
+    {
+      "file": "gpt-6-luna_v2_noex_id8.json",
+      "issue": "입력은 식빵이 메인인데 우유식빵이 메인이라고 좁혀 표현함. 사장님 확인 필요."
+    },
+    {
+      "file": "gpt-6-luna_v2_noex_id14.json",
+      "issue": "수요일 휴무인데 매일 10:00~21:00 운영이라고 덧붙임. 휴무일과 충돌할 수 있음."
+    },
+    {
+      "file": "gpt-6-luna_v2_examples_id14.json",
+      "issue": "인스타에 입니다가 들어가 기본 해요체 지침을 벗어남. hashtags에 가게명 원두기록실 누락."
+    }
+  ]
+}

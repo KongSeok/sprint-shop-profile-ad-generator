@@ -1,0 +1,254 @@
+[
+  {
+    "file": "gpt-6-luna_v2_noex_id2.json",
+    "old": {
+      "success": true,
+      "hashtags": 6,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 1,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 1
+    },
+    "new": {
+      "success": true,
+      "hashtags": 9,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": true,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6.1-sol_v2_noex_id2.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 1,
+      "owner_phrase_standalone_lines": 1,
+      "forbidden_explanation_hits": 1
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6-luna_v2_examples_id2.json",
+    "old": {
+      "success": true,
+      "hashtags": 6,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 2,
+      "owner_phrase_standalone_lines": 1,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 9,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6.1-sol_v2_examples_id2.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 2,
+      "owner_phrase_standalone_lines": 1,
+      "forbidden_explanation_hits": 1
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6-luna_v2_noex_id8.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6.1-sol_v2_noex_id8.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 1,
+      "owner_phrase_standalone_lines": 1,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6-luna_v2_examples_id8.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 1,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6.1-sol_v2_examples_id8.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 1,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6-luna_v2_noex_id14.json",
+    "old": {
+      "success": true,
+      "hashtags": 6,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 9,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6.1-sol_v2_noex_id14.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 2,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6-luna_v2_examples_id14.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 1,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 9,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  },
+  {
+    "file": "gpt-6.1-sol_v2_examples_id14.json",
+    "old": {
+      "success": true,
+      "hashtags": 5,
+      "tag_target_8_15": false,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 3,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    },
+    "new": {
+      "success": true,
+      "hashtags": 8,
+      "tag_target_8_15": true,
+      "hashtags_duplicated_in_body": false,
+      "literal_invitation_count_all_channels": 0,
+      "owner_phrase_standalone_lines": 0,
+      "forbidden_explanation_hits": 0
+    }
+  }
+]
