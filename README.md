@@ -73,3 +73,11 @@ v1은 규칙만, v2는 규칙과 train ID `1, 7, 13, 19, 25`의 예시 5개를 �
 `/profile/save`와 조회 응답의 concept는 프로필 밖의 선택값이며, 기존 DB는 서버 시작 시 concept_json 열을 추가합니다.
 문구는 원래 프로필 분위기·말투를 우선하며, 둘 다 없을 때만 컨셉을 표현 참고로 사용합니다.
 concept.theme은 저장만 하고 렌더러 테마 적용은 후속 병합에서 진행합니다.
+
+### 문구 v2: 규칙 / 예시 효과 비교
+v1 프롬프트와 기존 길이 검증은 유지합니다. v2는 인스타 본문 150~600자·해시태그 5~15개,
+배달앱 30~200자, 네이버 플레이스 100~500자이며 공백·줄바꿈도 글자 수에 포함합니다.
+API 요청의 use_examples는 기본 true이며, false면 v2 규칙만 사용합니다(v1에서는 무시).
+`python -m tools.copy_samples --version v2 --ids 2 --no-examples`
+예시 포함 결과는 data/copy_runs/copy_v2.jsonl, 제외 결과는 copy_v2_noex.jsonl에 따로 저장합니다.
+--features와 --this-time은 선택한 모든 ID에 동일하게 적용됩니다. 기존 ID는 건너뜁니다.

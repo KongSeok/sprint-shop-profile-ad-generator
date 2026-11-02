@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from app.services.fact_check import fact_warnings, output_text, merge_warnings
 from app.services.copy_examples import select_examples, example_warnings
 from app.core import config
-from app.schemas.copy import CopyGenerateResponse, CopyMenu, GeneratedCopy
+from app.schemas.copy import CopyGenerateResponse, CopyMenu, GeneratedCopy, generated_copy_model
 from app.schemas.concept import Concept, can_suggest
 from app.schemas.profile import ShopProfile
 
@@ -20,11 +20,11 @@ class CopyGenerationError(Exception):
         self.upstream_status = upstream_status
 
 
-def build_copy_prompt(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None) -> tuple[str, str]:
-    return prepare_copy_prompt(profile, menu, prompt_version, concept=concept)[:2]
+def build_copy_prompt(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True) -> tuple[str, str]:
+    return prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples)[:2]
 
 
-def prepare_copy_prompt(profile, menu, prompt_version="v2", *, concept=None):
+def prepare_copy_prompt(profile, menu, prompt_version="v2", *, concept=None, use_examples=True):
     if prompt_version not in ("v1", "v2"):
         raise CopyGenerationError("INVALID_PROMPT_VERSION", "prompt_version은 v1 또는 v2여야 합니다", 422)
     try:
@@ -41,7 +41,7 @@ def prepare_copy_prompt(profile, menu, prompt_version="v2", *, concept=None):
         data['concept'] = {'mood': selected.mood, 'tone': selected.tone}
         contents = json.dumps(data, ensure_ascii=False)
         prompt += "\nconcept는 사장님이 고른 컨셉. 사실이 아니니 사실처럼 쓰지 않기. concept.tone을 말투로, concept.mood를 분위기 참고로만 사용한다. 컨셉에서 숫자·원산지·품질 등의 사실을 가져오지 않는다."
-    examples = select_examples(config.PROJECT_ROOT / "data/copy_examples/examples.jsonl", profile.business_type) if prompt_version == "v2" else []
+    examples = select_examples(config.PROJECT_ROOT / "data/copy_examples/examples.jsonl", profile.business_type) if prompt_version == "v2" and use_examples else []
     if examples:
         prompt += "\n채널별 말투 예시:\n" + json.dumps({channel: [r["text"] for r in examples if r["channel"] == channel] for channel in ("instagram", "delivery_app", "naver_place")}, ensure_ascii=False)
     return prompt, contents, examples
@@ -54,8 +54,9 @@ def banned_expression_warnings(profile: ShopProfile, generated: GeneratedCopy) -
             if word and any(word in text for text in texts)]
 
 
-def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None) -> CopyGenerateResponse:
-    prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version, concept=concept)
+def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True) -> CopyGenerateResponse:
+    prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples)
+    response_model = generated_copy_model(prompt_version)
     api_key = config.GEMINI_API_KEY.strip()
     if not api_key:
         raise CopyGenerationError("GEMINI_KEY_MISSING", "서비스 연결 설정을 확인해 주세요", 503)
@@ -69,7 +70,7 @@ def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v
                 model=config.GEMINI_MODEL, contents=contents,
                 config=types.GenerateContentConfig(
                     system_instruction=prompt, response_mime_type="application/json",
-                    response_json_schema=GeneratedCopy.model_json_schema(),
+                    response_json_schema=response_model.model_json_schema(),
                     temperature=0.7, thinking_config=types.ThinkingConfig(thinking_level="medium"),
                 ),
             )
@@ -81,12 +82,12 @@ def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v
     except Exception as exc:
         raise CopyGenerationError("COPY_CALL_FAILED", f"문구 생성 연결 실패 ({type(exc).__name__})") from exc
     try:
-        generated = GeneratedCopy.model_validate_json(response.text or "")
+        generated = response_model.model_validate_json(response.text or "")
     except ValidationError as exc:
         raise CopyGenerationError("COPY_VALIDATION_FAILED", "문구 응답의 형식을 확인하지 못했어요. 다시 눌러 주세요") from exc
     factual_inputs = json.dumps({"profile": profile.model_dump(mode="json", exclude_none=True), "menu": menu.model_dump(mode="json", exclude_none=True)}, ensure_ascii=False)
     warnings = banned_expression_warnings(profile, generated)
-    if prompt_version == "v2":
+    if prompt_version == "v2" and use_examples:
         if not examples:
             warnings.append("문구 예시 파일이 없거나 비어 있어 예시 없이 만들었어요")
         warnings.extend(example_warnings(examples, factual_inputs, generated.model_dump_json()))

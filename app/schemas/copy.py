@@ -28,6 +28,7 @@ class CopyGenerateRequest(ProfileModel):
     menu: CopyMenu
     concept: Concept | None = None
     prompt_version: Literal["v1", "v2"] = "v2"
+    use_examples: bool = True
 
     @model_validator(mode="after")
     def exactly_one_profile_source(self):
@@ -70,7 +71,46 @@ class GeneratedCopy(ProfileModel):
     naver_place: NaverPlaceCopy
 
 
-class CopyGenerateResponse(GeneratedCopy):
-    warnings: list[str] = Field(default_factory=list, description="서버가 검사한 피할 표현 경고")
+class TextCopy(ProfileModel):
+    body: str = Field(min_length=1)
 
+
+class InstagramResult(TextCopy):
+    hashtags: list[str]
+
+
+class InstagramCopyV2(ProfileModel):
+    body: str = Field(min_length=150, max_length=600, description="인스타그램 본문. 공백·줄바꿈 포함 150~600자. 문장·줄 수 제한 없음")
+    hashtags: list[str] = Field(min_length=5, max_length=15, description="#을 포함한 해시태그 5~15개")
+
+    @field_validator("hashtags")
+    @classmethod
+    def check_hashtags(cls, value):
+        return InstagramCopy.check_hashtags(value)
+
+
+class DeliveryCopyV2(ProfileModel):
+    body: str = Field(min_length=30, max_length=200, description="배달앱 본문. 공백·줄바꿈 포함 30~200자")
+
+
+class NaverPlaceCopyV2(ProfileModel):
+    body: str = Field(min_length=100, max_length=500, description="네이버 플레이스 본문. 공백·줄바꿈 포함 100~500자")
+
+
+class GeneratedCopyV2(ProfileModel):
+    instagram: InstagramCopyV2
+    delivery_app: DeliveryCopyV2
+    naver_place: NaverPlaceCopyV2
+
+
+def generated_copy_model(prompt_version):
+    return GeneratedCopyV2 if prompt_version == "v2" else GeneratedCopy
+
+
+class CopyGenerateResponse(ProfileModel):
+    # Each version is validated by its own generation model before conversion.
+    instagram: InstagramResult
+    delivery_app: TextCopy
+    naver_place: TextCopy
+    warnings: list[str] = Field(default_factory=list, description="서버가 검사한 경고")
     example_ids: list[str] = Field(default_factory=list, description="사용한 예시 ID")
