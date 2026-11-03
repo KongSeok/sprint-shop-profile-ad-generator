@@ -31,6 +31,19 @@ def test_versions_and_metadata():
     assert 'account' not in v2 and 'source_kind' not in v2
 
 
+def test_v3_2_prompt_focuses_on_menu_instead_of_listing_facts():
+    from app.core import config
+
+    saved_prompt = (config.PROJECT_ROOT / 'app/prompts/copy_v3-2.txt').read_text(encoding='utf-8')
+    prompt, _ = build_copy_prompt(
+        ShopProfile(shop_name=None, business_type='카페'),
+        CopyMenu(name='에스프레소'), 'v2', use_examples=False,
+    )
+    assert prompt == saved_prompt
+    assert '목표는 읽는 사람이 이 메뉴를 먹고 싶고 가게에 가고 싶어지게 만드는 것입니다.' in prompt
+    assert '나열하지 마세요' in prompt
+
+
 def test_leak_warnings():
     examples = [{'text': '15000원 한우등심', 'menu_names': ['한우등심']}]
     assert len(example_warnings(examples, '라떼 13000원', '한우등심 15000원')) == 2
