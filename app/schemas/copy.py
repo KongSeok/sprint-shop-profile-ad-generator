@@ -91,11 +91,11 @@ class InstagramCopyV2(ProfileModel):
 
 
 class DeliveryCopyV2(ProfileModel):
-    body: str = Field(min_length=30, max_length=200, description="배달앱 본문. 공백·줄바꿈 포함 30~200자")
+    body: str = Field(min_length=1, max_length=60, description="배달앱 메뉴 카피. 1~2문장, 공백·줄바꿈 포함 60자 이내")
 
 
 class NaverPlaceCopyV2(ProfileModel):
-    body: str = Field(min_length=100, max_length=500, description="네이버 플레이스 본문. 공백·줄바꿈 포함 100~500자")
+    body: str = Field(min_length=1, max_length=200, description="가게 소개. 헤드라인, 빈 줄, 소개 2~3줄, 빈 줄, 입력에 있는 정보 줄. 공백·줄바꿈 포함 200자 이내")
 
 
 class GeneratedCopyV2(ProfileModel):

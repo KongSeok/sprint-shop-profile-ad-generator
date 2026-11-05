@@ -20,7 +20,7 @@ def copy_output():
     return {
         "instagram": {"body": "오늘의 메뉴를 소개해요. 오늘은 어떤 식사를 할지 천천히 골라보세요. 익숙한 하루에 잠깐 쉬어가는 시간을 가져보세요.\n강추라는 표현이 들어갔어요. 메뉴를 살펴보며 마음에 드는 것을 골라보셔도 좋아요.\n편하게 만나보세요. 오늘의 식사도 기분 좋게 즐기시기를 바라요. 부담 없는 마음으로 방문해 주세요.",
                       "hashtags": ["#메뉴", "#소개", "#가게", "#오늘", "#식사"]},
-        "delivery_app": {"body": "메뉴를 소개합니다. 오늘의 식사를 생각하고 계시다면 편하게 살펴보고 주문해 주세요."},
+        "delivery_app": {"body": "오늘의 메뉴, 한 끼의 즐거움. 가볍게 만나는 식사."},
         "naver_place": {"body": "오늘 메뉴를 소개합니다. 어떤 식사를 할지 고민되는 날이라면 마음에 드는 메뉴를 천천히 살펴보세요. 편하게 찾아주시고 오늘의 식사도 기분 좋게 즐겨주세요. 다시 만나는 시간을 기다리겠습니다."},
     }
 
@@ -63,7 +63,7 @@ def test_prompt_omits_nulls_but_keeps_conflicts_bans_owner_and_menu():
     assert data["profile"]["avoid_expressions"] == ["강추"]
     assert data["profile"]["owner_phrases"] == ["동네의 쉼터"]
     assert data["menu"]["this_time"] == "이번 주만 1,000원 할인"
-    assert "150~600자" in system and "30~200자" in system and "100~500자" in system
+    assert "150~600자" in system and "60자 이내" in system and "200자 이내" in system
 
 
 def test_direct_profile_generation_and_code_generated_warnings(api_client, copy_mock, gemini_mock):

@@ -87,16 +87,18 @@ def test_disabled_examples_do_not_load_or_check(copy_mock, monkeypatch, version,
     checker.assert_not_called()
 
 
-def test_v2_has_no_sentence_or_line_count_constraints():
+def test_v2_keeps_instagram_flexible_and_shortens_other_channels():
     profile = ShopProfile(shop_name=None, business_type=None)
     prompt, _ = build_copy_prompt(profile, CopyMenu(name='라떼'), 'v2', use_examples=False)
-    assert not re.search(r'\d+\s*[~~～–-]\s*\d+\s*(줄|문장)', prompt)
-    assert not re.search(r'\d+\s*(줄|문장)', prompt)
-    schema = str(GeneratedCopyV2.model_json_schema())
-    assert '3~6줄' not in schema and '1~2문장' not in schema and '3~5문장' not in schema
+    instagram_rule = next(line for line in prompt.splitlines() if line.startswith('16.'))
+    assert not re.search(r'\d+\s*[~~～–-]\s*\d+\s*(줄|문장)', instagram_rule)
+    assert '1~2문장' in prompt and '짧은 소개 2~3줄' in prompt
+    assert '장면 규칙은 인스타그램에만 적용' in prompt
+    assert '세 채널 중 한 곳에서만 한 번' in prompt
+    assert GeneratedCopyV2.model_json_schema()['$defs']['InstagramCopyV2']['properties']['body']['minLength'] == 150
 
 
-@pytest.mark.parametrize('channel,minimum,maximum', [('instagram',150,600),('delivery_app',30,200),('naver_place',100,500)])
+@pytest.mark.parametrize('channel,minimum,maximum', [('instagram',150,600),('delivery_app',1,60),('naver_place',1,200)])
 def test_v2_character_boundaries(copy_output, channel, minimum, maximum):
     for size in (minimum, maximum):
         copy_output[channel]['body'] = '가' * size
