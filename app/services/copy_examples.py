@@ -1,4 +1,4 @@
-"""Deterministic channel examples; metadata never enters the model prompt."""
+"""Versioned channel examples; metadata never enters the model prompt."""
 import json
 import random
 import re
@@ -18,14 +18,15 @@ def business_category(value: str | None) -> str | None:
     return None
 
 
-def select_examples(path: Path, business_type: str | None, seed: int = EXAMPLE_SEED, *, example_version: str = 'short-v1') -> list[dict]:
-    if example_version not in ('short-v1', 'full-v2'):
+def select_examples(path: Path, business_type: str | None, seed: int | None = None, *, example_version: str = 'short-v1') -> list[dict]:
+    if example_version not in ('short-v1', 'full-v2', 'full-v3'):
         raise ValueError('알 수 없는 예시 선택 버전입니다')
     if not path.exists():
         return []
     rows = [json.loads(line) for line in path.read_text(encoding='utf-8-sig').splitlines() if line.strip()]
     category = business_category(business_type)
-    rng = random.Random(seed)
+    legacy_seed = EXAMPLE_SEED if seed is None or example_version == "full-v3" else seed
+    rng = random.Random(legacy_seed)
     selected = []
     for channel in CHANNELS:
         candidates = [row for row in rows if row.get('channel') == channel and row.get('text')
@@ -35,9 +36,9 @@ def select_examples(path: Path, business_type: str | None, seed: int = EXAMPLE_S
         rng.shuffle(preferred)
         rng.shuffle(others)
         selected.extend((preferred + others)[:3])
-    if example_version == 'full-v2':
+    if example_version in ('full-v2', 'full-v3'):
         # Separate RNG preserves delivery/place selections, including their shuffle order.
-        rng = random.Random(seed)
+        rng = random.Random(seed if example_version == "full-v3" else legacy_seed)
         full = [r for r in rows if r.get('channel') == 'instagram' and r.get('kind') == 'full'
                 and r.get('text') and r.get('style')]
         preferred = [r for r in full if category and r.get('business_type') == category]

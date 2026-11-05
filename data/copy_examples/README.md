@@ -9,10 +9,15 @@
 - 프롬프트에는 text만 넣음. account, source는 출처 기록용
 - 예시 선택 버전 (`prompt_version`과 별도):
   - `short-v1`: 기존 방식. 인스타 short 최대 3개, 같은 업종 우선 후 다른 업종 보충.
-  - `full-v2` (copy v2 기본): 인스타 full 2편(서로 다른 style, 같은 업종 우선) + 같은 업종 short 1개. 같은 업종 short가 없으면 생략.
-  - 배달앱·플레이스는 두 버전 모두 기존 방식과 동일한 예시를 선택한다.
-  - API: `example_version`에 `short-v1` 또는 `full-v2`. `use_examples=false`면 예시 생략.
-  - CLI: `python -m tools.copy_samples --version v2 --example-version full-v2 --ids 2`
+  - `full-v2`: 고정 seed 방식. 인스타 full 2편(서로 다른 style, 같은 업종 우선) + 같은 업종 short 1개. 같은 업종 short가 없으면 생략.
+  - `full-v3` (copy v2 새 기본): 같은 구성에 인스타만 요청마다 새 난수로 선택. 랜덤이므로 우연히 같은 예시가 다시 나올 수 있다.
+  - 배달앱·플레이스는 모든 버전에서 기존 방식과 동일한 예시를 선택한다.
+  - API: `example_version`에 `short-v1`, `full-v2`, `full-v3`. `use_examples=false`면 예시 생략. API에는 seed를 받지 않는다.
+  - CLI: `python -m tools.copy_samples --version v2 --example-version full-v3 --ids 2`
+  - 평가 재현: 위 명령에 `--seed 42` 추가. 서비스 내부 함수에는 `example_seed=42`, 선택 함수에는 `seed=42` 전달 가능.
+  - full-v3에서도 배달앱·플레이스는 기존 고정 seed로 선택하며 평가 seed로도 바뀌지 않는다.
   - 결과는 `copy_v2_full_v2.jsonl` / `copy_v2_short_v1.jsonl`로 구분. 예시 없는 결과는 기존 `copy_v2_noex.jsonl` 유지.
   - full은 "흐름·말투 참고 (문장 그대로 쓰지 말 것)", short는 "짧은 표현 참고"로 프롬프트에 구분한다.
+  - full-v3는 위 안내 대신 "아래 예시는 말투와 흐름만 참고하고, 문장·구조·단어는 따라 하지 마세요."를 먼저 넣고 "통 글 예시" / "짧은 표현 예시"로 구분한다.
+  - full-v3 결과: `copy_v2_full_v3.jsonl`, 평가 seed 지정 시 `copy_v2_full_v3_seed_42.jsonl`. 결과에 예시 버전·seed·선택 ID를 기록한다.
 - 뺀 것: 후기·공동게시물 27, 협찬 3, 블로그 메뉴 요약 100, 네이버 블로그 제목 599

@@ -42,7 +42,7 @@ def test_full_fallback_and_no_other_category_short(tmp_path):
 
 
 def test_full_prompt_labels_and_metadata():
-    prompt, _, picked = prepare_copy_prompt(ShopProfile(shop_name=None, business_type='고깃집'), CopyMenu(name='삼겹살'))
+    prompt, _, picked = prepare_copy_prompt(ShopProfile(shop_name=None, business_type='고깃집'), CopyMenu(name='삼겹살'), example_version='full-v2')
     assert '흐름·말투 참고 (문장 그대로 쓰지 말 것)' in prompt
     assert '짧은 표현 참고' in prompt
     grouped = json.loads(prompt.split('채널별 말투 예시:\n', 1)[1])
@@ -89,3 +89,55 @@ def test_invalid_example_version_does_not_call_model(api_client, gemini_mock):
     })
     assert result.status_code == 422
     gemini_mock.assert_not_called()
+
+
+@pytest.mark.parametrize('category', ['고깃집', '빵집', '카페', '한식', '일식', '분식'])
+def test_full_v3_seed_and_category_rules(category):
+    path = config.PROJECT_ROOT / 'data/copy_examples/examples.jsonl'
+    a = select_examples(path, category, seed=42, example_version='full-v3')
+    assert a == select_examples(path, category, seed=42, example_version='full-v3')
+    instagram = [r for r in a if r['channel'] == 'instagram']
+    assert Counter(r['kind'] for r in instagram) == {'full': 2, 'short': 1}
+    assert all(r['business_type'] == category for r in instagram)
+    assert len({r['style'] for r in instagram if r['kind'] == 'full'}) == 2
+    old = select_examples(path, category, example_version='full-v2')
+    assert [r for r in a if r['channel'] != 'instagram'] == [r for r in old if r['channel'] != 'instagram']
+
+
+def test_full_v3_without_seed_uses_fresh_randomness(monkeypatch):
+    from app.services import copy_examples
+    from random import Random
+
+    # Controlled entropy tests variability without a probabilistic assertion.
+    entropy = iter((1, 2))
+    calls = []
+
+    def rng(seed=None):
+        calls.append(seed)
+        return Random(next(entropy) if seed is None else seed)
+
+    monkeypatch.setattr(copy_examples.random, 'Random', rng)
+    path = config.PROJECT_ROOT / 'data/copy_examples/examples.jsonl'
+    a = select_examples(path, '고깃집', example_version='full-v3')
+    b = select_examples(path, '고깃집', example_version='full-v3')
+    assert calls.count(None) == 2
+    assert [r['id'] for r in a if r['channel'] == 'instagram'] != [r['id'] for r in b if r['channel'] == 'instagram']
+    assert [r for r in a if r['channel'] != 'instagram'] == [r for r in b if r['channel'] != 'instagram']
+
+
+def test_full_v3_prompt_labels_and_seed_forwarding():
+    profile, menu = ShopProfile(shop_name=None, business_type='고깃집'), CopyMenu(name='삼겹살')
+    a = prepare_copy_prompt(profile, menu, example_seed=42)
+    assert a == prepare_copy_prompt(profile, menu, example_seed=42)
+    assert '아래 예시는 말투와 흐름만 참고하고, 문장·구조·단어는 따라 하지 마세요.' in a[0]
+    grouped = json.loads(a[0].split('채널별 말투 예시:\n', 1)[1])
+    assert len(grouped['instagram']['통 글 예시']) == 2
+    assert len(grouped['instagram']['짧은 표현 예시']) == 1
+
+
+def test_full_v3_api_default(api_client, copy_mock):
+    result = api_client.post('/copy/generate', json={
+        'profile': {'shop_name': None, 'business_type': '고깃집'}, 'menu': {'name': '삼겹살'},
+    })
+    assert result.status_code == 200
+    assert '통 글 예시' in copy_mock.models.generate_content.call_args.kwargs['config'].system_instruction

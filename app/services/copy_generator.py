@@ -20,12 +20,12 @@ class CopyGenerationError(Exception):
         self.upstream_status = upstream_status
 
 
-def build_copy_prompt(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True, example_version: str = "full-v2") -> tuple[str, str]:
-    return prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples, example_version=example_version)[:2]
+def build_copy_prompt(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True, example_version: str = "full-v3", example_seed: int | None = None) -> tuple[str, str]:
+    return prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples, example_version=example_version, example_seed=example_seed)[:2]
 
 
-def prepare_copy_prompt(profile, menu, prompt_version="v2", *, concept=None, use_examples=True, example_version="full-v2"):
-    if example_version not in ("short-v1", "full-v2"):
+def prepare_copy_prompt(profile, menu, prompt_version="v2", *, concept=None, use_examples=True, example_version="full-v3", example_seed=None):
+    if example_version not in ("short-v1", "full-v2", "full-v3"):
         raise CopyGenerationError("INVALID_EXAMPLE_VERSION", "예시 버전을 확인해 주세요", 422)
     if prompt_version not in ("v1", "v2"):
         raise CopyGenerationError("INVALID_PROMPT_VERSION", "prompt_version은 v1 또는 v2여야 합니다", 422)
@@ -43,14 +43,20 @@ def prepare_copy_prompt(profile, menu, prompt_version="v2", *, concept=None, use
         data['concept'] = {'mood': selected.mood, 'tone': selected.tone}
         contents = json.dumps(data, ensure_ascii=False)
         prompt += "\nconcept는 사장님이 고른 컨셉. 사실이 아니니 사실처럼 쓰지 않기. concept.tone을 말투로, concept.mood를 분위기 참고로만 사용한다. 컨셉에서 숫자·원산지·품질 등의 사실을 가져오지 않는다."
-    examples = select_examples(config.PROJECT_ROOT / "data/copy_examples/examples.jsonl", profile.business_type, example_version=example_version) if prompt_version == "v2" and use_examples else []
+    examples = select_examples(config.PROJECT_ROOT / "data/copy_examples/examples.jsonl", profile.business_type, seed=example_seed, example_version=example_version) if prompt_version == "v2" and use_examples else []
     if examples:
         grouped = {channel: [r["text"] for r in examples if r["channel"] == channel] for channel in ("instagram", "delivery_app", "naver_place")}
-        if example_version == "full-v2":
+        if example_version in ("full-v2", "full-v3"):
             grouped["instagram"] = {
                 "흐름·말투 참고 (문장 그대로 쓰지 말 것)": [r["text"] for r in examples if r["channel"] == "instagram" and r.get("kind") == "full"],
                 "짧은 표현 참고": [r["text"] for r in examples if r["channel"] == "instagram" and r.get("kind") == "short"],
             }
+        if example_version == "full-v3":
+            grouped["instagram"] = {
+                "통 글 예시": [r["text"] for r in examples if r["channel"] == "instagram" and r.get("kind") == "full"],
+                "짧은 표현 예시": [r["text"] for r in examples if r["channel"] == "instagram" and r.get("kind") == "short"],
+            }
+            prompt += "\n아래 예시는 말투와 흐름만 참고하고, 문장·구조·단어는 따라 하지 마세요."
         prompt += "\n채널별 말투 예시:\n" + json.dumps(grouped, ensure_ascii=False)
     return prompt, contents, examples
 
@@ -62,8 +68,8 @@ def banned_expression_warnings(profile: ShopProfile, generated: GeneratedCopy) -
             if word and any(word in text for text in texts)]
 
 
-def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True, example_version: str = "full-v2") -> CopyGenerateResponse:
-    prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples, example_version=example_version)
+def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True, example_version: str = "full-v3", example_seed: int | None = None) -> CopyGenerateResponse:
+    prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples, example_version=example_version, example_seed=example_seed)
     response_model = generated_copy_model(prompt_version)
     api_key = config.GEMINI_API_KEY.strip()
     if not api_key:

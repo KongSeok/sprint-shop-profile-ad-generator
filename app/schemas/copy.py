@@ -29,7 +29,7 @@ class CopyGenerateRequest(ProfileModel):
     concept: Concept | None = None
     prompt_version: Literal["v1", "v2"] = "v2"
     use_examples: bool = True
-    example_version: Literal["short-v1", "full-v2"] = "full-v2"
+    example_version: Literal["short-v1", "full-v2", "full-v3"] = "full-v3"
 
     @model_validator(mode="after")
     def exactly_one_profile_source(self):
