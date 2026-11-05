@@ -1,0 +1,53 @@
+{
+  "counting_method": "Manual atomic input claims, repeated claims counted once, shop name excluded. Menu, cooking, store type, each origin, price, and policy counted separately; imagined scenes/sensory prose excluded from input-fact count, not certified factual. Instagram body only (hashtags excluded).",
+  "shops": {
+    "2": {
+      "before_facts": [
+        "메뉴 소갈비살",
+        "숯불 조리",
+        "대표 메뉴",
+        "퇴근 후 한잔에 어울리는 편안한 가게"
+      ],
+      "after_facts": [
+        "메뉴 소갈비살",
+        "숯불 조리"
+      ],
+      "issues": [
+        "플레이스에서 편안한 세 번 반복",
+        "인스타 따뜻한 불빛은 입력에 없는 구체적 매장 묘사로 읽힐 여지"
+      ]
+    },
+    "8": {
+      "before_facts": [
+        "메뉴 우유식빵",
+        "매일 빵 생산",
+        "남은 빵 다음 날 판매 안 함",
+        "동네 빵집"
+      ],
+      "after_facts": [
+        "메뉴 우유식빵",
+        "동네 빵집",
+        "매일 빵 생산"
+      ],
+      "issues": [
+        "인스타 3개 사실로 한도 초과",
+        "매일 빵을 만들어요가 장면과 분리된 설명 문장"
+      ]
+    },
+    "14": {
+      "before_facts": [
+        "메뉴 에스프레소",
+        "에티오피아 원두 취급",
+        "콜롬비아 원두 취급",
+        "과테말라 원두 취급"
+      ],
+      "after_facts": [
+        "메뉴 에스프레소",
+        "가격 3800원"
+      ],
+      "issues": [
+        "인스타 마지막 줄에 ? (remove maybe) 편집 메모 노출"
+      ]
+    }
+  }
+}
