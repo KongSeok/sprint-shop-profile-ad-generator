@@ -18,7 +18,9 @@ def business_category(value: str | None) -> str | None:
     return None
 
 
-def select_examples(path: Path, business_type: str | None, seed: int = EXAMPLE_SEED) -> list[dict]:
+def select_examples(path: Path, business_type: str | None, seed: int = EXAMPLE_SEED, *, example_version: str = 'short-v1') -> list[dict]:
+    if example_version not in ('short-v1', 'full-v2'):
+        raise ValueError('알 수 없는 예시 선택 버전입니다')
     if not path.exists():
         return []
     rows = [json.loads(line) for line in path.read_text(encoding='utf-8-sig').splitlines() if line.strip()]
@@ -26,12 +28,33 @@ def select_examples(path: Path, business_type: str | None, seed: int = EXAMPLE_S
     rng = random.Random(seed)
     selected = []
     for channel in CHANNELS:
-        candidates = [row for row in rows if row.get('channel') == channel and row.get('text')]
+        candidates = [row for row in rows if row.get('channel') == channel and row.get('text')
+                      and (channel != 'instagram' or row.get('kind', 'short') == 'short')]
         preferred = [r for r in candidates if category and r.get('business_type') == category]
         others = [r for r in candidates if r not in preferred]
         rng.shuffle(preferred)
         rng.shuffle(others)
         selected.extend((preferred + others)[:3])
+    if example_version == 'full-v2':
+        # Separate RNG preserves delivery/place selections, including their shuffle order.
+        rng = random.Random(seed)
+        full = [r for r in rows if r.get('channel') == 'instagram' and r.get('kind') == 'full'
+                and r.get('text') and r.get('style')]
+        preferred = [r for r in full if category and r.get('business_type') == category]
+        others = [r for r in full if r not in preferred]
+        rng.shuffle(preferred)
+        rng.shuffle(others)
+        instagram, styles = [], set()
+        for row in preferred + others:
+            if row['style'] not in styles:
+                instagram.append(row)
+                styles.add(row['style'])
+                if len(instagram) == 2:
+                    break
+        short = [r for r in rows if r.get('channel') == 'instagram' and r.get('kind') == 'short'
+                 and r.get('text') and category and r.get('business_type') == category]
+        rng.shuffle(short)
+        selected = instagram + short[:1] + [r for r in selected if r['channel'] != 'instagram']
     return selected
 
 
