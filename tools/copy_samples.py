@@ -13,13 +13,14 @@ from app.services.copy_generator import CopyGenerationError, generate_copy
 from eval.common import ROOT, read_rows
 
 
-def run_samples(ids: list[int], *, version: str = "v1", use_examples: bool = True, example_version: str = "full-v3", example_seed: int | None = None, features: str | None = None, this_time: str | None = None, root: Path = ROOT) -> dict:
+def run_samples(ids: list[int], *, version: str = "v1", use_examples: bool = True, example_version: str = "full-v3", example_seed: int | None = None, features: str | None = None, this_time: str | None = None, root: Path = ROOT, mode: str = "menu") -> dict:
     gold = read_rows(root / "data/samples/answer_profiles_gold.jsonl")
     suffix = "_noex" if version == "v2" and not use_examples else ""
     if version == "v2" and use_examples:
         suffix = "_" + example_version.replace("-", "_")
     if version == "v2" and use_examples and example_seed is not None:
         suffix += f"_seed_{example_seed}"
+    suffix += "_" + mode
     output_path = root / f"data/copy_runs/copy_{version}{suffix}.jsonl"
     saved = read_rows(output_path) if output_path.exists() else {}
     success = skipped = 0
@@ -38,11 +39,11 @@ def run_samples(ids: list[int], *, version: str = "v1", use_examples: bool = Tru
             time.sleep(6)
         called = True
         try:
-            generated = generate_copy(profile, menu, version, use_examples=use_examples, example_version=example_version, example_seed=example_seed)
+            generated = generate_copy(profile, menu if mode == "menu" else None, version, use_examples=use_examples, example_version=example_version, example_seed=example_seed, mode=mode)
         except CopyGenerationError as exc:
             print(f"ID {row_id}: 실패 ({exc.code}). 다시 실행하면 남은 ID만 호출합니다.")
             return {"success": success, "skipped": skipped, "failed": 1}
-        saved[row_id] = {"id": row_id, "prompt_version": version, "example_version": example_version, "example_seed": example_seed, "use_examples": use_examples if version == "v2" else False, "input": {"profile": profile.model_dump(), "menu": menu.model_dump()},
+        saved[row_id] = {"id": row_id, "prompt_version": version, "mode": mode, "example_version": example_version, "example_seed": example_seed, "use_examples": use_examples if version == "v2" else False, "input": {"profile": profile.model_dump(), "menu": menu.model_dump()},
                          "output": generated.model_dump()}
         output_path.parent.mkdir(parents=True, exist_ok=True)
         temporary = output_path.with_suffix(".tmp")
@@ -61,6 +62,7 @@ def main(argv=None):
     parser.add_argument("--no-examples", action="store_true")
     parser.add_argument("--example-version", choices=("short-v1", "full-v2", "full-v3"), default="full-v3")
     parser.add_argument("--seed", type=int, help="평가 재현용 예시 seed. 생략하면 인스타 예시를 매번 새로 선택")
+    parser.add_argument("--mode", choices=("shop", "menu"), default="menu")
     parser.add_argument("--features")
     parser.add_argument("--this-time")
     args = parser.parse_args(argv)
@@ -68,7 +70,7 @@ def main(argv=None):
         ids = [int(value.strip()) for value in args.ids.split(",")]
         if any(value <= 0 for value in ids):
             raise ValueError("ID는 양의 정수여야 합니다")
-        result = run_samples(ids, version=args.version, use_examples=not args.no_examples, example_version=args.example_version, example_seed=args.seed, features=args.features, this_time=args.this_time)
+        result = run_samples(ids, version=args.version, use_examples=not args.no_examples, example_version=args.example_version, example_seed=args.seed, mode=args.mode, features=args.features, this_time=args.this_time)
     except (ValueError, ValidationError):
         print("ID와 정답 파일의 프로필·대표 메뉴를 확인해 주세요")
         return 1

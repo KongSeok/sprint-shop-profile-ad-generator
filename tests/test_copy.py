@@ -29,11 +29,22 @@ def copy_output():
 def copy_mock(gemini_mock, copy_output):
     client = gemini_mock.return_value.__enter__.return_value
     client.models.generate_content.return_value = SimpleNamespace(text=json.dumps(copy_output, ensure_ascii=False))
+    def respond(**kwargs):
+        raw = client.models.generate_content.return_value.text
+        try:
+            data = json.loads(raw)
+        except ValueError:
+            return SimpleNamespace(text=raw)
+        schema = kwargs['config'].response_json_schema
+        if 'delivery_app' in schema.get('properties', {}) and 'GeneratedMenuCopy' == schema.get('title'):
+            data = {'instagram': data['instagram'], 'delivery_app': {'menu_description': data['delivery_app'].get('body', data['delivery_app'].get('menu_description'))}}
+        return SimpleNamespace(text=json.dumps(data, ensure_ascii=False))
+    client.models.generate_content.side_effect = respond
     return client
 
 
 def direct_request(**changes):
-    return {"profile": {"shop_name": "가게", "business_type": "카페"}, "menu": {"name": "라떼"}, **changes}
+    return {"mode": "menu", "profile": {"shop_name": "가게", "business_type": "카페"}, "menu": {"name": "라떼"}, **changes}
 
 
 @pytest.mark.parametrize("body", [
@@ -71,7 +82,8 @@ def test_direct_profile_generation_and_code_generated_warnings(api_client, copy_
     request["profile"]["avoid_expressions"] = ["강추", "역대급", "강추"]
     response = api_client.post("/copy/generate", json=request)
     assert response.status_code == 200
-    assert response.json()["warnings"] == ["피할 표현 '강추'이 들어갔어요"]
+    assert any("강추" in w for w in response.json()["warnings"])
+    assert copy_mock.models.generate_content.call_count == 2
     options = copy_mock.models.generate_content.call_args.kwargs["config"]
     assert options.temperature == 0.7 and options.thinking_config.thinking_level.value == "MEDIUM"
     assert options.response_mime_type == "application/json"
@@ -85,7 +97,7 @@ def test_saved_shop_generation_uses_saved_profile(api_client, copy_mock):
         "profile": {"shop_name": "저장 가게", "business_type": "카페"}, "source_text": "원문", "prompt_version": "v2",
     })
     shop_id = saved.json()["shop_id"]
-    result = api_client.post("/copy/generate", json={"shop_id": shop_id, "menu": {"name": "라떼"}})
+    result = api_client.post("/copy/generate", json={"mode": "menu", "shop_id": shop_id, "menu": {"name": "라떼"}})
     assert result.status_code == 200
     data = json.loads(copy_mock.models.generate_content.call_args.kwargs["contents"])
     assert data["profile"]["shop_name"] == "저장 가게"
@@ -93,7 +105,7 @@ def test_saved_shop_generation_uses_saved_profile(api_client, copy_mock):
 
 
 def test_unknown_shop_is_404_without_gemini(api_client, gemini_mock):
-    response = api_client.post("/copy/generate", json={"shop_id": 999, "menu": {"name": "라떼"}})
+    response = api_client.post("/copy/generate", json={"mode": "menu", "shop_id": 999, "menu": {"name": "라떼"}})
     assert response.status_code == 404 and response.json()["detail"] == "저장된 가게를 찾을 수 없습니다"
     gemini_mock.assert_not_called()
 
@@ -145,7 +157,7 @@ def test_real_sdk_serializes_copy_schema_without_network(api_client, copy_output
 
     def handle(request):
         calls.append(json.loads(request.content))
-        return httpx.Response(200, json={"candidates": [{"content": {"role": "model", "parts": [{"text": json.dumps(copy_output)}]}, "finishReason": "STOP"}]})
+        return httpx.Response(200, json={"candidates": [{"content": {"role": "model", "parts": [{"text": json.dumps({"instagram":copy_output["instagram"],"delivery_app":{"menu_description":copy_output["delivery_app"]["body"]}})}]}, "finishReason": "STOP"}]})
 
     def client(**kwargs):
         kwargs["http_options"].httpx_client = httpx.Client(transport=httpx.MockTransport(handle))
@@ -153,5 +165,5 @@ def test_real_sdk_serializes_copy_schema_without_network(api_client, copy_output
 
     monkeypatch.setattr(copy_generator.genai, "Client", client)
     assert api_client.post("/copy/generate", json=direct_request()).status_code == 200
-    assert len(calls) == 1 and calls[0]["generationConfig"]["temperature"] == 0.7
+    assert len(calls) <= 2 and calls[0]["generationConfig"]["temperature"] == 0.7
     assert calls[0]["generationConfig"]["thinkingConfig"] == {"thinking_level": "MEDIUM"}

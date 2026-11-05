@@ -50,7 +50,7 @@ def test_leak_warnings():
 
 
 def test_bad_version(api_client, gemini_mock):
-    result = api_client.post('/copy/generate', json={'profile': {'shop_name': None, 'business_type': None}, 'menu': {'name': '라떼'}, 'prompt_version': 'v3'})
+    result = api_client.post('/copy/generate', json={"mode": "menu", 'profile': {'shop_name': None, 'business_type': None}, 'menu': {'name': '라떼'}, 'prompt_version': 'v3'})
     assert result.status_code == 422
     gemini_mock.assert_not_called()
 
@@ -131,7 +131,7 @@ def test_v2_leak_mock_response(copy_mock, monkeypatch, copy_output):
 def test_api_passes_use_examples_false(api_client, copy_mock, monkeypatch):
     checker = Mock(side_effect=AssertionError('must not run'))
     monkeypatch.setattr(copy_generator,'example_warnings',checker)
-    result = api_client.post('/copy/generate',json={'profile':{'shop_name':None,'business_type':None},'menu':{'name':'라떼'},'use_examples':False})
+    result = api_client.post('/copy/generate',json={"mode": "menu", 'profile':{'shop_name':None,'business_type':None},'menu':{'name':'라떼'},'use_examples':False})
     assert result.status_code == 200 and result.json()['example_ids'] == []
     assert '채널별 말투 예시:' not in copy_mock.models.generate_content.call_args.kwargs['config'].system_instruction
     checker.assert_not_called()
@@ -141,10 +141,10 @@ def test_short_channels_emit_one_combined_warning(api_client, copy_mock, copy_ou
     copy_output['delivery_app']['body'] = '짧은 메뉴.'
     copy_output['naver_place']['body'] = '짧은 소개.'
     copy_mock.models.generate_content.return_value.text = json.dumps(copy_output)
-    result = api_client.post('/copy/generate', json={
+    result = api_client.post('/copy/generate', json={"mode": "menu",
         'profile': {'shop_name': None, 'business_type': None}, 'menu': {'name': '라떼'},
     })
-    assert result.status_code == 502
-    assert result.json()['detail']['code'] == 'COPY_LENGTH_BELOW_MIN'
-    assert result.json()['detail']['message'].count('글자 수 하한 미달') == 1
-    assert '배달앱, 네이버 플레이스' in result.json()['detail']['message']
+    assert result.status_code == 200
+    assert result.json()['regeneration']['performed']
+    assert any('schema:' in w for w in result.json()['warnings'])
+    assert copy_mock.models.generate_content.call_count == 2

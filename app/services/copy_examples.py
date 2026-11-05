@@ -18,7 +18,7 @@ def business_category(value: str | None) -> str | None:
     return None
 
 
-def select_examples(path: Path, business_type: str | None, seed: int | None = None, *, example_version: str = 'short-v1') -> list[dict]:
+def select_examples(path: Path, business_type: str | None, seed: int | None = None, *, example_version: str = 'short-v1', mode: str | None = None) -> list[dict]:
     if example_version not in ('short-v1', 'full-v2', 'full-v3'):
         raise ValueError('알 수 없는 예시 선택 버전입니다')
     if not path.exists():
@@ -45,6 +45,13 @@ def select_examples(path: Path, business_type: str | None, seed: int | None = No
         others = [r for r in full if r not in preferred]
         rng.shuffle(preferred)
         rng.shuffle(others)
+        if mode in ('shop', 'menu'):
+            shop_styles = ('정중한 소개형', '계절 인사 · 가게 이야기', '준비 과정 · 사장님 일상')
+            def priority(row):
+                is_shop = any(style in row['style'] for style in shop_styles)
+                return is_shop if mode == 'shop' else not is_shop
+            preferred.sort(key=lambda row: not priority(row))
+            others.sort(key=lambda row: not priority(row))
         instagram, styles = [], set()
         for row in preferred + others:
             if row['style'] not in styles:

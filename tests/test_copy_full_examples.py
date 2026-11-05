@@ -73,7 +73,7 @@ def test_one_full_uses_another_category_and_omits_missing_short(tmp_path):
 
 @pytest.mark.parametrize('version', ['short-v1', 'full-v2'])
 def test_api_example_version(api_client, copy_mock, version):
-    result = api_client.post('/copy/generate', json={
+    result = api_client.post('/copy/generate', json={"mode": "menu",
         'profile': {'shop_name': None, 'business_type': '고깃집'},
         'menu': {'name': '삼겹살'}, 'example_version': version,
     })
@@ -83,7 +83,7 @@ def test_api_example_version(api_client, copy_mock, version):
 
 
 def test_invalid_example_version_does_not_call_model(api_client, gemini_mock):
-    result = api_client.post('/copy/generate', json={
+    result = api_client.post('/copy/generate', json={"mode": "menu",
         'profile': {'shop_name': None, 'business_type': '고깃집'},
         'menu': {'name': '삼겹살'}, 'example_version': 'unknown',
     })
@@ -136,7 +136,7 @@ def test_full_v3_prompt_labels_and_seed_forwarding():
 
 
 def test_full_v3_api_default(api_client, copy_mock):
-    result = api_client.post('/copy/generate', json={
+    result = api_client.post('/copy/generate', json={"mode": "menu",
         'profile': {'shop_name': None, 'business_type': '고깃집'}, 'menu': {'name': '삼겹살'},
     })
     assert result.status_code == 200

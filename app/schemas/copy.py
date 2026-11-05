@@ -23,9 +23,10 @@ class CopyMenu(ProfileModel):
 
 
 class CopyGenerateRequest(ProfileModel):
+    mode: Literal['shop', 'menu']
     shop_id: int | None = Field(default=None, gt=0)
     profile: ShopProfile | None = None
-    menu: CopyMenu
+    menu: CopyMenu | None = None
     concept: Concept | None = None
     prompt_version: Literal["v1", "v2"] = "v2"
     use_examples: bool = True
@@ -35,6 +36,10 @@ class CopyGenerateRequest(ProfileModel):
     def exactly_one_profile_source(self):
         if (self.shop_id is None) == (self.profile is None):
             raise ValueError("저장된 가게 또는 프로필 중 하나만 선택해 주세요")
+        if self.mode == 'shop' and (self.shop_id is None or self.menu is not None or self.concept is not None):
+            raise ValueError('가게 소개는 저장된 가게만 선택해 주세요')
+        if self.mode == 'menu' and self.menu is None:
+            raise ValueError('메뉴를 선택해 주세요')
         return self
 
 
@@ -115,3 +120,39 @@ class CopyGenerateResponse(ProfileModel):
     naver_place: TextCopy
     warnings: list[str] = Field(default_factory=list, description="서버가 검사한 경고")
     example_ids: list[str] = Field(default_factory=list, description="사용한 예시 ID")
+
+
+class ShopDelivery(ProfileModel):
+    shop_intro: str = Field(min_length=80, max_length=150, description='배달앱 가게 소개. 2~3문장, 80~150자')
+
+
+class MenuDelivery(ProfileModel):
+    menu_description: str = Field(min_length=50, max_length=90, description='메뉴 설명만. 정확히 2문장, 50~90자. 가게명·가게 소개 제외')
+
+
+class GeneratedShopCopy(ProfileModel):
+    instagram: InstagramCopyV2
+    delivery_app: ShopDelivery
+    naver_place: NaverPlaceCopyV2
+
+
+class GeneratedMenuCopy(ProfileModel):
+    instagram: InstagramCopyV2
+    delivery_app: MenuDelivery
+
+
+class RegenerationInfo(ProfileModel):
+    performed: bool = False
+    initial_violations: list[str] = Field(default_factory=list)
+    retry_violations: list[str] = Field(default_factory=list)
+    selected_attempt: int = 1
+
+
+class ModeCopyResponse(ProfileModel):
+    mode: Literal['shop', 'menu']
+    instagram: InstagramResult
+    delivery_app: dict[str, str]
+    naver_place: TextCopy | None = None
+    warnings: list[str] = Field(default_factory=list)
+    example_ids: list[str] = Field(default_factory=list)
+    regeneration: RegenerationInfo = Field(default_factory=RegenerationInfo)

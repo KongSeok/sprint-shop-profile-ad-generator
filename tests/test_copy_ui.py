@@ -12,22 +12,26 @@ def test_copy_tab_renders_channels_warnings_and_preserves_result(monkeypatch):
     def fake_api(base, method, path, *, payload=None, **kwargs):
         if path == "/profile/list":
             return [{"id": 7, "shop_name": "가게", "business_type": "카페", "updated_at": "now"}]
+        if path == "/profile/7":
+            return {"profile": {"menus": [{"name":"라떼", "price":"4000원"}]}}
         assert path == "/copy/generate"
-        assert kwargs["timeout"] == 320
+        assert kwargs["timeout"] == 620
         seen.append(payload)
         return {"instagram": {"body": "첫 줄\n둘째 줄\n셋째 줄", "hashtags": ["#메뉴"]},
-                "delivery_app": {"body": "배달 문구"}, "naver_place": {"body": "플레이스 문구"},
+                "delivery_app": {"menu_description": "배달 문구"}, "naver_place": {"body": "플레이스 문구"},
                 "warnings": ["피할 표현 '강추'이 들어갔어요"]}
 
     monkeypatch.setattr(api_client, "request_api", fake_api)
     view = AppTest.from_file(str(ROOT / "app/ui/main_ui.py"), default_timeout=30).run()
     assert [tab.label for tab in view.tabs] == ["가게 프로필", "문구 만들기"]
     view.selectbox(key="copy_shop_id").select(7).run()
+    assert view.text_input(key="copy_menu_price").value == "4000원"
+    assert any(item.label == "가게 소개 문구" for item in view.button)
     view.text_input(key="copy_menu_name").input(" 라떼 ")
     view.text_area(key="copy_menu_this_time").input("이번 주만 1,000원 할인")
-    next(item for item in view.button if item.label == "문구 만들기").click().run()
+    next(item for item in view.button if item.label == "메뉴 문구").click().run()
     assert not view.exception
-    assert seen[0] == {"shop_id": 7, "menu": {"name": "라떼", "price": None, "features": None, "this_time": "이번 주만 1,000원 할인"}}
+    assert seen[0] == {"mode": "menu", "shop_id": 7, "menu": {"name": "라떼", "price": "4000원", "features": None, "this_time": "이번 주만 1,000원 할인"}}
     assert any("피할 표현" in item.value for item in view.warning)
     assert any(item.value == "배달 문구" for item in view.text)
     view.run()

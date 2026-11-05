@@ -22,7 +22,7 @@ def test_samples_resume_skip_and_keep_successes_when_later_call_fails(tmp_path, 
     monkeypatch.setattr(copy_samples, "generate_copy", generate)
     monkeypatch.setattr(copy_samples.time, "sleep", sleep)
     assert copy_samples.run_samples([2, 8], root=tmp_path) == {"success": 1, "skipped": 0, "failed": 1}
-    path = tmp_path / "data/copy_runs/copy_v1.jsonl"
+    path = tmp_path / "data/copy_runs/copy_v1_menu.jsonl"
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
     assert [row["id"] for row in rows] == [2]
     assert rows[0]["input"]["menu"]["name"]
@@ -40,7 +40,7 @@ def test_no_examples_sample_file_and_options(tmp_path, monkeypatch):
     generate = Mock(return_value=output())
     monkeypatch.setattr(copy_samples,'generate_copy',generate)
     copy_samples.run_samples([2],version='v2',use_examples=False,features='숯불',this_time='이번 주만',root=tmp_path)
-    assert (tmp_path/'data/copy_runs/copy_v2_noex.jsonl').exists()
+    assert (tmp_path/'data/copy_runs/copy_v2_noex_menu.jsonl').exists()
     assert not (tmp_path/'data/copy_runs/copy_v2.jsonl').exists()
     assert generate.call_args.kwargs['use_examples'] is False
     assert generate.call_args.args[1].features == '숯불'

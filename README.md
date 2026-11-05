@@ -74,10 +74,21 @@ v1은 규칙만, v2는 규칙과 train ID `1, 7, 13, 19, 25`의 예시 5개를 �
 문구는 원래 프로필 분위기·말투를 우선하며, 둘 다 없을 때만 컨셉을 표현 참고로 사용합니다.
 concept.theme은 저장만 하고 렌더러 테마 적용은 후속 병합에서 진행합니다.
 
-### 문구 v2: 규칙 / 예시 효과 비교
-v1 프롬프트와 기존 길이 검증은 유지합니다. v2는 인스타 본문 150~600자·해시태그 5~15개,
-배달앱 30~200자, 네이버 플레이스 100~500자이며 공백·줄바꿈도 글자 수에 포함합니다.
-API 요청의 use_examples는 기본 true이며, false면 v2 규칙만 사용합니다(v1에서는 무시).
-`python -m tools.copy_samples --version v2 --ids 2 --no-examples`
-예시 포함 결과는 data/copy_runs/copy_v2.jsonl, 제외 결과는 copy_v2_noex.jsonl에 따로 저장합니다.
---features와 --this-time은 선택한 모든 ID에 동일하게 적용됩니다. 기존 ID는 건너뜁니다.
+### 문구 모드와 1회 교정
+가게 프로필을 저장한 뒤 문구 탭에서 가게를 선택합니다. `[가게 소개 문구]`는 메뉴 없이,
+`[메뉴 문구]`는 프로필 메뉴 드롭다운 또는 새 메뉴 이름·가격·특징·이번 요청으로 생성합니다.
+
+`POST /copy/generate`는 `mode`를 반드시 받습니다. shop은 저장된 shop_id만, menu는 shop_id 또는 profile 중 하나와 menu를 받습니다.
+- shop 요청: `{"mode":"shop","shop_id":1}`. 응답은 instagram, delivery_app.shop_intro(80~150자·2~3문장), naver_place(120~220자).
+- menu 요청: `{"mode":"menu","shop_id":1,"menu":{"name":"라떼","price":"4000원","features":null,"this_time":null}}`. 응답은 instagram, delivery_app.menu_description(50~90자·2문장). 플레이스는 출력하지 않습니다.
+- 인스타 150~600자, 태그 5~15개. `use_examples=false`로 예시 생략 가능.
+- 예시는 `short-v1`, `full-v2`, `full-v3`(기본)로 구분. full-v3는 모드별 style 우선순위로 full 2편+short 1개를 코드에서 선택합니다. shop 배달앱은 Place 예시, menu 배달앱은 delivery_app 예시를 사용합니다.
+
+`python -m tools.copy_samples --version v2 --mode menu --example-version full-v3 --seed 42 --ids 2,8,14`
+shop은 `--mode shop`. CLI 기본 모드는 menu로 기존 메뉴 비교 흐름을 유지합니다. 결과 파일은 예시 버전·seed·모드별로 구분되며 선택 ID와 regeneration 기록을 저장합니다.
+
+생성 후 금지 표현·어절 반복·글자 수·식별 가능한 인스타 사실 수·편집 메모·이상한 이모지 꼬리·모드 형식을 검사합니다.
+위반 시 같은 입력/예시로 교정 1회만 호출합니다. 두 번째도 위반이면 구조를 읽을 수 있는 후보 중 검사 위반 수가 적은 쪽(동률이면 첫 번째)을 반환하고 warnings에 남깁니다.
+둘 다 JSON 구조를 읽을 수 없으면 502. 429/503/504 등 네트워크 오류를 이유로 자동 재시도하지 않습니다.
+`regeneration`에 수행 여부·첫/교정 위반 목록·선택 시도 번호를 반환합니다. 사실 수와 반복 판정은 휴리스틱이며 의미 전체의 정확성을 보장하지 않습니다.
+문구 UI 대기 시간은 최대 두 호출을 감안해 `GEMINI_TIMEOUT_MS * 2 / 1000 + 20`(기본 620초)입니다. 프로필 추출 대기 시간은 기존 그대로입니다.

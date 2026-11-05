@@ -32,7 +32,7 @@ def test_instagram_is_not_subject_to_channel_specific_word_ban():
 def test_v2_mock_response_includes_style_warning(api_client, copy_mock, copy_output):
     copy_output['delivery_app']['body'] = '매력 ' + copy_output['delivery_app']['body']
     copy_mock.models.generate_content.return_value.text = json.dumps(copy_output)
-    result = api_client.post('/copy/generate', json={
+    result = api_client.post('/copy/generate', json={"mode": "menu",
         'profile': {'shop_name': None, 'business_type': None}, 'menu': {'name': '라떼'},
     })
     assert result.status_code == 200

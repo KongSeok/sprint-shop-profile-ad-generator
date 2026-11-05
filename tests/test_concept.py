@@ -140,9 +140,11 @@ def test_saved_concept_used_for_copy_api(api_client, monkeypatch):
     from app.api.routers import copy as copy_router
     from test_copy_samples import output
     saved = api_client.post('/profile/save',json={'profile':{'shop_name':'가게','business_type':'카페'},'source_text':'','concept':concept().model_dump()}).json()['shop_id']
-    generate = Mock(return_value=output())
+    from app.schemas.copy import ModeCopyResponse
+    old = output()
+    generate = Mock(return_value=ModeCopyResponse(mode='menu', instagram=old.instagram, delivery_app={'menu_description':old.delivery_app.body}))
     monkeypatch.setattr(copy_router,'generate_copy',generate)
-    assert api_client.post('/copy/generate',json={'shop_id':saved,'menu':{'name':'라떼'}}).status_code == 200
+    assert api_client.post('/copy/generate',json={"mode": "menu", 'shop_id':saved,'menu':{'name':'라떼'}}).status_code == 200
     assert generate.call_args.kwargs['concept'] == concept().model_dump()
 
 
