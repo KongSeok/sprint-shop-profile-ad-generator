@@ -92,13 +92,13 @@ def test_v2_keeps_instagram_flexible_and_shortens_other_channels():
     prompt, _ = build_copy_prompt(profile, CopyMenu(name='라떼'), 'v2', use_examples=False)
     instagram_rule = next(line for line in prompt.splitlines() if line.startswith('16.'))
     assert not re.search(r'\d+\s*[~~～–-]\s*\d+\s*(줄|문장)', instagram_rule)
-    assert '1~2문장' in prompt and '짧은 소개 2~3줄' in prompt
+    assert '정확히 2문장' in prompt and '소개 3~4줄' in prompt
     assert '장면 규칙은 인스타그램에만 적용' in prompt
     assert '세 채널 중 한 곳에서만 한 번' in prompt
     assert GeneratedCopyV2.model_json_schema()['$defs']['InstagramCopyV2']['properties']['body']['minLength'] == 150
 
 
-@pytest.mark.parametrize('channel,minimum,maximum', [('instagram',150,600),('delivery_app',1,60),('naver_place',1,200)])
+@pytest.mark.parametrize('channel,minimum,maximum', [('instagram',150,600),('delivery_app',40,80),('naver_place',120,220)])
 def test_v2_character_boundaries(copy_output, channel, minimum, maximum):
     for size in (minimum, maximum):
         copy_output[channel]['body'] = '가' * size
@@ -135,3 +135,16 @@ def test_api_passes_use_examples_false(api_client, copy_mock, monkeypatch):
     assert result.status_code == 200 and result.json()['example_ids'] == []
     assert '채널별 말투 예시:' not in copy_mock.models.generate_content.call_args.kwargs['config'].system_instruction
     checker.assert_not_called()
+
+
+def test_short_channels_emit_one_combined_warning(api_client, copy_mock, copy_output):
+    copy_output['delivery_app']['body'] = '짧은 메뉴.'
+    copy_output['naver_place']['body'] = '짧은 소개.'
+    copy_mock.models.generate_content.return_value.text = json.dumps(copy_output)
+    result = api_client.post('/copy/generate', json={
+        'profile': {'shop_name': None, 'business_type': None}, 'menu': {'name': '라떼'},
+    })
+    assert result.status_code == 502
+    assert result.json()['detail']['code'] == 'COPY_LENGTH_BELOW_MIN'
+    assert result.json()['detail']['message'].count('글자 수 하한 미달') == 1
+    assert '배달앱, 네이버 플레이스' in result.json()['detail']['message']

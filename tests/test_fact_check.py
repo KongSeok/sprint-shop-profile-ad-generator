@@ -37,7 +37,7 @@ def test_generator_runs_fact_checks_for_both_versions(gemini_mock, version):
     generated = {'instagram': {'body': '국내산 메뉴입니다.\n15000원에 만나요.\n오늘도 기다릴게요.', 'hashtags': ['#메뉴', '#소개', '#식사', '#오늘', '#가게']}, 'delivery_app': {'body': '메뉴 소개.'}, 'naver_place': {'body': '소개합니다. 편히 오세요. 기다릴게요.'}}
     if version == "v2":
         generated["instagram"]["body"] += " 오늘의 메뉴를 편하게 만나보세요." * 10
-        generated["delivery_app"]["body"] += " 오늘의 식사를 천천히 골라보세요. 편하게 찾아주세요."
+        generated["delivery_app"]["body"] += " 오늘의 식사를 천천히 골라보세요. 마음에 드는 메뉴로 편하게 찾아주세요."
         generated["naver_place"]["body"] += " 마음에 드는 메뉴를 살펴보고 편하게 방문해 주세요." * 5
     gemini_mock.return_value.__enter__.return_value.models.generate_content.return_value.text = json.dumps(generated)
     result = generate_copy(ShopProfile(shop_name=None, business_type=None), CopyMenu(name='라떼'), version)

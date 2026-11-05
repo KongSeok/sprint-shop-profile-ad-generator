@@ -68,6 +68,16 @@ def banned_expression_warnings(profile: ShopProfile, generated: GeneratedCopy) -
             if word and any(word in text for text in texts)]
 
 
+def below_minimum_warning(errors: list[dict]) -> str | None:
+    labels = {'delivery_app': '배달앱', 'naver_place': '네이버 플레이스'}
+    short = [labels[error['loc'][0]] for error in errors
+             if error['type'] == 'string_too_short' and error['loc']
+             and error['loc'][0] in labels]
+    if short:
+        return '글자 수 하한 미달: ' + ', '.join(dict.fromkeys(short))
+    return None
+
+
 def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True, example_version: str = "full-v3", example_seed: int | None = None) -> CopyGenerateResponse:
     prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples, example_version=example_version, example_seed=example_seed)
     response_model = generated_copy_model(prompt_version)
@@ -98,6 +108,9 @@ def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v
     try:
         generated = response_model.model_validate_json(response.text or "")
     except ValidationError as exc:
+        warning = below_minimum_warning(exc.errors(include_input=False)) if prompt_version == 'v2' else None
+        if warning:
+            raise CopyGenerationError('COPY_LENGTH_BELOW_MIN', warning + '. 다시 눌러 주세요') from exc
         raise CopyGenerationError("COPY_VALIDATION_FAILED", "문구 응답의 형식을 확인하지 못했어요. 다시 눌러 주세요") from exc
     factual_inputs = json.dumps({"profile": profile.model_dump(mode="json", exclude_none=True), "menu": menu.model_dump(mode="json", exclude_none=True)}, ensure_ascii=False)
     warnings = banned_expression_warnings(profile, generated)
