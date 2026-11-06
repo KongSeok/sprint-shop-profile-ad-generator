@@ -3,10 +3,12 @@ import streamlit as st
 from app.core.config import GEMINI_TIMEOUT_MS
 from app.ui.api_client import UserApiError
 from app.ui.profile_form import blank_to_none
+from app.ui.render_tab import render_ad_controls
 
 
 def clear_copy_result():
-    st.session_state.pop("copy_result", None)
+    for key in ("copy_result", "ad_png", "ad_headline", "ad_body"):
+        st.session_state.pop(key, None)
 
 
 def render_copy_tab(api, shops):
@@ -48,6 +50,7 @@ def render_copy_tab(api, shops):
     shop_clicked = left.button('가게 소개 문구', disabled=selected is None, use_container_width=True)
     menu_clicked = right.button('메뉴 문구', type='primary', disabled=selected is None, use_container_width=True)
     if shop_clicked or menu_clicked:
+        clear_copy_result()
         mode = 'shop' if shop_clicked else 'menu'
         if mode == 'menu' and not name.strip():
             st.error('메뉴 이름을 적어 주세요')
@@ -78,3 +81,9 @@ def render_copy_tab(api, shops):
         if result.get('naver_place'):
             st.subheader('네이버 플레이스')
             st.text(result['naver_place']['body'])
+
+        if selected is not None and name.strip():
+            render_ad_controls(api, selected, {
+                'name': name.strip(), 'price': blank_to_none(price),
+                'features': blank_to_none(features), 'this_time': blank_to_none(this_time),
+            }, result)

@@ -23,7 +23,7 @@ def test_copy_tab_renders_channels_warnings_and_preserves_result(monkeypatch):
 
     monkeypatch.setattr(api_client, "request_api", fake_api)
     view = AppTest.from_file(str(ROOT / "app/ui/main_ui.py"), default_timeout=30).run()
-    assert [tab.label for tab in view.tabs] == ["가게 프로필", "문구 만들기"]
+    assert [tab.label for tab in view.tabs] == ["가게 프로필", "문구 만들기", "메뉴판 만들기"]
     view.selectbox(key="copy_shop_id").select(7).run()
     assert view.text_input(key="copy_menu_price").value == "4000원"
     assert any(item.label == "가게 소개 문구" for item in view.button)

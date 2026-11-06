@@ -92,3 +92,15 @@ shop은 `--mode shop`. CLI 기본 모드는 menu로 기존 메뉴 비교 흐름�
 둘 다 JSON 구조를 읽을 수 없으면 502. 429/503/504 등 네트워크 오류를 이유로 자동 재시도하지 않습니다.
 `regeneration`에 수행 여부·첫/교정 위반 목록·선택 시도 번호를 반환합니다. 사실 수와 반복 판정은 휴리스틱이며 의미 전체의 정확성을 보장하지 않습니다.
 문구 UI 대기 시간은 최대 두 호출을 감안해 `GEMINI_TIMEOUT_MS * 2 / 1000 + 20`(기본 620초)입니다. 프로필 추출 대기 시간은 기존 그대로입니다.
+
+### 오프라인 PNG 렌더링
+`pip install -r requirements.txt` 다음 `playwright install chromium`을 한 번 실행합니다.
+`python -m tools.render_samples --ids 2,8,14,20,22`로 임시 광고 카드를 확인합니다.
+기존 Chromium 계열 브라우저를 쓰려면 `RENDER_BROWSER_EXECUTABLE`에 실행 파일 경로를 지정합니다.
+폰트와 템플릿은 로컬 파일을 사용하며 렌더 중 외부 네트워크 요청은 차단합니다.
+새 템플릿은 templates/ad_card/<이름>/ 안에 template.html, style.css, meta.json을 넣습니다.
+필수 칸 shop_name, menu_name, price, headline, body, photo_url과 CSS 변수를 유지합니다.
+POST /render/ad-card는 png_base64와 warnings를 반환합니다.
+
+`python -m tools.render_samples --kind menu_board --ids 4,9,14,24`로 메뉴판을 확인합니다.
+POST /render/menu-board: shop_id 또는 profile, 선택 menus(name/price/note), template, theme. 메뉴는 최대 12개입니다.

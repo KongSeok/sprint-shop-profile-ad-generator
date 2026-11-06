@@ -1,0 +1,44 @@
+{
+  "고깃집": {
+    "color_bg": "#201b18",
+    "color_main": "#f4e8d6",
+    "color_accent": "#ee8855",
+    "font_title": "Noto Sans KR",
+    "font_body": "Noto Sans KR"
+  },
+  "빵집": {
+    "color_bg": "#fff5e4",
+    "color_main": "#513b2c",
+    "color_accent": "#c47b43",
+    "font_title": "Noto Sans KR",
+    "font_body": "Noto Sans KR"
+  },
+  "카페": {
+    "color_bg": "#eef1e9",
+    "color_main": "#263c32",
+    "color_accent": "#a88252",
+    "font_title": "Noto Sans KR",
+    "font_body": "Noto Sans KR"
+  },
+  "한식": {
+    "color_bg": "#f6f0e5",
+    "color_main": "#3c493a",
+    "color_accent": "#ad4a37",
+    "font_title": "Noto Sans KR",
+    "font_body": "Noto Sans KR"
+  },
+  "일식": {
+    "color_bg": "#f4f0ea",
+    "color_main": "#262f3c",
+    "color_accent": "#ae493e",
+    "font_title": "Noto Sans KR",
+    "font_body": "Noto Sans KR"
+  },
+  "기본": {
+    "color_bg": "#f2f2ef",
+    "color_main": "#232d36",
+    "color_accent": "#8c643d",
+    "font_title": "Noto Sans KR",
+    "font_body": "Noto Sans KR"
+  }
+}
