@@ -1,0 +1,59 @@
+{
+  "id": 2,
+  "requested_model": "gemini-3.5-flash",
+  "prompt_version": "v2",
+  "example_ids": [
+    "ig_0036",
+    "ig_0054",
+    "ig_0055",
+    "da_0038",
+    "da_0041",
+    "da_0005",
+    "np_0006",
+    "np_0029",
+    "np_0005"
+  ],
+  "prompt_sha1": "3f0c4b0d9d11d49d97ca2c2b245f9f7876c1a774",
+  "temperature": 0.7,
+  "thinking": "medium",
+  "timeout_ms": 300000,
+  "input": {
+    "profile": {
+      "shop_name": "불꽃한점",
+      "business_type": "고깃집",
+      "location": null,
+      "hours": null,
+      "closed_days": null,
+      "menus": [
+        {
+          "name": "소갈비살",
+          "price": null
+        }
+      ],
+      "takeout_delivery": null,
+      "parking": null,
+      "mood_strengths": "숯불에 구운 소갈비살이 대표 메뉴",
+      "tone": "퇴근하고 소주 한잔하기 좋은 편안한 가게라는 느낌",
+      "avoid_expressions": null,
+      "owner_phrases": [
+        "퇴근하고 소주 한잔하기 좋은 편안한 가게"
+      ],
+      "needs_check": null,
+      "other_info": null
+    },
+    "menu": {
+      "name": "소갈비살",
+      "price": null,
+      "features": null,
+      "this_time": null
+    }
+  },
+  "created_at": "2026-10-29T00:49:18.672139+00:00",
+  "status": "error",
+  "error": {
+    "type": "ServerError",
+    "http_status": 503,
+    "message": "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  "elapsed_seconds": 1.81
+}
