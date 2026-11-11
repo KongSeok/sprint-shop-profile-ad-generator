@@ -21,3 +21,6 @@ __pycache__/
 /logs/llm_calls.jsonl
 
 /logs/
+
+# Keep only the verified submission README.
+/docs/README_draft.md
