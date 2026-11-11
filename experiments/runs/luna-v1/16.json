@@ -1,0 +1,46 @@
+{
+  "id": 16,
+  "prompt_version": "v1",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "c1a49d0164cfcc13b0491a80ca483d39e4926973",
+  "created_at": "2026-11-10T19:14:55.064213+00:00",
+  "raw_text": "{\"shop_name\": \"온기밥상\", \"business_type\": \"한식집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"제육볶음\", \"price\": null}, {\"name\": \"된장찌개\", \"price\": null}, {\"name\": \"고등어구이\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"엄청 특별한 요리를 하는 곳은 아니고 매일 먹어도 질리지 않는 밥을 만들고 싶습니다.\", \"tone\": null, \"avoid_expressions\": [\"엄마 손맛\"], \"owner_phrases\": [\"매일 먹어도 질리지 않는 밥을 만들고 싶습니다.\"], \"needs_check\": null, \"other_info\": [\"반찬은 매일 아침 준비하고 계절에 따라 조금씩 달라집니다.\", \"점심에는 근처 회사원들이 많이 오시고 저녁에는 동네 주민들이 가족끼리 오시는 편이에요.\", \"따뜻한 밥과 반찬이 차려진 식탁을 보여주면 좋겠어요.\", \"어머니가 아니라 제가 직접 요리하거든요.\"]}",
+  "profile": {
+    "shop_name": "온기밥상",
+    "business_type": "한식집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "제육볶음",
+        "price": null
+      },
+      {
+        "name": "된장찌개",
+        "price": null
+      },
+      {
+        "name": "고등어구이",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "엄청 특별한 요리를 하는 곳은 아니고 매일 먹어도 질리지 않는 밥을 만들고 싶습니다.",
+    "tone": null,
+    "avoid_expressions": [
+      "엄마 손맛"
+    ],
+    "owner_phrases": [
+      "매일 먹어도 질리지 않는 밥을 만들고 싶습니다."
+    ],
+    "needs_check": null,
+    "other_info": [
+      "반찬은 매일 아침 준비하고 계절에 따라 조금씩 달라집니다.",
+      "점심에는 근처 회사원들이 많이 오시고 저녁에는 동네 주민들이 가족끼리 오시는 편이에요.",
+      "따뜻한 밥과 반찬이 차려진 식탁을 보여주면 좋겠어요.",
+      "어머니가 아니라 제가 직접 요리하거든요."
+    ]
+  }
+}

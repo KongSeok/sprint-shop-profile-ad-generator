@@ -1,0 +1,41 @@
+{
+  "id": 21,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:18:08.825104+00:00",
+  "raw_text": "{\"shop_name\": \"하루초밥\", \"business_type\": \"일식집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"초밥\", \"price\": null}, {\"name\": \"사시미\", \"price\": null}, {\"name\": \"초밥 세트\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"초밥이랑 사시미를 주로 판매, 점심에는 초밥 세트가 많이 나감, 내부는 바 좌석 8개와 테이블 4개, 생선은 매일 상태를 확인하고 그날 사용할 만큼 손질\", \"tone\": \"너무 비싼 오마카세 식당처럼 보이기보다는 특별한 날이 아니어도 편하게 들를 수 있는 초밥집이라는 인상\", \"avoid_expressions\": null, \"owner_phrases\": [\"특별한 날이 아니어도 편하게 들를 수 있는 초밥집\"], \"needs_check\": null, \"other_info\": [\"손님 앞에서 초밥을 쥐는 모습을 보여드리고 싶어요.\"]}",
+  "profile": {
+    "shop_name": "하루초밥",
+    "business_type": "일식집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "초밥",
+        "price": null
+      },
+      {
+        "name": "사시미",
+        "price": null
+      },
+      {
+        "name": "초밥 세트",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "초밥이랑 사시미를 주로 판매, 점심에는 초밥 세트가 많이 나감, 내부는 바 좌석 8개와 테이블 4개, 생선은 매일 상태를 확인하고 그날 사용할 만큼 손질",
+    "tone": "너무 비싼 오마카세 식당처럼 보이기보다는 특별한 날이 아니어도 편하게 들를 수 있는 초밥집이라는 인상",
+    "avoid_expressions": null,
+    "owner_phrases": [
+      "특별한 날이 아니어도 편하게 들를 수 있는 초밥집"
+    ],
+    "needs_check": null,
+    "other_info": [
+      "손님 앞에서 초밥을 쥐는 모습을 보여드리고 싶어요."
+    ]
+  }
+}

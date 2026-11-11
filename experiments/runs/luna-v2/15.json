@@ -1,0 +1,39 @@
+{
+  "id": 15,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:17:33.911145+00:00",
+  "raw_text": "{\"shop_name\": \"숲속우편함\", \"business_type\": \"카페\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"말차 음료\", \"price\": null}, {\"name\": \"수제 푸딩\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"내부에 식물이 많고 창문이 커서 낮에는 햇빛이 잘 들어옵니다, 손님들이 사진을 많이 찍으시긴 합니다\", \"tone\": \"사진 찍기 좋은 카페라는 말보다는 차분하게 시간을 보내기 좋은 곳으로 소개하고 싶습니다.\", \"avoid_expressions\": [\"인스타 감성\", \"핫플\", \"SNS 인증 필수\"], \"owner_phrases\": [\"차분하게 시간을 보내기 좋은 곳\"], \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "숲속우편함",
+    "business_type": "카페",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "말차 음료",
+        "price": null
+      },
+      {
+        "name": "수제 푸딩",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "내부에 식물이 많고 창문이 커서 낮에는 햇빛이 잘 들어옵니다, 손님들이 사진을 많이 찍으시긴 합니다",
+    "tone": "사진 찍기 좋은 카페라는 말보다는 차분하게 시간을 보내기 좋은 곳으로 소개하고 싶습니다.",
+    "avoid_expressions": [
+      "인스타 감성",
+      "핫플",
+      "SNS 인증 필수"
+    ],
+    "owner_phrases": [
+      "차분하게 시간을 보내기 좋은 곳"
+    ],
+    "needs_check": null,
+    "other_info": null
+  }
+}

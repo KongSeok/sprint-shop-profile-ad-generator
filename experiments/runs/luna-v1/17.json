@@ -1,0 +1,35 @@
+{
+  "id": 17,
+  "prompt_version": "v1",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "c1a49d0164cfcc13b0491a80ca483d39e4926973",
+  "created_at": "2026-11-10T19:15:02.044281+00:00",
+  "raw_text": "{\"shop_name\": \"소담한끼\", \"business_type\": \"한식집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"소불고기 정식\", \"price\": null}, {\"name\": \"순두부찌개\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": null, \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": [\"혼자 오셔도 편하게 식사할 수 있는\"], \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "소담한끼",
+    "business_type": "한식집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "소불고기 정식",
+        "price": null
+      },
+      {
+        "name": "순두부찌개",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": null,
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": [
+      "혼자 오셔도 편하게 식사할 수 있는"
+    ],
+    "needs_check": null,
+    "other_info": null
+  }
+}

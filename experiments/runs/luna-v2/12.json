@@ -1,0 +1,33 @@
+{
+  "id": 12,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:17:24.056649+00:00",
+  "raw_text": "{\"shop_name\": \"모닝페이퍼\", \"business_type\": \"카페\", \"location\": null, \"hours\": \"오전 8시에 문 열어서\", \"closed_days\": null, \"menus\": [{\"name\": \"아메리카노\", \"price\": \"4,000원\"}, {\"name\": \"라테\", \"price\": \"4,500원\"}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"출근길 테이크아웃 손님이 많아요\", \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "모닝페이퍼",
+    "business_type": "카페",
+    "location": null,
+    "hours": "오전 8시에 문 열어서",
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "아메리카노",
+        "price": "4,000원"
+      },
+      {
+        "name": "라테",
+        "price": "4,500원"
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "출근길 테이크아웃 손님이 많아요",
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": null
+  }
+}

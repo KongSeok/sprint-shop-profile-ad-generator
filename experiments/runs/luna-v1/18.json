@@ -1,0 +1,40 @@
+{
+  "id": 18,
+  "prompt_version": "v1",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "c1a49d0164cfcc13b0491a80ca483d39e4926973",
+  "created_at": "2026-11-10T19:15:06.909244+00:00",
+  "raw_text": "{\"shop_name\": \"밥짓는하루\", \"business_type\": \"백반집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"반찬\", \"price\": null}, {\"name\": \"국\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"반찬을 직접 만든다는 점\", \"tone\": null, \"avoid_expressions\": [\"가격이 싸다고만\"], \"owner_phrases\": null, \"needs_check\": null, \"other_info\": [\"반찬은 보통 6가지 나오구요 매일 조금씩 바뀌어요.\", \"국도 매일 달라요.\", \"가게가 오래된건 아니고 작년에 오픈했어요.\", \"점심시간엔 좀 정신없지만 최대한 빨리 음식 내드리려고 하고있어요.\"]}",
+  "profile": {
+    "shop_name": "밥짓는하루",
+    "business_type": "백반집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "반찬",
+        "price": null
+      },
+      {
+        "name": "국",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "반찬을 직접 만든다는 점",
+    "tone": null,
+    "avoid_expressions": [
+      "가격이 싸다고만"
+    ],
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": [
+      "반찬은 보통 6가지 나오구요 매일 조금씩 바뀌어요.",
+      "국도 매일 달라요.",
+      "가게가 오래된건 아니고 작년에 오픈했어요.",
+      "점심시간엔 좀 정신없지만 최대한 빨리 음식 내드리려고 하고있어요."
+    ]
+  }
+}

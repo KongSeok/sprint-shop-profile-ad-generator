@@ -1,0 +1,28 @@
+{
+  "id": 30,
+  "prompt_version": "v1",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "c1a49d0164cfcc13b0491a80ca483d39e4926973",
+  "created_at": "2026-11-10T19:16:20.307113+00:00",
+  "raw_text": "{\"shop_name\": \"한판\", \"business_type\": \"돼지구이집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": null, \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": null, \"tone\": null, \"avoid_expressions\": [\"과장된 표현\"], \"owner_phrases\": [\"동네에서 제일 맛있는 집이라는 느낌은 줬으면 좋겠어요.\"], \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "한판",
+    "business_type": "돼지구이집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": null,
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": null,
+    "tone": null,
+    "avoid_expressions": [
+      "과장된 표현"
+    ],
+    "owner_phrases": [
+      "동네에서 제일 맛있는 집이라는 느낌은 줬으면 좋겠어요."
+    ],
+    "needs_check": null,
+    "other_info": null
+  }
+}

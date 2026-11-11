@@ -1,0 +1,41 @@
+{
+  "id": 4,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:16:38.893565+00:00",
+  "raw_text": "{\"shop_name\": \"육향정원\", \"business_type\": \"고깃집\", \"location\": null, \"hours\": \"11:30~22:00, 브레이크타임 15:00~17:00\", \"closed_days\": \"매주 월요일\", \"menus\": [{\"name\": \"한우 등심\", \"price\": \"150g 39,000원\"}, {\"name\": \"한우 안심\", \"price\": \"150g 45,000원\"}, {\"name\": \"육회\", \"price\": \"180g 28,000원\"}], \"takeout_delivery\": null, \"parking\": \"건물 지하에 2시간 무료\", \"mood_strengths\": null, \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": null, \"other_info\": [\"소고기는 국내산 한우 1++ 등급을 사용\", \"예약 가능\", \"단체석은 최대 12명까지 있습니다\"]}",
+  "profile": {
+    "shop_name": "육향정원",
+    "business_type": "고깃집",
+    "location": null,
+    "hours": "11:30~22:00, 브레이크타임 15:00~17:00",
+    "closed_days": "매주 월요일",
+    "menus": [
+      {
+        "name": "한우 등심",
+        "price": "150g 39,000원"
+      },
+      {
+        "name": "한우 안심",
+        "price": "150g 45,000원"
+      },
+      {
+        "name": "육회",
+        "price": "180g 28,000원"
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": "건물 지하에 2시간 무료",
+    "mood_strengths": null,
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": [
+      "소고기는 국내산 한우 1++ 등급을 사용",
+      "예약 가능",
+      "단체석은 최대 12명까지 있습니다"
+    ]
+  }
+}

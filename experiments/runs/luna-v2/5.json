@@ -1,0 +1,30 @@
+{
+  "id": 5,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:16:43.288306+00:00",
+  "raw_text": "{\"shop_name\": \"연기담\", \"business_type\": \"숙성 돼지고기 전문점\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": null, \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"고기는 14일 정도 저온 숙성해서 사용, 검은색 돌판에 고기를 구워 먹는 방식, 내부는 어두운 우드톤\", \"tone\": \"차분하고 조금 묵직한 분위기\", \"avoid_expressions\": [\"금색 글씨\", \"화려한 장식\", \"고기가 입에서 녹는다\"], \"owner_phrases\": [\"씹는 맛이 있는 고기라서요.\"], \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "연기담",
+    "business_type": "숙성 돼지고기 전문점",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": null,
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "고기는 14일 정도 저온 숙성해서 사용, 검은색 돌판에 고기를 구워 먹는 방식, 내부는 어두운 우드톤",
+    "tone": "차분하고 조금 묵직한 분위기",
+    "avoid_expressions": [
+      "금색 글씨",
+      "화려한 장식",
+      "고기가 입에서 녹는다"
+    ],
+    "owner_phrases": [
+      "씹는 맛이 있는 고기라서요."
+    ],
+    "needs_check": null,
+    "other_info": null
+  }
+}

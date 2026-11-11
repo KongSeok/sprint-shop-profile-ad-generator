@@ -1,0 +1,35 @@
+{
+  "id": 26,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:18:35.091865+00:00",
+  "raw_text": "{\"shop_name\": \"오후의창가\", \"business_type\": \"카페\", \"location\": null, \"hours\": \"오전 10시부터 밤 9시까지, 월요일에도 오후에는 문 열어요\", \"closed_days\": \"매주 월요일은 쉬어요, 월요일에도 오후에는 문 열어요\", \"menus\": [{\"name\": \"흑임자라테\", \"price\": \"5,500원\"}, {\"name\": \"스콘\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"조용하고 밝은 분위기\", \"tone\": \"조용하고 밝은 분위기로 소개해 주세요\", \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": [\"영업시간은 “매주 월요일은 쉬어요”라고 했지만 “월요일에도 오후에는 문 열어요”라고도 했습니다. 월요일 휴무 여부와 운영 시간을 확인해 주세요. 평일 중에 손님이 제일 많은 날이라서요.\"], \"other_info\": null}",
+  "profile": {
+    "shop_name": "오후의창가",
+    "business_type": "카페",
+    "location": null,
+    "hours": "오전 10시부터 밤 9시까지, 월요일에도 오후에는 문 열어요",
+    "closed_days": "매주 월요일은 쉬어요, 월요일에도 오후에는 문 열어요",
+    "menus": [
+      {
+        "name": "흑임자라테",
+        "price": "5,500원"
+      },
+      {
+        "name": "스콘",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "조용하고 밝은 분위기",
+    "tone": "조용하고 밝은 분위기로 소개해 주세요",
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": [
+      "영업시간은 “매주 월요일은 쉬어요”라고 했지만 “월요일에도 오후에는 문 열어요”라고도 했습니다. 월요일 휴무 여부와 운영 시간을 확인해 주세요. 평일 중에 손님이 제일 많은 날이라서요."
+    ],
+    "other_info": null
+  }
+}

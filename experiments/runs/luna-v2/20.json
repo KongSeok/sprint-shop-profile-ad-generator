@@ -1,0 +1,38 @@
+{
+  "id": 20,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:18:03.371328+00:00",
+  "raw_text": "{\"shop_name\": \"담백한계절\", \"business_type\": \"한식집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"나물밥\", \"price\": null}, {\"name\": \"들깨수제비\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"나물밥과 들깨수제비가 대표 메뉴, 자극적인 양념보다는 재료 자체의 맛을 살리는 쪽으로 요리, 실내는 밝은 나무색 가구와 흰색 벽으로 꾸몄고 조용한 분위기, 연세가 있으신 손님들도 자주 오세요\", \"tone\": \"그냥 편안하게 먹을 수 있는 한 끼라는 점을 강조\", \"avoid_expressions\": [\"건강을 치료하는 음식\", \"몸속 독소 제거\"], \"owner_phrases\": [\"편안하게 먹을 수 있는 한 끼\"], \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "담백한계절",
+    "business_type": "한식집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "나물밥",
+        "price": null
+      },
+      {
+        "name": "들깨수제비",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "나물밥과 들깨수제비가 대표 메뉴, 자극적인 양념보다는 재료 자체의 맛을 살리는 쪽으로 요리, 실내는 밝은 나무색 가구와 흰색 벽으로 꾸몄고 조용한 분위기, 연세가 있으신 손님들도 자주 오세요",
+    "tone": "그냥 편안하게 먹을 수 있는 한 끼라는 점을 강조",
+    "avoid_expressions": [
+      "건강을 치료하는 음식",
+      "몸속 독소 제거"
+    ],
+    "owner_phrases": [
+      "편안하게 먹을 수 있는 한 끼"
+    ],
+    "needs_check": null,
+    "other_info": null
+  }
+}

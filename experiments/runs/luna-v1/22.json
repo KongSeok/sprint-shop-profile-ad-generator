@@ -1,0 +1,33 @@
+{
+  "id": 22,
+  "prompt_version": "v1",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "c1a49d0164cfcc13b0491a80ca483d39e4926973",
+  "created_at": "2026-11-10T19:15:35.599125+00:00",
+  "raw_text": "{\"shop_name\": \"우동한그릇\", \"business_type\": \"우동집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"가쓰오 육수로 만든 우동\", \"price\": null}, {\"name\": \"새우튀김\", \"price\": null}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"혼밥 손님이 많고 음식이 비교적 빨리 나오는 편입니다.\", \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": null, \"other_info\": null}",
+  "profile": {
+    "shop_name": "우동한그릇",
+    "business_type": "우동집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "가쓰오 육수로 만든 우동",
+        "price": null
+      },
+      {
+        "name": "새우튀김",
+        "price": null
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "혼밥 손님이 많고 음식이 비교적 빨리 나오는 편입니다.",
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": null
+  }
+}

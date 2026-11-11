@@ -1,0 +1,45 @@
+{
+  "id": 24,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:18:29.655729+00:00",
+  "raw_text": "{\"shop_name\": \"면옥하루\", \"business_type\": \"라멘집\", \"location\": null, \"hours\": \"11:30~21:00, 브레이크타임 15:00~17:00\", \"closed_days\": \"월요일\", \"menus\": [{\"name\": \"돈코츠라멘\", \"price\": \"10,000원\"}, {\"name\": \"쇼유라멘\", \"price\": \"9,500원\"}, {\"name\": \"매운미소라멘\", \"price\": \"11,000원\"}, {\"name\": \"차슈 추가\", \"price\": \"3,000원\"}], \"takeout_delivery\": \"포장 가능, 배달 불가\", \"parking\": null, \"mood_strengths\": null, \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": null, \"other_info\": [\"면은 국내 제조 생면을 사용하며 돼지고기는 국내산입니다.\", \"좌석 14석\", \"주문은 키오스크로 받습니다.\"]}",
+  "profile": {
+    "shop_name": "면옥하루",
+    "business_type": "라멘집",
+    "location": null,
+    "hours": "11:30~21:00, 브레이크타임 15:00~17:00",
+    "closed_days": "월요일",
+    "menus": [
+      {
+        "name": "돈코츠라멘",
+        "price": "10,000원"
+      },
+      {
+        "name": "쇼유라멘",
+        "price": "9,500원"
+      },
+      {
+        "name": "매운미소라멘",
+        "price": "11,000원"
+      },
+      {
+        "name": "차슈 추가",
+        "price": "3,000원"
+      }
+    ],
+    "takeout_delivery": "포장 가능, 배달 불가",
+    "parking": null,
+    "mood_strengths": null,
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": [
+      "면은 국내 제조 생면을 사용하며 돼지고기는 국내산입니다.",
+      "좌석 14석",
+      "주문은 키오스크로 받습니다."
+    ]
+  }
+}

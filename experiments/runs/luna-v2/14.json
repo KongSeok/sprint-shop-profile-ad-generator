@@ -1,0 +1,47 @@
+{
+  "id": 14,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:17:29.244795+00:00",
+  "raw_text": "{\"shop_name\": \"원두기록실\", \"business_type\": \"카페\", \"location\": null, \"hours\": \"10:00~21:00\", \"closed_days\": \"매주 수요일 휴무\", \"menus\": [{\"name\": \"에스프레소\", \"price\": \"3,800원\"}, {\"name\": \"아메리카노\", \"price\": \"4,300원\"}, {\"name\": \"플랫화이트\", \"price\": \"5,000원\"}, {\"name\": \"필터커피\", \"price\": \"6,500원부터\"}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": null, \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": null, \"other_info\": [\"에티오피아, 콜롬비아, 과테말라 원두를 취급\", \"원두 판매도 합니다\", \"좌석 16석\", \"콘센트 일부 제공\", \"반려동물 동반 불가\"]}",
+  "profile": {
+    "shop_name": "원두기록실",
+    "business_type": "카페",
+    "location": null,
+    "hours": "10:00~21:00",
+    "closed_days": "매주 수요일 휴무",
+    "menus": [
+      {
+        "name": "에스프레소",
+        "price": "3,800원"
+      },
+      {
+        "name": "아메리카노",
+        "price": "4,300원"
+      },
+      {
+        "name": "플랫화이트",
+        "price": "5,000원"
+      },
+      {
+        "name": "필터커피",
+        "price": "6,500원부터"
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": null,
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": [
+      "에티오피아, 콜롬비아, 과테말라 원두를 취급",
+      "원두 판매도 합니다",
+      "좌석 16석",
+      "콘센트 일부 제공",
+      "반려동물 동반 불가"
+    ]
+  }
+}

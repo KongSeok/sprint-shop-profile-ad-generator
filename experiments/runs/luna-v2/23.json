@@ -1,0 +1,42 @@
+{
+  "id": 23,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:18:23.067832+00:00",
+  "raw_text": "{\"shop_name\": \"스시노을\", \"business_type\": \"초밥집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": [{\"name\": \"연어초밥\", \"price\": null}, {\"name\": \"광어초밥\", \"price\": null}, {\"name\": \"점심세트\", \"price\": \"만이천원\"}], \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"가게가 작음, 연어초밥이랑 광어초밥이 제일 잘나감\", \"tone\": \"너무 고급집인줄 알고 부담스러워 하지 않았으면 좋겠어요. 그냥 신선한 초밥 편하게 먹으러 오는곳\", \"avoid_expressions\": null, \"owner_phrases\": [\"그냥 신선한 초밥 편하게 먹으러 오는곳\"], \"needs_check\": null, \"other_info\": [\"미니우동도 같이 나와요\", \"예약은 안받고 있어요\"]}",
+  "profile": {
+    "shop_name": "스시노을",
+    "business_type": "초밥집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": [
+      {
+        "name": "연어초밥",
+        "price": null
+      },
+      {
+        "name": "광어초밥",
+        "price": null
+      },
+      {
+        "name": "점심세트",
+        "price": "만이천원"
+      }
+    ],
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "가게가 작음, 연어초밥이랑 광어초밥이 제일 잘나감",
+    "tone": "너무 고급집인줄 알고 부담스러워 하지 않았으면 좋겠어요. 그냥 신선한 초밥 편하게 먹으러 오는곳",
+    "avoid_expressions": null,
+    "owner_phrases": [
+      "그냥 신선한 초밥 편하게 먹으러 오는곳"
+    ],
+    "needs_check": null,
+    "other_info": [
+      "미니우동도 같이 나와요",
+      "예약은 안받고 있어요"
+    ]
+  }
+}

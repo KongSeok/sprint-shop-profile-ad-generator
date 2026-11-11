@@ -1,0 +1,27 @@
+{
+  "id": 18,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:17:55.321268+00:00",
+  "raw_text": "{\"shop_name\": \"밥짓는하루\", \"business_type\": \"백반집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": null, \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": \"반찬은 보통 6가지 나오고 매일 조금씩 바뀜, 국도 매일 달라짐, 반찬을 직접 만듦, 점심시간엔 좀 정신없지만 최대한 빨리 음식 내드리려고 함\", \"tone\": null, \"avoid_expressions\": null, \"owner_phrases\": null, \"needs_check\": null, \"other_info\": [\"작년에 오픈\", \"가격이 싸다고만 광고하지 말고 반찬을 직접 만든다는 점이 잘 보였으면 좋겠어요.\"]}",
+  "profile": {
+    "shop_name": "밥짓는하루",
+    "business_type": "백반집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": null,
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": "반찬은 보통 6가지 나오고 매일 조금씩 바뀜, 국도 매일 달라짐, 반찬을 직접 만듦, 점심시간엔 좀 정신없지만 최대한 빨리 음식 내드리려고 함",
+    "tone": null,
+    "avoid_expressions": null,
+    "owner_phrases": null,
+    "needs_check": null,
+    "other_info": [
+      "작년에 오픈",
+      "가격이 싸다고만 광고하지 말고 반찬을 직접 만든다는 점이 잘 보였으면 좋겠어요."
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": 30,
+  "prompt_version": "v2",
+  "model": "gpt-6-luna",
+  "prompt_sha1": "dc9b0ef26e4f8f4dba08be3093aa81c83250ecb8",
+  "created_at": "2026-11-10T19:19:01.888430+00:00",
+  "raw_text": "{\"shop_name\": \"한판\", \"business_type\": \"돼지구이집\", \"location\": null, \"hours\": null, \"closed_days\": null, \"menus\": null, \"takeout_delivery\": null, \"parking\": null, \"mood_strengths\": null, \"tone\": \"동네에서 제일 맛있는 집이라는 느낌은 줬으면 좋겠어요.\", \"avoid_expressions\": [\"과장된 표현\"], \"owner_phrases\": [\"동네에서 제일 맛있는 집\"], \"needs_check\": [\"과장된 표현은 싫어요 / 동네에서 제일 맛있는 집이라는 느낌은 줬으면 좋겠어요: 과장 표현을 피하면서 해당 인상을 줄 수 있는지 확인 필요\"], \"other_info\": null}",
+  "profile": {
+    "shop_name": "한판",
+    "business_type": "돼지구이집",
+    "location": null,
+    "hours": null,
+    "closed_days": null,
+    "menus": null,
+    "takeout_delivery": null,
+    "parking": null,
+    "mood_strengths": null,
+    "tone": "동네에서 제일 맛있는 집이라는 느낌은 줬으면 좋겠어요.",
+    "avoid_expressions": [
+      "과장된 표현"
+    ],
+    "owner_phrases": [
+      "동네에서 제일 맛있는 집"
+    ],
+    "needs_check": [
+      "과장된 표현은 싫어요 / 동네에서 제일 맛있는 집이라는 느낌은 줬으면 좋겠어요: 과장 표현을 피하면서 해당 인상을 줄 수 있는지 확인 필요"
+    ],
+    "other_info": null
+  }
+}
