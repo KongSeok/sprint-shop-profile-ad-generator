@@ -190,6 +190,8 @@ python -m eval.score --run-name luna-v2
 
 Windows PowerShell, Python 3.12 기준. 레포 폴더에서 실행합니다.
 
+먼저 py -3.12 --version으로 Python 3.12 등록 여부를 확인하세요. 'No runtime installed that matches 3.12'가 나오면 Python 설치 관리자에서 py install 3.12로 설치하거나, 이미 설치된 Python 3.12의 python.exe 전체 경로로 아래 첫 명령을 실행하세요. 전체 경로를 쓸 때 PowerShell에서는 & 'Python 3.12 실행 파일 전체 경로' -m venv .venv 형식입니다.
+
 1) 설치 (문구·원본 사진 렌더링, GPU 없이)
 
 ```powershell
@@ -200,7 +202,7 @@ python -m playwright install chromium
 Copy-Item .env.example .env
 ```
 
-Chromium 설치가 네트워크 문제로 실패하면 설치된 Microsoft Edge를 사용합니다. 렌더러는 Chromium 실행 파일이 없을 때만 Edge(channel=msedge)로 대체합니다.
+Chromium 설치가 네트워크 문제로 실패하거나 다운로드가 진행되지 않으면 설치를 중단하고, 설치된 Microsoft Edge로 렌더할 수 있습니다. 렌더러는 Chromium 실행 파일이 없을 때만 Edge(channel=msedge)로 대체합니다.
 
 `.env`에 `OPENAI_API_KEY`를 넣습니다. 기본값은 `OPENAI_MODEL=gpt-6-luna`, `IMAGE_ENABLED=false`입니다.
 
@@ -223,13 +225,15 @@ python -m streamlit run app/ui/main_ui.py
 
 브라우저에서 http://localhost:8501 을 엽니다.
 
+기본 포트가 이미 사용 중이면 FastAPI는 --port 8005, Streamlit은 --server.port 8505처럼 빈 포트를 지정하세요. 이때 Streamlit을 실행하는 터미널에서 $env:API_BASE_URL='http://127.0.0.1:8005'를 먼저 설정하고 http://localhost:8505 를 엽니다.
+
 4) 테스트
 
 ```powershell
 python -m pytest
 ```
 
-LLM 호출은 mock 처리되어 API 키 없이 실행됩니다. .env를 만든 상태에서는 IMAGE_ENABLED=false로 두고 실행하세요. Chromium 또는 Edge가 없으면 실제 브라우저 렌더 테스트는 건너뜁니다. 제출 준비 환경에서 키 없이 실행한 결과는 382 passed (102.64초)입니다. API 상세와 옵션 설명은 [docs/DEV_NOTES.md](docs/DEV_NOTES.md)에 있습니다.
+LLM 호출은 mock 처리되어 API 키 없이 실행됩니다. .env를 만든 상태에서는 IMAGE_ENABLED=false로 두고 실행하세요. Chromium 또는 Edge가 없으면 실제 브라우저 렌더 테스트는 건너뜁니다. 제출 준비 환경에서 키 없이 실행한 결과는 382 passed (102.64초)입니다. GitHub main을 새 폴더에 clone하고 기본 requirements만 설치한 환경에서도 382 passed (106.18초, 의존성의 사용 중단 예정 안내 1건)를 확인했습니다. /health, Streamlit 첫 화면, IMAGE_ENABLED=false 원본 사진 합성과 광고 PNG도 확인했습니다. API 상세와 옵션 설명은 [docs/DEV_NOTES.md](docs/DEV_NOTES.md)에 있습니다.
 
 ## 11. 보안 및 데이터 관리
 
@@ -261,4 +265,4 @@ LLM 호출은 mock 처리되어 API 키 없이 실행됩니다. .env를 만든 �
 - [x] Streamlit 화면 정리, 한 번에 만들기
 - [x] 전체 흐름 테스트
 - [x] 최종 보고서 작성
-- [ ] main 병합 및 새 환경 실행 확인
+- [x] main 병합 및 새 환경 실행 확인
