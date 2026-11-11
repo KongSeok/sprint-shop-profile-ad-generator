@@ -1,9 +1,8 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css | safe }}
 {{ style_css | safe }}</style></head><body><main>
 <div class="shop" data-field="shop_name">{{ shop_name }}</div>
-<h1 data-field="headline">{{ headline }}</h1>
 {% if photo_url %}<img class="photo" src="{{ photo_url }}" alt="메뉴 사진">{% else %}<div class="photo placeholder" aria-label="사진 자리"></div>{% endif %}
-<div class="menu" data-field="menu_name">{{ menu_name }}</div>
+<h1 class="menu" data-field="menu_name">{{ menu_name }}</h1>
 {% if price %}<div class="price" data-field="price">{{ price }}</div>{% endif %}
-<div class="body" data-field="body">{{ body }}</div>
+{% if body %}<div class="body" data-field="body" data-min-font="18" data-lines="2">{{ body }}</div>{% endif %}
 </main></body></html>

@@ -1,0 +1,9 @@
+.venv/
+.upstream/
+.cache/
+weights/
+*.safetensors
+*.bin
+__pycache__/
+results/
+*.log

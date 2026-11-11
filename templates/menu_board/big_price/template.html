@@ -1,0 +1,23 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}" data-layout="big_price"><main style="--rows:{{ menus|length }}">
+  <header>
+    <div class="htxt">
+      <div class="lbl"><span class="en">Menu</span><span class="ko">차림표</span></div>
+      <h1 class="title shop fit" data-field="shop_name" data-max="100" data-min="52">{{ shop_name }}</h1>
+      {% if intro %}<p class="intro" data-field="intro">{{ intro }}</p>{% endif %}
+    </div>
+    {% if photo_url %}<div class="media"><img class="food" src="{{ photo_url }}" alt=""></div>{% endif %}
+  </header>
+  <section class="menus" data-cols="{{ 2 if menus|length > 6 else 1 }}">
+  {% for m in menus %}<article class="item">
+    <div class="itxt">
+      <span class="name">{{ m.main }}</span>
+      {% if m.sub %}<span class="sub {{ m.sub_lang }}">{{ m.sub }}</span>{% endif %}
+      {% if m.note %}<span class="note">{{ m.note }}</span>{% endif %}{% if m.origin %}<span class="m-origin">{{ m.origin }}</span>{% endif %}
+    </div>
+    {% if m.price %}<div class="iprice">{% if m.price_num %}{% if m.price_pre %}<span class="pre">{{ m.price_pre }}</span>{% endif %}<span class="num">{{ m.price_num }}</span><span class="won">원</span>{% else %}<span class="num">{{ m.price }}</span>{% endif %}</div>{% endif %}
+  </article>{% endfor %}
+  </section>
+  {% if origin_note %}<p class="origin" data-field="origin_note">원산지 {{ origin_note }}</p>{% endif %}
+  {% if footer %}<footer>{% for l in footer %}<span>{{ l }}</span>{% endfor %}</footer>{% endif %}
+</main><script>{{ fit_js|safe }}</script></body></html>

@@ -40,7 +40,7 @@ def test_menu_png():
         pytest.skip('playwright install chromium 필요')
     result = renderer.render_menu_board(profile())
     assert result.png.startswith(b'\x89PNG\r\n\x1a\n')
-    assert struct.unpack('>II', result.png[16:24]) == (1080, 1350)
+    assert struct.unpack('>II', result.png[16:24]) == (1080, 1527)
     assert result.warnings == []
 
 
@@ -54,11 +54,18 @@ def test_menu_tab_preview_download_without_generation(monkeypatch):
         calls.append(path)
         if path == '/profile/list':
             return [{'id': 1, 'shop_name': '가게', 'business_type': '카페'}]
+        if path == '/profile/1':
+            return {'profile': {'shop_name': '가게', 'business_type': '카페', 'menus': [{'name': '라떼', 'price': '4000원'}]},
+                    'source_text': '', 'prompt_version': 'v2'}
         assert path == '/render/menu-board'
         return {'png_base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=', 'warnings': ['확인 경고']}
     monkeypatch.setattr(api_client, 'request_api', api)
     view = AppTest.from_file(str(ROOT / 'app/ui/main_ui.py'), default_timeout=30).run()
-    view.selectbox(key='board_shop_id').select(1).run()
+    from ui_navigation import navigate
+
+    view.selectbox(key='saved_selection').select(1).run()
+    navigate(view, 'board')
+    assert any(item.value == '사진 0/1개, 사진 없는 메뉴는 글자로만 나와요' for item in view.caption)
     next(button for button in view.button if button.label == '메뉴판 만들기').click().run()
     assert not view.exception
     assert '/render/menu-board' in calls and '/copy/generate' not in calls

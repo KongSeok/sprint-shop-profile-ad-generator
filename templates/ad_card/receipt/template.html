@@ -1,0 +1,15 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}" data-layout="receipt"><main>
+  <div class="paperwrap"><div class="paper">
+    <div class="r-top"><span class="lbl"><span class="en">{{ category_en }}</span><span class="ko">{{ category_ko }}</span></span></div>
+    <h1 class="title shop fit" data-field="shop_name" data-max="50" data-min="32">{{ shop_name }}</h1>
+    <i class="cut"></i>
+    <div class="media">{% if cutout_url %}<img class="food cutout" src="{{ cutout_url }}" alt="">{% elif photo_url %}<img class="food" src="{{ photo_url }}" alt="">{% endif %}</div>
+    <i class="cut"></i>
+    <div class="row"><span class="name">{{ main_name }}</span><span class="dots"></span>{% if price %}<span class="rprice" data-field="price">{{ price }}</span>{% endif %}</div>
+    {% if sub_name %}<div class="sub {{ sub_lang }}" data-field="menu_name_sub">{{ sub_name }}</div>{% endif %}
+    {% if body %}<p class="body" data-field="body">{{ body }}</p>{% endif %}
+    {% if origin %}<p class="origin" data-field="origin">원산지 {{ origin }}</p>{% endif %}
+    <i class="barcode"></i>
+  </div></div>
+</main><script>{{ fit_js|safe }}</script></body></html>

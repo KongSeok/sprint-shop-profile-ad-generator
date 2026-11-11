@@ -97,7 +97,11 @@ def inspect_copy(raw, mode, profile, menu=None):
             issues.append('menu_only: 배달앱 메뉴 설명에서 가게 소개를 빼세요')
         senses = sum(bool(re.search(pattern, delivery)) for pattern in
                      (r'향|냄새', r'식감|쫄깃|바삭|부드|결|촉촉|쫀득', r'소리|지글|바삭', r'따뜻|뜨거|차가|시원|온기|온도'))
-        if senses < 2:
+        from app.services.fact_check import ORIGIN_PATTERN, assorted_menu, component_warnings
+        if ORIGIN_PATTERN.search(delivery):
+            issues.append('origin: 메뉴 설명에서 원산지 표현을 빼세요')
+        issues.extend(component_warnings(menu, delivery))
+        if senses < 2 and not (assorted_menu(menu) and menu.components):
             issues.append('sensory: 메뉴 설명에 향·식감·소리·온도 중 두 종류 이상 쓰세요')
     count = len([s for s in re.split(r'[.!?]+(?:\s|$)', texts['delivery_app']) if s.strip()])
     invalid_count = count != 2 if mode == 'menu' else not 2 <= count <= 3

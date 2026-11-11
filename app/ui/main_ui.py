@@ -1,142 +1,116 @@
 import sys
 from pathlib import Path
 
-import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from app.core.config import API_BASE_URL, GEMINI_TIMEOUT_MS
-from app.ui.api_client import UserApiError, request_api
-from app.ui.concept_panel import render_concept_panel, selected_concept
-from app.ui.copy_tab import render_copy_tab
-from app.ui.render_tab import render_menu_tab
-from app.ui.profile_form import LIST_FIELDS, TEXT_FIELDS, form_to_profile, list_to_lines
-
-st.set_page_config(page_title="가게 프로필", page_icon="🏪")
-
-
-def clear_saved_notice():
-    st.session_state.pop("saved_notice", None)
+from app.ui.api_client import UserApiError
+from app.ui.copy_tab import render_copy_page
+from app.ui.labels import shop_label
+from app.ui.profile_page import render_profile_page
+from app.ui.quick_page import render_quick_page
+from app.ui.render_tab import render_ad_page, render_menu_page
+from app.ui.state import api, clear_results, set_draft
+from app.ui.theme import render_theme
 
 
-def set_draft(profile, source_text, shop_id=None, version="v2", concept=None):
-    st.session_state.draft_concept = concept
-    st.session_state.draft = profile
-    st.session_state.draft_source = source_text
-    st.session_state.shop_id = shop_id
-    st.session_state.prompt_version = version
-    st.session_state.draft_revision = st.session_state.get("draft_revision", 0) + 1
-    clear_saved_notice()
+st.set_page_config(page_title="우리 가게 광고 만들기", page_icon="🍽️", layout="wide")
+profile = st.Page(lambda: render_profile_page(copy), title="가게 정보", icon="🏪", url_path="profile")
+copy = st.Page(lambda: render_copy_page(ad), title="문구 만들기", icon="✍️", url_path="copy")
+ad = st.Page(render_ad_page, title="광고 카드", icon="🖼️", url_path="ad")
+board = st.Page(render_menu_page, title="메뉴판", icon="📋", url_path="board")
+quick = st.Page(lambda: render_quick_page(profile, copy, ad), title="✨ 한 번에 만들기", default=True)
+pages = (quick, profile, copy, ad, board)
+current = st.navigation(pages, position="hidden")
+render_theme()
 
 
-def api(method, path, **kwargs):
-    return request_api(API_BASE_URL, method, path, **kwargs)
+def reset_inputs():
+    state = st.session_state
+    state.source_revision = state.get("source_revision", 0) + 1
+    for key in state.pop("page_inputs", {}):
+        state.pop(key, None)
+    for key in ("menu_selection", "copy_menu_selection", "ad_menu_selection"):
+        state.pop(key, None)
+
+
+def select_shop():
+    state = st.session_state
+    selected = state.saved_selection
+    if selected == state.get("shop_id"):
+        return
+    try:
+        if selected is None:
+            set_draft({}, "")
+            state.pop("draft", None)
+            state.pop("saved_profile", None)
+            state.pop("saved_shop", None)
+        else:
+            saved = api("GET", f"/profile/{selected}")
+            state.saved_shop = {**saved, "shop_id": selected}
+            state.saved_profile = saved["profile"]
+            set_draft(saved["profile"], saved["source_text"], selected, saved["prompt_version"],
+                      saved.get("concept"), saved.get("design"), saved.get("menu_origins"))
+        clear_results()
+        state.pop("quick_results", None)
+        state.pop("quick_pending", None)
+        reset_inputs()
+        state.pop("design_notice", None)
+        state.pop("shop_load_error", None)
+    except UserApiError as exc:
+        state.shop_load_error = str(exc)
+        state.saved_selection = state.get("shop_id")
+
+
+def new_shop():
+    already_new = st.session_state.get("shop_id") is None
+    st.session_state.saved_selection = None
+    select_shop()
+    if already_new:
+        st.session_state.pop("draft", None)
+        reset_inputs()
 
 
 with st.sidebar:
-    st.header("저장된 가게")
+    st.markdown('<div class="shop-app-name">우리 가게 광고 만들기</div>', unsafe_allow_html=True)
+    st.caption("사진과 가격만 넣으면 광고가 나와요")
+    state = st.session_state
+    if "shops" not in state or state.pop("reload_shops", False):
+        try:
+            state.shops = api("GET", "/profile/list")
+            state.pop("list_error", None)
+        except UserApiError as exc:
+            state.setdefault("shops", [])
+            state.list_error = str(exc)
+    if state.get("sync_saved_selection"):
+        state.saved_selection = state.shop_id
+        state.pop("sync_saved_selection")
+    choices = {shop["id"]: shop for shop in state.shops}
+    st.selectbox("가게 선택", [None, *choices], key="saved_selection",
+                 format_func=lambda value: shop_label(choices[value]) if value in choices else "가게를 선택하세요",
+                 on_change=select_shop)
+    if st.button("＋ 새 가게", on_click=new_shop):
+        st.switch_page(profile)
+    if error := state.get("shop_load_error") or state.get("list_error"):
+        st.warning(error)
+    st.divider()
+    st.page_link(quick, label=quick.title)
+    st.caption("직접 고치기")
+    for page, key in zip(pages[1:], ("shop_id", "copy_result", "ad_png", "board_png")):
+        with st.container(key=f"nav_{key}_{'current' if page is current else 'link'}"):
+            st.page_link(page, label=page.title + (" ✓" if state.get(key) else ""),
+                         icon=page.icon, disabled=page is not profile and not state.get("shop_id"))
+    st.divider()
     if st.button("목록 새로 불러오기"):
-        st.session_state.reload_shops = True
-    if "shops" not in st.session_state or st.session_state.get("reload_shops"):
-        try:
-            st.session_state.shops = api("GET", "/profile/list")
-            st.session_state.reload_shops = False
-            st.session_state.pop("list_error", None)
-        except UserApiError as exc:
-            st.session_state.shops = []
-            st.session_state.list_error = str(exc)
-    if st.session_state.get("list_error"):
-        st.warning(st.session_state.list_error)
-    choices = {shop["id"]: shop for shop in st.session_state.shops}
-    selected = st.selectbox(
-        "가게 선택", [None, *choices],
-        format_func=lambda value: "가게를 선택하세요" if value is None else f"{choices[value]['shop_name']} · {choices[value]['business_type']} (#{value})",
-        key="saved_selection",
-    )
-    if st.button("불러오기", disabled=selected is None):
-        try:
-            saved = api("GET", f"/profile/{selected}")
-            set_draft(saved["profile"], saved["source_text"], saved["shop_id"], saved["prompt_version"], saved.get("concept"))
-            st.session_state.source_input = saved["source_text"]
-        except UserApiError as exc:
-            st.error(str(exc))
-    if st.button("새 가게 작성"):
-        st.session_state.pop("draft", None)
-        st.session_state.shop_id = None
-        st.session_state.source_input = ""
-        clear_saved_notice()
+        state.reload_shops = True
+        st.rerun()
 
-profile_tab, copy_tab, board_tab = st.tabs(["가게 프로필", "문구 만들기", "메뉴판 만들기"])
-with profile_tab:
-    st.title("가게 프로필 만들기")
-    if st.session_state.get("saved_notice"):
-        st.success(f"저장했어요 · 저장 번호 {st.session_state.saved_notice}")
-
-    st.subheader("1. 가게 소개")
-    source = st.text_area("가게 소개를 편하게 적어 주세요", height=200, key="source_input", on_change=clear_saved_notice)
-    if st.button("정리하기", type="primary"):
-        if not source.strip():
-            st.info("가게 소개를 먼저 적어 주세요")
-        else:
-            try:
-                with st.spinner("가게 소개를 정리하고 있어요…"):
-                    extracted = api("POST", "/profile/extract", payload={"text": source, "prompt_version": "v2"}, timeout=GEMINI_TIMEOUT_MS / 1000 + 20)
-                set_draft(extracted, source, st.session_state.get("shop_id"))
-            except UserApiError as exc:
-                st.error(str(exc))
-
-    if "draft" in st.session_state:
-        draft = st.session_state.draft
-        revision = st.session_state.draft_revision
-        st.subheader("2. 이렇게 이해했어요")
-        if draft.get("needs_check"):
-            st.warning("글에서 서로 다른 내용이 있어요. 확인해 주세요")
-            for item in draft["needs_check"]:
-                st.write(f"• {item}")
-        st.caption("비어 있는 칸은 글에 없었어요. 필요한 내용만 채워 주세요")
-        values = {}
-        for field, label in TEXT_FIELDS.items():
-            key = f"draft_{revision}_{field}"
-            if key not in st.session_state:
-                st.session_state[key] = draft.get(field) or ""
-            values[field] = st.text_input(label, key=key, placeholder="글에 없었어요", on_change=clear_saved_notice)
-        st.write("대표 메뉴·가격")
-        frame = pd.DataFrame(draft.get("menus") or [], columns=["name", "price"]).fillna("").astype(str)
-        menu_rows = st.data_editor(
-            frame, num_rows="dynamic", hide_index=True, key=f"draft_{revision}_menus",
-            column_config={"name": st.column_config.TextColumn("메뉴 이름"), "price": st.column_config.TextColumn("가격")},
-            on_change=clear_saved_notice,
-        )
-        for field, label in LIST_FIELDS.items():
-            key = f"draft_{revision}_{field}"
-            if key not in st.session_state:
-                st.session_state[key] = list_to_lines(draft.get(field))
-            values[field] = st.text_area(f"{label} (한 줄에 하나씩)", key=key, placeholder="글에 없었어요", on_change=clear_saved_notice)
-        concept_panel = render_concept_panel(api, values, menu_rows, draft, revision)
-        st.subheader("3. 저장")
-        if st.button("저장", type="primary"):
-            try:
-                profile = form_to_profile(values, menu_rows, draft.get("needs_check"))
-                if not profile["shop_name"] or not profile["business_type"]:
-                    st.error("가게 이름과 업종은 꼭 적어 주세요")
-                else:
-                    concept = selected_concept(concept_panel)
-                    result = api("POST", "/profile/save", payload={
-                        "shop_id": st.session_state.get("shop_id"), "profile": profile,
-                        "source_text": st.session_state.draft_source,
-                        "prompt_version": st.session_state.prompt_version,
-                        "concept": concept,
-                    })
-                    st.session_state.draft_concept = concept
-                    st.session_state.shop_id = result["shop_id"]
-                    st.session_state.saved_notice = result["shop_id"]
-                    st.session_state.reload_shops = True
-                    st.rerun()
-            except (UserApiError, ValueError) as exc:
-                st.error(str(exc))
-
-with copy_tab:
-    render_copy_tab(api, st.session_state.shops)
-
-with board_tab:
-    render_menu_tab(api, st.session_state.shops)
+if current not in (profile, quick) and not state.get("shop_id"):
+    st.switch_page(profile)
+if current is not profile and state.get("saved_profile") and (
+    state.get("draft_invalid") or state.get("draft") != state.saved_profile
+    or state.get("draft_origins", {}) != (state.get("saved_shop", {}).get("menu_origins") or {})
+):
+    st.warning("가게 정보에 저장 안 한 내용이 있어요")
+    st.page_link(profile, label="저장하러 가기")
+current.run()

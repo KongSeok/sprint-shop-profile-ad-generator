@@ -1,0 +1,14 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}"><main>
+  <div class="media">{% if photo_url or cutout_url %}<img class="photo" src="{{ photo_url or cutout_url }}" alt="">{% endif %}</div>
+  <div class="shade"></div><div class="deco"></div><i class="sprig"></i>
+  <header><span class="shop" data-field="shop_name">{{ shop_name }}</span><i class="rule"></i></header>
+  <footer>
+    <div class="lbl"><span class="en">{{ category_en }}</span><span class="ko">{{ category_ko }}</span></div>
+    <h1 class="title menu fit" data-field="menu_name" data-max="108" data-min="60">{{ main_name }}</h1>
+    {% if sub_name %}<div class="sub {{ sub_lang }}" data-field="menu_name_sub">{{ sub_name }}</div>{% endif %}
+    {% if body %}<p class="body" data-field="body">{{ body }}</p>{% endif %}
+    {% if price %}<div class="price p-{{ price_style }}" data-field="price">{{ price }}</div>{% endif %}
+    {% if origin %}<p class="origin" data-field="origin">원산지 {{ origin }}</p>{% endif %}
+  </footer>
+</main><script>{{ fit_js|safe }}</script></body></html>

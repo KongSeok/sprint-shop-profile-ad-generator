@@ -1,0 +1,60 @@
+main{position:relative;width:1080px;height:1080px;overflow:hidden}
+.media{position:absolute;inset:0}
+.photo{width:100%;height:100%;object-fit:cover;display:block}
+.shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgb(0 0 0/.5) 0%,transparent 17%)}
+header{position:absolute;z-index:6;top:62px;left:76px;right:76px;display:flex;align-items:center;gap:22px;color:#fff}
+.shop{font-size:28px;font-weight:700;text-shadow:0 1px 8px rgb(0 0 0/.45)}
+.rule{flex:1;height:1px;background:rgb(255 255 255/.6)}
+footer{position:absolute;z-index:6;left:76px;right:76px;bottom:72px}
+.lbl{font-size:46px;margin-bottom:10px}
+.menu{font-size:108px;line-height:1.1;white-space:nowrap}
+.body{margin-top:18px;font-size:32px;line-height:1.55;max-width:900px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.price{margin-top:26px;font-size:40px}
+/* overlay: dark gradient over photo */
+body[data-photo="overlay"] .shade{background:linear-gradient(to top,color-mix(in srgb,var(--bg) 96%,transparent) 0%,color-mix(in srgb,var(--bg) 82%,transparent) 30%,color-mix(in srgb,var(--bg) 20%,transparent) 55%,transparent 66%),linear-gradient(to bottom,rgb(0 0 0/.5) 0%,transparent 17%)}
+body[data-photo="overlay"] footer{color:var(--ink)}
+body[data-photo="overlay"] .body{color:var(--ink);opacity:.9}
+/* panel: photo top, solid panel bottom */
+body[data-photo="panel"] main{display:flex;flex-direction:column}
+body[data-photo="panel"] .media{position:relative;inset:auto;flex:1;min-height:0}
+body[data-photo="panel"] footer{position:relative;left:0;right:0;bottom:0;min-height:400px;background:var(--bg);padding:44px 76px 56px;color:var(--ink)}
+body[data-photo="panel"] .body{color:var(--sub)}
+body[data-photo="panel"] .price{position:absolute;right:76px;top:-36px;margin:0}
+body[data-photo="panel"] .price.p-text{background:var(--bg);padding:14px 28px;top:-34px}
+body[data-photo="panel"] .lbl{font-size:42px}
+body[data-photo="panel"] .menu{font-size:96px}
+/* style tweaks */
+body[data-style="classic"] footer{text-align:center}
+body[data-style="classic"] .body{margin-inline:auto}
+body[data-style="classic"][data-photo="panel"] .price{position:static;margin-top:22px}
+body[data-style="classic"][data-photo="panel"] footer{padding-top:50px}
+body[data-style="classic"] .deco{--frame:color-mix(in srgb,var(--accent) 70%,transparent)}
+body[data-style="cozy"] .media{border-radius:0 0 48px 48px;overflow:hidden}
+body[data-style="cozy"] .deco{z-index:7;--frame:#fff}
+body[data-style="pop"] .media{border-bottom:14px solid var(--ink)}
+body[data-style="pop"] .menu{-webkit-text-stroke:0}
+body[data-style="pop"][data-photo="panel"] .price{top:-60px;font-size:46px}
+body[data-style="traditional"] .deco{--frame:var(--ink);z-index:7}
+body[data-style="traditional"][data-photo="panel"] footer{min-height:420px}
+body[data-style="grill"] .menu{text-transform:uppercase}
+body[data-style="grill"] .deco{z-index:4}
+body[data-style="grill"] .lbl{font-size:50px}
+
+footer .sub{font-size:40px;margin-top:4px}
+body[data-photo="panel"] footer .sub{color:var(--accent)}
+/* cozy: fuller panel */
+body[data-style="cozy"] .sprig{z-index:6;width:190px;height:190px;right:44px;bottom:44px;opacity:.55}
+body[data-style="cozy"] .sprig.flip{display:none}
+body[data-style="cozy"][data-photo="panel"] footer{background:var(--bg)}
+body[data-style="cozy"] .body{font-size:34px;color:var(--ink);opacity:.85}
+body[data-style="cozy"] .lbl{font-size:48px}
+body[data-style="cozy"][data-photo="panel"] .media{margin:26px 26px 0;border-radius:36px}
+body[data-style="cozy"][data-photo="panel"] footer{min-height:420px}
+body[data-style="cozy"] .deco{z-index:3;--frame:var(--line)}
+body[data-style="cozy"][data-photo="overlay"] .deco{--frame:color-mix(in srgb,var(--ink) 35%,transparent)}
+body[data-style="cozy"][data-photo="panel"] header{color:#fff}
+footer .origin{margin-top:16px}
+body[data-photo="overlay"] footer .origin{color:var(--ink);opacity:.75}
+body[data-style="classic"] footer .origin{text-align:center}
+
+body[data-style="cozy"] .body{max-width:740px;-webkit-line-clamp:3}

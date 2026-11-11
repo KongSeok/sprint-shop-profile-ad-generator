@@ -1,0 +1,24 @@
+[server]
+enableStaticServing = true
+
+[theme]
+base = "light"
+primaryColor = "#C8553D"
+backgroundColor = "#FBF7F0"
+secondaryBackgroundColor = "#F3ECE0"
+textColor = "#2B2420"
+font = "Noto Sans KR"
+headingFont = "Noto Sans KR"
+
+[[theme.fontFaces]]
+family = "Noto Sans KR"
+url = "app/static/NotoSansKR-400.ttf"
+weight = "400"
+
+[[theme.fontFaces]]
+family = "Noto Sans KR"
+url = "app/static/NotoSansKR-700.ttf"
+weight = "700"
+
+[client]
+toolbarMode = "minimal"

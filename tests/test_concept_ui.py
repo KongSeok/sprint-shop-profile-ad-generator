@@ -4,6 +4,7 @@ from app.ui import api_client
 from app.ui.api_client import UserApiError
 from eval.common import ROOT
 from test_concept import candidates
+from ui_navigation import navigate
 
 
 def button(view, label):
@@ -31,6 +32,8 @@ def test_choose_edit_save_reload_concept(monkeypatch):
         raise AssertionError(path)
     monkeypatch.setattr(api_client,'request_api',api)
     view = AppTest.from_file(str(ROOT / 'app/ui/main_ui.py'),default_timeout=30).run()
+    assert any("한 번에 만들기" in title.value for title in view.title)
+    navigate(view, "profile")
     view.text_area(key='source_input').input('가게 소개')
     button(view,'정리하기').click().run()
     view.text_input(key='draft_1_shop_name').input('화면 수정 이름').run()
@@ -43,10 +46,10 @@ def test_choose_edit_save_reload_concept(monkeypatch):
     assert saved['concept']['mood'] == '내가 고친 분위기'
     assert saved['concept']['source'] == '직접'
     assert 'concept' not in saved['profile']
+    view.selectbox(key='saved_selection').select(None).run()
     view.selectbox(key='saved_selection').select(1).run()
-    button(view,'불러오기').click().run()
     assert not view.exception
-    assert view.text_input(key='concept_2_0_saved_mood').value == '내가 고친 분위기'
+    assert view.text_input(key='concept_3_0_saved_mood').value == '내가 고친 분위기'
     button(view,'저장').click().run()
     assert saved['concept']['source'] == '직접'
 
@@ -66,6 +69,8 @@ def test_recommend_failure_does_not_block_save(monkeypatch):
         raise AssertionError(path)
     monkeypatch.setattr(api_client,'request_api',api)
     view = AppTest.from_file(str(ROOT / 'app/ui/main_ui.py'),default_timeout=30).run()
+    assert any("한 번에 만들기" in title.value for title in view.title)
+    navigate(view, "profile")
     view.text_area(key='source_input').input('가게 소개')
     button(view,'정리하기').click().run()
     button(view,'컨셉 추천받기').click().run()

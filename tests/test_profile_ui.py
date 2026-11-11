@@ -7,6 +7,7 @@ from app.core import config
 from app.schemas.profile import ShopProfile
 from app.ui import api_client
 from eval.common import ROOT
+from ui_navigation import navigate
 
 
 def button(view, label):
@@ -15,7 +16,8 @@ def button(view, label):
 
 def test_ui_extract_edit_rerun_save_reload_update(monkeypatch):
     monkeypatch.setattr(config, "GEMINI_TIMEOUT_MS", 420_000)
-    shops = {}
+    shops = {2: {"shop_id": 2, "profile": ShopProfile(shop_name="다른 가게", business_type="카페").model_dump(),
+                 "source_text": "다른 가게 소개", "prompt_version": "v2"}}
     extracted = ShopProfile(shop_name=None, business_type="카페", needs_check=["휴무일 확인 필요"]).model_dump()
 
     def fake_api(base, method, path, *, payload=None, **kwargs):
@@ -23,16 +25,18 @@ def test_ui_extract_edit_rerun_save_reload_update(monkeypatch):
             return [{"id": key, "shop_name": row["profile"]["shop_name"], "business_type": "카페", "updated_at": "now"} for key, row in shops.items()]
         if path == "/profile/extract":
             assert payload["prompt_version"] == "v2"
-            assert kwargs["timeout"] == 440
+            assert kwargs["timeout"] == 1300
             return extracted
         if path == "/profile/save":
-            shop_id = payload["shop_id"] or len(shops) + 1
+            shop_id = payload["shop_id"] or 1
             shops[shop_id] = {**payload, "shop_id": shop_id}
             return {"shop_id": shop_id}
         return shops[int(path.rsplit("/", 1)[1])]
 
     monkeypatch.setattr(api_client, "request_api", fake_api)
     view = AppTest.from_file(str(ROOT / "app/ui/main_ui.py"), default_timeout=30).run()
+    assert any("한 번에 만들기" in title.value for title in view.title)
+    navigate(view, "profile")
     view.text_area(key="source_input").input("월요일 휴무이고 연중무휴예요")
     button(view, "정리하기").click().run()
     assert not view.exception
@@ -41,15 +45,21 @@ def test_ui_extract_edit_rerun_save_reload_update(monkeypatch):
     view.run()  # Repeated reruns retain unsaved edits.
     assert view.text_input(key="draft_1_shop_name").value == " 우리 가게 "
     button(view, "저장").click().run()
-    assert not view.exception and len(shops) == 1
+    assert not view.exception and len(shops) == 2
     assert shops[1]["profile"]["shop_name"] == "우리 가게"
     assert "저장했어요" in view.success[0].value
+    view.selectbox(key="saved_selection").select(2).run()
+    assert view.text_input(key="draft_2_shop_name").value == "다른 가게"
+    assert next(item for item in view.text_area if item.label == "가게 소개 글").value == "다른 가게 소개"
     view.selectbox(key="saved_selection").select(1).run()
-    button(view, "불러오기").click().run()
     assert not view.exception
-    view.text_input(key="draft_2_shop_name").input("수정 가게").run()
+    view.text_input(key="draft_3_shop_name").input("수정 가게").run()
+    navigate(view, "copy")
+    navigate(view, "profile")
+    assert view.text_input(key="draft_3_shop_name").value == "수정 가게"
+    assert shops[1]["profile"]["shop_name"] == "우리 가게"
     button(view, "저장").click().run()
-    assert not view.exception and len(shops) == 1
+    assert not view.exception and len(shops) == 2
     assert shops[1]["profile"]["shop_name"] == "수정 가게"
 
 

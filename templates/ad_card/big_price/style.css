@@ -1,0 +1,27 @@
+main{position:relative;width:1080px;height:1080px;overflow:hidden;background:var(--bg);color:var(--ink);padding:64px;display:flex;flex-direction:column;justify-content:space-between}
+.deco,.sprig,.blob{display:none!important}
+.top{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) 540px;gap:40px}
+.left{display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-width:0}
+.shop{font-weight:800;font-size:28px;color:var(--accent);letter-spacing:var(--shop-track)}
+.txt{display:flex;flex-direction:column;gap:16px}
+.txt .lbl{font-size:34px}
+.menu{font-size:calc(78px * var(--glyph,1));line-height:1.08;margin:0;word-break:keep-all}
+.sub{font-size:30px;color:var(--accent);margin-top:-6px}
+.body{margin:0;font-size:24px;line-height:1.55;color:var(--sub);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.origin{font-size:19px;margin-top:-4px}
+.media{width:540px;height:540px;position:relative;border-radius:var(--radius);overflow:hidden}
+.media.is-cut{overflow:visible}
+.halo{position:absolute;inset:0;border-radius:50%;background:radial-gradient(closest-side,var(--bg2),transparent)}
+.food{position:relative;width:100%;height:100%;object-fit:cover;display:block}
+.food.cutout{object-fit:contain;filter:drop-shadow(0 22px 22px rgb(0 0 0/.35))}
+.bigprice{position:relative;z-index:2;display:flex;align-items:baseline;gap:18px;border-top:4px solid var(--accent);padding-top:14px;color:var(--accent);font-family:var(--font-title),sans-serif;font-weight:var(--title-weight)}
+.bigprice .num{flex:1;min-width:0;font-size:236px;line-height:.95;letter-spacing:-.05em;white-space:nowrap}
+.bigprice .won{font-size:96px;line-height:1}
+.bigprice .pre{font-size:54px;line-height:1;align-self:flex-end;margin-bottom:24px;color:var(--ink)}
+body[data-style="classic"] .bigprice .num,body[data-style="traditional"] .bigprice .num{letter-spacing:-.02em}
+body[data-style="pop"] .media:not(.is-cut){border:10px solid var(--ink)}
+body[data-style="pop"] .bigprice .num{-webkit-text-stroke:6px var(--ink);paint-order:stroke fill}
+body[data-style="cozy"] .media:not(.is-cut){border-radius:40px}
+body[data-photo="panel"] .bigprice .pre{color:var(--ink)}
+.bigprice .num{flex:0 1 auto;max-width:calc(100% - 130px)}
+.bigprice .pre+.num{max-width:calc(100% - 280px)}

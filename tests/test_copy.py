@@ -7,6 +7,7 @@ from google import genai
 from google.genai.errors import ClientError, ServerError
 from pydantic import ValidationError
 
+from app.services import llm_client
 from app.core import config
 from app.schemas.copy import CopyGenerateRequest, CopyMenu, GeneratedCopy
 from app.schemas.profile import ShopProfile
@@ -60,7 +61,7 @@ def test_invalid_copy_request_is_422_without_call(api_client, gemini_mock, body)
 
 def test_menu_trims_and_blank_optionals_are_null():
     menu = CopyMenu(name=" 라떼 ", price=" ", features=" 우유 사용 ")
-    assert menu.model_dump() == {"name": "라떼", "price": None, "features": "우유 사용", "this_time": None}
+    assert menu.model_dump() == {"name": "라떼", "price": None, "features": "우유 사용", "this_time": None, "components": None, "origin": None}
 
 
 def test_prompt_omits_nulls_but_keeps_conflicts_bans_owner_and_menu():
@@ -111,13 +112,16 @@ def test_unknown_shop_is_404_without_gemini(api_client, gemini_mock):
 
 
 @pytest.mark.parametrize("status", [429, 503, 504])
-def test_transient_errors_return_retry_message_without_server_retry(api_client, copy_mock, status):
+def test_transient_errors_return_retry_message_without_server_retry(api_client, copy_mock, status, monkeypatch):
     copy_mock.models.generate_content.side_effect = ServerError(status, {"error": {"message": "test-only-gemini-key"}})
+    delays = []
+    monkeypatch.setattr("app.services.llm_client.sleep", delays.append)
     response = api_client.post("/copy/generate", json=direct_request())
     assert response.status_code == 503
     assert response.json()["detail"]["message"] == "잠시 후 다시 눌러 주세요"
     assert "test-only-gemini-key" not in response.text
-    assert copy_mock.models.generate_content.call_count == 1
+    assert copy_mock.models.generate_content.call_count == (3 if status >= 500 else 1)
+    assert delays == ([5, 15] if status >= 500 else [])
 
 
 def test_other_upstream_error_redacts_key(api_client, copy_mock):
@@ -163,7 +167,7 @@ def test_real_sdk_serializes_copy_schema_without_network(api_client, copy_output
         kwargs["http_options"].httpx_client = httpx.Client(transport=httpx.MockTransport(handle))
         return REAL_CLIENT(**kwargs)
 
-    monkeypatch.setattr(copy_generator.genai, "Client", client)
+    monkeypatch.setattr(llm_client.genai, "Client", client)
     assert api_client.post("/copy/generate", json=direct_request()).status_code == 200
     assert len(calls) <= 2 and calls[0]["generationConfig"]["temperature"] == 0.7
     assert calls[0]["generationConfig"]["thinkingConfig"] == {"thinking_level": "MEDIUM"}

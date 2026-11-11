@@ -1,0 +1,11 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}"><main{% if sub_name %} data-sub{% endif %}>
+  <div class="glow"></div><div class="ring"></div><i class="blob"></i><div class="deco"></div><i class="sprig"></i><i class="sprig flip"></i>
+  <header><span class="shop" data-field="shop_name">{{ shop_name }}</span><span class="lbl"><span class="en">{{ category_en }}</span><span class="ko">{{ category_ko }}</span></span></header>
+  <div class="titlewrap"><h1 class="title big fit" data-field="menu_name" data-max="{{ 180 if sub_name else 220 }}" data-min="100">{{ main_name }}</h1>
+  {% if sub_name %}<div class="sub {{ sub_lang }}" data-field="menu_name_sub">{{ sub_name }}</div>{% endif %}</div>
+  {% if cutout_url or photo_url %}<img class="food" src="{{ cutout_url or photo_url }}" alt="">{% endif %}
+  {% if price %}<div class="pricewrap"><div class="price p-{{ price_style }}" data-field="price">{{ price }}</div></div>{% endif %}
+  {% if body %}<p class="body" data-field="body">{{ body }}</p>{% endif %}
+{% if origin %}<p class="origin" data-field="origin">원산지 {{ origin }}</p>{% endif %}
+</main><script>{{ fit_js|safe }}</script></body></html>

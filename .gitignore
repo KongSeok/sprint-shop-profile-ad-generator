@@ -9,3 +9,15 @@ __pycache__/
 *.db-journal
 *.db-wal
 *.db-shm
+
+# Local image inputs, model caches and experiment outputs
+/data/photos/
+/.cache/
+/.hf_cache/
+/huggingface_cache/
+/.u2net/
+/experiments/image_*/
+!/experiments/image_setup_log.md
+/logs/llm_calls.jsonl
+
+/logs/

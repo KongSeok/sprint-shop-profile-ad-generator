@@ -1,12 +1,11 @@
 import json
 
-from google import genai
-from google.genai import errors, types
 from pydantic import ValidationError
 
 from app.services.fact_check import fact_warnings, output_text, merge_warnings
 from app.services.style_check import style_warnings
 from app.services.copy_examples import select_examples, example_warnings
+from app.services.llm_client import LLMError, QUOTA_MESSAGE, generate_json
 from app.core import config
 from app.schemas.copy import CopyGenerateResponse, CopyMenu, GeneratedCopy, generated_copy_model
 from app.schemas.concept import Concept, can_suggest
@@ -90,6 +89,16 @@ def below_minimum_warning(errors: list[dict]) -> str | None:
     return None
 
 
+def copy_llm_error(exc):
+    if exc.code == "insufficient_quota":
+        return CopyGenerationError("LLM_QUOTA_EXHAUSTED", QUOTA_MESSAGE, 503, exc.status)
+    if exc.code == "KEY_MISSING":
+        return CopyGenerationError("GEMINI_KEY_MISSING", str(exc), 503)
+    if exc.status in (429, 503, 504):
+        return CopyGenerationError("COPY_RETRY_LATER", "잠시 후 다시 눌러 주세요", 503, exc.status)
+    return CopyGenerationError("COPY_CALL_FAILED", f"{exc.code}: {exc}", 502, exc.status)
+
+
 def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v2", *, concept: Concept | None = None, use_examples: bool = True, example_version: str = "full-v3", example_seed: int | None = None, mode: str | None = None) -> CopyGenerateResponse:
     if mode is not None:
         from app.services.copy_pipeline import generate_mode_copy
@@ -97,32 +106,12 @@ def generate_copy(profile: ShopProfile, menu: CopyMenu, prompt_version: str = "v
                                   use_examples=use_examples, example_version=example_version, example_seed=example_seed)
     prompt, contents, examples = prepare_copy_prompt(profile, menu, prompt_version, concept=concept, use_examples=use_examples, example_version=example_version, example_seed=example_seed)
     response_model = generated_copy_model(prompt_version)
-    api_key = config.GEMINI_API_KEY.strip()
-    if not api_key:
-        raise CopyGenerationError("GEMINI_KEY_MISSING", "서비스 연결 설정을 확인해 주세요", 503)
     try:
-        with genai.Client(
-            api_key=api_key, vertexai=False,
-            http_options=types.HttpOptions(timeout=config.GEMINI_TIMEOUT_MS,
-                                           retry_options=types.HttpRetryOptions(attempts=1)),
-        ) as client:
-            response = client.models.generate_content(
-                model=config.GEMINI_MODEL, contents=contents,
-                config=types.GenerateContentConfig(
-                    system_instruction=prompt, response_mime_type="application/json",
-                    response_json_schema=response_model.model_json_schema(),
-                    temperature=0.7, thinking_config=types.ThinkingConfig(thinking_level="medium"),
-                ),
-            )
-    except errors.APIError as exc:
-        if exc.code in (429, 503, 504):
-            raise CopyGenerationError("COPY_RETRY_LATER", "잠시 후 다시 눌러 주세요", 503, exc.code) from exc
-        reason = str(exc.message or "응답 오류").replace(api_key, "[REDACTED]")[:500]
-        raise CopyGenerationError("COPY_CALL_FAILED", f"Gemini 호출 실패 (HTTP {exc.code}): {reason}", 502, exc.code) from exc
-    except Exception as exc:
-        raise CopyGenerationError("COPY_CALL_FAILED", f"문구 생성 연결 실패 ({type(exc).__name__})") from exc
+        raw = generate_json(prompt, contents, response_model.model_json_schema(), 0.7, "copy_legacy")
+    except LLMError as exc:
+        raise copy_llm_error(exc) from exc
     try:
-        generated = response_model.model_validate_json(response.text or "")
+        generated = response_model.model_validate_json(raw)
     except ValidationError as exc:
         warning = below_minimum_warning(exc.errors(include_input=False)) if prompt_version == 'v2' else None
         if warning:

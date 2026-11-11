@@ -1,10 +1,9 @@
 import json
 from typing import Literal
 
-from google import genai
-from google.genai import errors, types
 from pydantic import ValidationError
 
+from app.services.llm_client import LLMError, QUOTA_MESSAGE, generate_json
 from app.core import config
 from app.schemas.profile import ShopProfile
 from app.services.fewshot_loader import FewShotError, load_fewshot_examples
@@ -47,45 +46,14 @@ def extract_profile_raw(
 ) -> tuple[str, ShopProfile]:
     # Validate prompt data before creating a client, especially for incomplete v2.
     prompt = system_prompt if system_prompt is not None else build_prompt(prompt_version)
-    api_key = config.GEMINI_API_KEY.strip()
-    if not api_key:
-        raise ProfileExtractionError("GEMINI_KEY_MISSING", "GEMINI_API_KEY가 없습니다. .env 또는 환경변수를 설정해 주세요.")
     try:
-        with genai.Client(
-            api_key=api_key,
-            vertexai=False,
-            http_options=types.HttpOptions(
-                timeout=config.GEMINI_TIMEOUT_MS,
-                retry_options=types.HttpRetryOptions(attempts=1),
-            ),
-        ) as client:
-            response = client.models.generate_content(
-                model=config.GEMINI_MODEL,
-                contents=text,
-                config=types.GenerateContentConfig(
-                    system_instruction=prompt,
-                    response_mime_type="application/json",
-                    response_json_schema=ShopProfile.model_json_schema(),
-                    temperature=0.1,
-                    thinking_config=types.ThinkingConfig(thinking_level="medium"),
-                ),
-            )
-    except errors.APIError as exc:
-        # SDK messages may contain request metadata. Never echo the key.
-        reason = str(exc.message or "응답 오류").replace(api_key, "[REDACTED]")[:500]
-        raise ProfileExtractionError(
-            "GEMINI_CALL_FAILED",
-            f"Gemini 호출 실패 (HTTP {exc.code}): {reason}",
-            502,
-            upstream_status=exc.code,
-        ) from exc
-    except Exception as exc:
-        raise ProfileExtractionError(
-            "GEMINI_CALL_FAILED",
-            f"Gemini 호출 실패 ({type(exc).__name__}). 네트워크와 SDK 설정을 확인해 주세요.",
-            502,
-        ) from exc
-    raw_text = response.text
+        raw_text = generate_json(prompt, text, ShopProfile.model_json_schema(), 0.1, "profile_extract")
+    except LLMError as exc:
+        if exc.code == "insufficient_quota":
+            raise ProfileExtractionError("LLM_QUOTA_EXHAUSTED", QUOTA_MESSAGE, 503, exc.status) from exc
+        if exc.code == "KEY_MISSING":
+            raise ProfileExtractionError("GEMINI_KEY_MISSING", str(exc)) from exc
+        raise ProfileExtractionError("GEMINI_CALL_FAILED", f"{exc.code}: {exc}", 502, exc.status) from exc
     if not raw_text:
         raise ProfileExtractionError("GEMINI_EMPTY_RESPONSE", "Gemini가 프로필 JSON을 반환하지 않았습니다. 차단 여부나 응답 종료 상태를 확인해 주세요.", 502, raw_text=raw_text)
     try:

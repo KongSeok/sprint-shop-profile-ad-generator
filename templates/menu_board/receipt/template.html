@@ -1,0 +1,21 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}" data-layout="receipt"><main style="--rows:{{ menus|length }}">
+  <div class="paperwrap"><div class="paper">
+    <div class="r-top"><span class="lbl"><span class="en">Menu</span><span class="ko">차림표</span></span></div>
+    <h1 class="title shop fit" data-field="shop_name" data-max="66" data-min="40">{{ shop_name }}</h1>
+    {% if intro %}<p class="intro" data-field="intro">{{ intro }}</p>{% endif %}
+    <i class="cut"></i>
+    {% if photo_url %}<div class="media"><img class="food" src="{{ photo_url }}" alt=""></div><i class="cut"></i>{% endif %}
+    <section class="menus" data-cols="{{ 2 if menus|length > 6 else 1 }}">
+    {% for m in menus %}<article class="item">
+      <div class="row"><span class="name">{{ m.main }}</span><span class="dots"></span>{% if m.price %}<span class="rprice">{{ m.price }}</span>{% endif %}</div>
+      {% if m.sub %}<div class="sub {{ m.sub_lang }}">{{ m.sub }}</div>{% endif %}
+      {% if m.note %}<div class="note">{{ m.note }}</div>{% endif %}{% if m.origin %}<div class="m-origin">{{ m.origin }}</div>{% endif %}
+    </article>{% endfor %}
+    </section>
+    {% if origin_note %}<p class="origin" data-field="origin_note">원산지 {{ origin_note }}</p>{% endif %}
+    <i class="cut"></i>
+    {% if footer %}<footer>{% for l in footer %}<span>{{ l }}</span>{% endfor %}</footer>{% endif %}
+    <i class="barcode"></i>
+  </div></div>
+</main><script>{{ fit_js|safe }}</script></body></html>

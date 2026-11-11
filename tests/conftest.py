@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 from app.api.main import app
 from app.core import config
 from app.schemas.profile import ShopProfile
-from app.services import profile_extractor
+from app.services import llm_client
 
 
 @pytest.fixture(autouse=True)
@@ -19,7 +19,10 @@ def gemini_mock(monkeypatch, tmp_path):
     client.models.generate_content.return_value = SimpleNamespace(
         text=ShopProfile(shop_name=None, business_type=None).model_dump_json()
     )
-    monkeypatch.setattr(profile_extractor.genai, "Client", factory)
+    monkeypatch.setattr(llm_client.genai, "Client", factory)
+    monkeypatch.setattr(config, "LLM_PROVIDER", "gemini")
+    monkeypatch.setattr(llm_client, "sleep", lambda _: None)
+    monkeypatch.setattr(llm_client, "LOG_PATH", tmp_path / "llm_calls.jsonl")
     monkeypatch.setattr(config, "GEMINI_API_KEY", "test-only-gemini-key")
     monkeypatch.setattr(config, "GEMINI_MODEL", "gemini-3.8-flash")
     monkeypatch.setattr(config, "SHOP_DB_PATH", tmp_path / "shops.db")

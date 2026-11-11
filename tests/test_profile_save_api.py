@@ -8,7 +8,7 @@ def payload(**profile_changes):
 
 def test_save_list_get_then_update_same_id(api_client, gemini_mock):
     assert api_client.get("/profile/list").json() == []
-    request = payload(parking=" ", other_info=[" 국내산 ", ""], menus=[])
+    request = payload(parking=" ", other_info=[" 국내산 ", ""], menus=[], tone="친근한 해요체")
     response = api_client.post("/profile/save", json=request)
     assert response.status_code == 200
     shop_id = response.json()["shop_id"]
@@ -19,7 +19,7 @@ def test_save_list_get_then_update_same_id(api_client, gemini_mock):
     assert saved["profile"]["other_info"] == ["국내산"]
     request["shop_id"] = shop_id
     request["profile"]["shop_name"] = "수정 가게"
-    assert api_client.post("/profile/save", json=request).json() == {"shop_id": shop_id}
+    assert api_client.post("/profile/save", json=request).json() == {"shop_id": shop_id, "concept": None}
     assert len(api_client.get("/profile/list").json()) == 1
     assert api_client.get(f"/profile/{shop_id}").json()["profile"]["shop_name"] == "수정 가게"
     gemini_mock.assert_not_called()

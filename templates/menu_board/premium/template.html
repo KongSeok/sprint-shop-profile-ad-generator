@@ -1,0 +1,19 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}"><main style="--rows:{{ menus|length }}"{% if menus|length > 8 %} data-many{% endif %}>
+  <div class="hero"><img src="{{ photo_url }}" alt=""></div>
+  <div class="deco"></div><i class="sprig"></i><i class="sprig flip"></i>
+  <header>
+    <div class="lbl"><span class="en">The Menu</span><span class="ko">차림표</span></div>
+    <h1 class="title shop fit" data-field="shop_name" data-max="96" data-min="56">{{ shop_name }}</h1>
+    {% if intro %}<p class="intro" data-field="intro">{{ intro }}</p>{% endif %}
+  </header>
+  <section class="menus" data-cols="{{ 2 if menus|length > 4 else 1 }}">
+  {% for m in menus %}<article class="item">
+    <div class="name">{{ m.main }}</div>{% if m.sub %}<div class="sub {{ m.sub_lang }}">{{ m.sub }}</div>{% endif %}
+    {% if m.note %}<div class="note">{{ m.note }}</div>{% endif %}{% if m.origin %}<div class="m-origin">{{ m.origin }}</div>{% endif %}
+    {% if m.price %}<div class="mprice">{{ m.price }}</div>{% endif %}
+  </article>{% if not loop.last %}<i class="sep"></i>{% endif %}{% endfor %}
+  </section>
+  {% if origin_note %}<p class="origin" data-field="origin_note">원산지 {{ origin_note }}</p>{% endif %}
+  {% if footer %}<footer>{% for l in footer %}<span>{{ l }}</span>{% endfor %}</footer>{% endif %}
+</main><script>{{ fit_js|safe }}</script></body></html>

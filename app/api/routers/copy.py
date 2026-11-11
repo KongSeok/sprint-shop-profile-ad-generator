@@ -6,6 +6,7 @@ from pydantic import ValidationError
 from app.schemas.copy import CopyGenerateRequest, ModeCopyResponse
 from app.schemas.profile import ShopProfile
 from app.services import shop_store
+from app.services.llm_client import QUOTA_MESSAGE
 from app.services.copy_generator import CopyGenerationError, generate_copy
 
 router = APIRouter(prefix="/copy", tags=["copy"])
@@ -27,6 +28,12 @@ def generate(request: CopyGenerateRequest):
     try:
         return generate_copy(profile, request.menu, request.prompt_version, concept=concept, use_examples=request.use_examples, example_version=request.example_version, mode=request.mode)
     except CopyGenerationError as exc:
+        if exc.code == "LLM_QUOTA_EXHAUSTED":
+            is_menu = request.mode == "menu"
+            name = request.menu.name if is_menu else profile.shop_name or "가게 소개"
+            return ModeCopyResponse(mode=request.mode, instagram={"body": name, "hashtags": []},
+                                    delivery_app={"menu_description" if is_menu else "shop_intro": ""},
+                                    warnings=[QUOTA_MESSAGE])
         raise HTTPException(exc.status_code, detail={
             "code": exc.code, "message": str(exc), "upstream_status": exc.upstream_status,
         }) from exc

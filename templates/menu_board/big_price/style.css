@@ -1,0 +1,32 @@
+main{position:relative;width:1080px;height:1527px;overflow:hidden;background:var(--bg);color:var(--ink);padding:64px;display:flex;flex-direction:column;gap:34px}
+.deco,.sprig,.blob{display:none!important}
+header{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:40px;padding-bottom:32px;border-bottom:4px solid var(--accent);flex:none}
+.htxt{min-width:0;display:flex;flex-direction:column;gap:10px}
+.htxt .lbl{font-size:38px}
+.shop{margin:0;font-size:calc(100px * var(--glyph,1));line-height:1.04;letter-spacing:-.02em;word-break:keep-all}
+.intro{font-size:24px;color:var(--sub);line-height:1.5}
+.media{flex:none;width:calc(500px - var(--rows) * 12px);height:calc(500px - var(--rows) * 12px);border-radius:var(--radius);overflow:hidden}
+.food{width:100%;height:100%;object-fit:cover;display:block}
+.menus{position:relative;z-index:2;flex:1;min-height:0;display:flex;flex-direction:column}
+.menus[data-cols="2"]{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:row;column-gap:52px}
+.item{flex:1;display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1.5px solid var(--line);min-height:0;padding:8px 0}
+.itxt{display:flex;flex-direction:column;gap:4px;min-width:0}
+.name{font-family:var(--font-body),sans-serif;font-weight:800;font-size:38px;line-height:1.2}
+.menus[data-cols="2"] .name{font-size:28px}
+.item .sub{font-size:22px;color:var(--accent);opacity:.9}
+.note{font-size:22px;color:var(--sub);line-height:1.4}
+.menus[data-cols="2"] .note,.menus[data-cols="2"] .item .sub{font-size:17px}
+.iprice{display:flex;align-items:baseline;gap:4px;color:var(--accent);white-space:nowrap;font-family:var(--font-title),sans-serif;font-weight:var(--title-weight)}
+.iprice .num{font-size:calc(clamp(72px,calc(130px - var(--rows) * 14px),100px) * var(--glyph,1));line-height:1;letter-spacing:-.04em}
+.menus[data-cols="2"] .iprice .num{font-size:calc(46px * var(--glyph,1))}
+.iprice .won{font-size:30px}
+.menus[data-cols="2"] .iprice .won{font-size:20px}
+.iprice .pre{font-size:22px;color:var(--sub);margin-right:6px;font-family:var(--font-body),sans-serif}
+.origin{font-size:20px;flex:none}
+footer{display:flex;flex-wrap:wrap;gap:6px 0;font-size:24px;color:var(--sub);flex:none}
+footer span+span::before{content:"·";margin:0 16px;color:var(--accent)}
+body[data-style="pop"] .media{border:8px solid var(--ink)}
+.htxt{flex:1}
+.shop{white-space:nowrap}
+.menus[data-cols="1"] .name{font-size:clamp(34px,calc(64px - var(--rows) * 5px),54px)}
+.menus[data-cols="1"] .iprice .num{font-size:calc(clamp(72px,calc(150px - var(--rows) * 15px),128px) * var(--glyph,1))}

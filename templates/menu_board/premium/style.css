@@ -1,0 +1,61 @@
+main{position:relative;width:1080px;height:1527px;display:flex;flex-direction:column;overflow:hidden}
+.hero{position:absolute;top:0;left:0;right:0;height:470px}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,var(--bg) 98%)}
+header{position:relative;z-index:6;text-align:center;margin-top:330px;padding:0 120px}
+header .lbl{font-size:50px}
+.shop{font-size:96px;line-height:1.12;margin-top:10px;white-space:nowrap}
+.intro{font-size:28px;line-height:1.55;color:var(--sub);margin:16px auto 0;max-width:700px}
+.menus{position:relative;z-index:6;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(12px,calc(150px / var(--rows)),40px);padding:20px 140px}
+.item{text-align:center}
+.item{font-size:clamp(34px,calc(60px - var(--rows) * 4px),50px)}
+.item .name{font-family:var(--font-title),serif;font-weight:var(--title-weight);font-size:calc(1em * var(--glyph,1));line-height:1.25;letter-spacing:var(--title-track)}
+.item .note{font-size:clamp(20px,calc(30px - var(--rows) * 1px),27px);color:var(--sub);margin-top:6px}
+.item .mprice{font-family:var(--font-script),serif;font-style:var(--script-style);font-weight:700;color:var(--accent);font-size:clamp(28px,calc(46px - var(--rows) * 2px),40px);margin-top:6px}
+.sep{width:10px;height:10px;background:var(--accent);transform:rotate(45deg);opacity:.8}
+footer{position:relative;z-index:6;text-align:center;font-size:25px;color:var(--sub);margin:0 120px 100px;border-top:1px solid var(--line);padding-top:28px;display:flex;flex-wrap:wrap;justify-content:center}
+footer span+span::before{content:"·";margin:0 16px;color:var(--accent)}
+body[data-deco="frame"] .deco{inset:34px;border-color:color-mix(in srgb,var(--accent) 70%,transparent)}
+body[data-deco="frame"] .deco::after{border-color:color-mix(in srgb,var(--accent) 70%,transparent)}
+body[data-style="modern"] .item .mprice{font-family:var(--font-body);font-weight:900}
+body[data-style="pop"] .hero{border-bottom:14px solid var(--ink)}
+body[data-style="pop"] .hero::after{display:none}
+body[data-style="pop"] header{margin-top:500px}
+body[data-style="grill"] .deco{display:none}
+
+.menus[data-cols="2"]{display:grid;grid-template-columns:1fr 1fr;align-content:center;gap:44px 40px;padding:20px 110px}
+.menus[data-cols="2"] .sep{display:none}
+
+body[data-style="pop"] .shop{font-size:84px}
+body[data-style="pop"] .hero{height:400px}
+body[data-style="pop"] header{margin-top:440px}
+body[data-style="pop"] .menus{gap:18px}
+
+.menus[data-cols="2"] .item .mprice{font-size:36px}
+
+.item .sub{font-size:.6em;color:var(--sub);margin-top:2px}
+.item .sub+.note{margin-top:4px}
+.menus[data-cols="2"]{gap:64px 48px;padding:30px 100px}
+.menus[data-cols="2"] .item{font-size:50px}
+.menus[data-cols="2"] .item .mprice{font-size:40px}
+
+.item:has(.sub) .name{line-height:1.15}
+.menus[data-cols="2"] .item .sub,.menus .item .sub{display:block}
+/* cozy */
+body[data-style="cozy"] .hero{left:34px;right:34px;top:34px;border-radius:40px;overflow:hidden}
+body[data-style="cozy"] .menus{background:color-mix(in srgb,var(--bg2) 70%,transparent);border-radius:44px;margin:40px 90px 40px;padding:50px 30px}
+body[data-style="cozy"] .sprig{left:60px;bottom:150px;width:170px;height:170px;z-index:7}
+body[data-style="cozy"] .sprig.flip{left:auto;right:60px}
+body[data-style="cozy"] .intro{color:var(--ink);opacity:.8;font-size:31px}
+body[data-style="cozy"] footer{color:var(--ink);border-top:none}
+main[data-many] .hero{height:330px!important}
+main[data-many] header{margin-top:220px!important}
+main[data-many] .shop{font-size:80px}
+main[data-many] .menus[data-cols="2"]{gap:30px 40px}
+main[data-many] .menus[data-cols="2"] .item{font-size:40px}
+main[data-many] .menus[data-cols="2"] .item .mprice{font-size:32px}
+body[data-style="cozy"] main[data-many] .menus{margin:24px 70px;padding:34px 20px}
+body[data-style="pop"] main[data-many] header{margin-top:360px!important}
+main>.origin{text-align:center;margin:0 auto 18px;max-width:860px;font-size:21px}
+body[data-style="modern"] main>.origin{text-align:left;margin-left:0}
+main>.origin{margin:0 120px 14px}

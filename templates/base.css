@@ -1,0 +1,93 @@
+@font-face{font-family:"Noto Serif KR";font-weight:400;src:url(../fonts/NotoSerifKR-400.ttf)}
+@font-face{font-family:"Noto Serif KR";font-weight:700;src:url(../fonts/NotoSerifKR-700.ttf)}
+@font-face{font-family:"Noto Serif KR";font-weight:900;src:url(../fonts/NotoSerifKR-900.ttf)}
+@font-face{font-family:"Noto Sans KR";font-weight:400;src:url(../fonts/NotoSansKR-400.ttf)}
+@font-face{font-family:"Noto Sans KR";font-weight:500;src:url(../fonts/NotoSansKR-500.ttf)}
+@font-face{font-family:"Noto Sans KR";font-weight:700;src:url(../fonts/NotoSansKR-700.ttf)}
+@font-face{font-family:"Noto Sans KR";font-weight:900;src:url(../fonts/NotoSansKR-900.ttf)}
+@font-face{font-family:"Gowun Batang";font-weight:400;src:url(../fonts/GowunBatang-400.ttf)}
+@font-face{font-family:"Gowun Batang";font-weight:700;src:url(../fonts/GowunBatang-700.ttf)}
+@font-face{font-family:"Gowun Dodum";font-weight:400;src:url(../fonts/GowunDodum-Regular.ttf)}
+@font-face{font-family:"Song Myung";font-weight:400;src:url(../fonts/SongMyung-400.ttf)}
+@font-face{font-family:"Jua";font-weight:400;src:url(../fonts/Jua-400.ttf)}
+@font-face{font-family:"Black Han Sans";font-weight:400;src:url(../fonts/BlackHanSans-400.ttf)}
+@font-face{font-family:"Do Hyeon";font-weight:400;src:url(../fonts/DoHyeon-400.ttf)}
+@font-face{font-family:"Gaegu";font-weight:700;src:url(../fonts/Gaegu-700.ttf)}
+@font-face{font-family:"Nanum Brush Script";font-weight:400;src:url(../fonts/NanumBrushScript-400.ttf)}
+@font-face{font-family:"Nanum Pen Script";font-weight:400;src:url(../fonts/NanumPenScript-Regular.ttf)}
+@font-face{font-family:"Nanum Myeongjo";font-weight:400;src:url(../fonts/NanumMyeongjo-Regular.ttf)}
+@font-face{font-family:"Nanum Myeongjo";font-weight:700;src:url(../fonts/NanumMyeongjo-Bold.ttf)}
+@font-face{font-family:"Nanum Myeongjo";font-weight:800;src:url(../fonts/NanumMyeongjo-ExtraBold.ttf)}
+@font-face{font-family:"Hahmlet";font-weight:700;src:url(../fonts/Hahmlet-700.ttf)}
+@font-face{font-family:"Hahmlet";font-weight:900;src:url(../fonts/Hahmlet-900.ttf)}
+@font-face{font-family:"Gothic A1";font-weight:400;src:url(../fonts/GothicA1-Regular.ttf)}
+@font-face{font-family:"Gothic A1";font-weight:700;src:url(../fonts/GothicA1-Bold.ttf)}
+@font-face{font-family:"Gothic A1";font-weight:900;src:url(../fonts/GothicA1-Black.ttf)}
+@font-face{font-family:"IBM Plex Sans KR";font-weight:400;src:url(../fonts/IBMPlexSansKR-Regular.ttf)}
+@font-face{font-family:"IBM Plex Sans KR";font-weight:700;src:url(../fonts/IBMPlexSansKR-Bold.ttf)}
+@font-face{font-family:"Yeon Sung";font-weight:400;src:url(../fonts/YeonSung-Regular.ttf)}
+@font-face{font-family:"Gamja Flower";font-weight:400;src:url(../fonts/GamjaFlower-Regular.ttf)}
+@font-face{font-family:"Bagel Fat One";font-weight:400;src:url(../fonts/BagelFatOne-Regular.ttf)}
+@font-face{font-family:"Dongle";font-weight:700;src:url(../fonts/Dongle-Bold.ttf)}
+@font-face{font-family:"East Sea Dokdo";font-weight:400;src:url(../fonts/EastSeaDokdo-Regular.ttf)}
+@font-face{font-family:"Dokdo";font-weight:400;src:url(../fonts/Dokdo-Regular.ttf)}
+@font-face{font-family:"Gasoek One";font-weight:400;src:url(../fonts/GasoekOne-Regular.ttf)}
+@font-face{font-family:"Nanum Gothic Coding";font-weight:400;src:url(../fonts/NanumGothicCoding-Regular.ttf)}
+@font-face{font-family:"Nanum Gothic Coding";font-weight:700;src:url(../fonts/NanumGothicCoding-Bold.ttf)}
+@font-face{font-family:"Cormorant Garamond";font-style:italic;font-weight:600;src:url(../fonts/CormorantGaramond-600i.ttf)}
+@font-face{font-family:"Playfair Display";font-style:italic;font-weight:600;src:url(../fonts/PlayfairDisplay-600i.ttf)}
+@font-face{font-family:"DM Serif Display";font-style:italic;font-weight:400;src:url(../fonts/DMSerifDisplay-Italic.ttf)}
+@font-face{font-family:"Caveat";font-weight:400 700;src:url(../fonts/Caveat-VF.ttf)}
+@font-face{font-family:"Montserrat";font-weight:100 900;src:url(../fonts/Montserrat-VF.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body),sans-serif;font-weight:var(--body-weight,400);-webkit-font-smoothing:antialiased;word-break:keep-all}
+.title{font-family:var(--font-title),serif;font-weight:var(--title-weight);letter-spacing:var(--title-track)}
+.lbl{font-family:var(--font-script),serif;font-style:var(--script-style);font-weight:700;color:var(--accent);line-height:1}
+.lbl .en,.lbl .ko{display:none}
+body[data-lang="en"] .lbl .en,body[data-lang="en_upper"] .lbl .en{display:inline}
+body[data-lang="en_upper"] .lbl{text-transform:uppercase;letter-spacing:.3em;font-size:.72em!important;font-weight:700}
+body[data-lang="ko"] .lbl .ko{display:inline}
+.shop{letter-spacing:var(--shop-track)}
+/* ---------- deco overlays ---------- */
+.deco{position:absolute;inset:0;pointer-events:none;z-index:5}
+body[data-deco="frame"] .deco{inset:28px;border:1.5px solid var(--frame,var(--line))}
+body[data-deco="frame"] .deco::after{content:"";position:absolute;inset:8px;border:1px solid var(--frame,var(--line))}
+body[data-deco="dashed"] .deco{inset:26px;border:3px dashed var(--frame,var(--line));border-radius:36px}
+body[data-deco="sticker"] .deco{inset:0;border:14px solid var(--ink)}
+body[data-deco="hanji"] main::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .48  0 0 0 0 .38  0 0 0 .35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+body[data-deco="hanji"] .deco{inset:34px;border-top:4px solid var(--frame,var(--ink));border-bottom:4px solid var(--frame,var(--ink))}
+body[data-deco="slash"] .deco::before{content:"";position:absolute;right:-190px;top:-80px;width:250px;height:820px;background:var(--accent);transform:rotate(28deg);opacity:.95}
+body[data-deco="slash"] .deco::after{content:"";position:absolute;right:-10px;top:-80px;width:24px;height:820px;background:var(--accent);transform:rotate(28deg);opacity:.95}
+/* ---------- price styles ---------- */
+.price{white-space:nowrap;font-variant-numeric:tabular-nums}
+.p-text{font-family:var(--font-title),serif;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:18px}
+.p-text::before,.p-text::after{content:"";width:46px;height:1.5px;background:currentColor}
+.p-block{background:var(--accent);color:var(--accent-ink);font-weight:900;padding:.18em .55em .22em;border-radius:var(--radius);display:inline-block}
+.p-tag{background:var(--accent);color:var(--accent-ink);font-weight:700;padding:.2em .9em .26em 1.3em;border-radius:.5em 999px 999px .5em;display:inline-block;position:relative;font-family:var(--font-title),serif;outline:2px dashed color-mix(in srgb,var(--accent-ink) 55%,transparent);outline-offset:-9px}
+.p-tag::before{content:"";position:absolute;left:.45em;top:50%;width:.28em;height:.28em;margin-top:-.14em;border-radius:50%;background:var(--bg)}
+.p-sticker{background:var(--accent);color:var(--accent-ink);font-family:var(--font-title),sans-serif;border:6px solid var(--ink);border-radius:999px;padding:.2em .8em .26em;display:inline-block;transform:rotate(-4deg);box-shadow:6px 6px 0 var(--ink)}
+.p-stamp{border:4px solid var(--accent);color:var(--accent);font-family:var(--font-title),serif;padding:.16em .6em .22em;display:inline-block;outline:2px solid var(--accent);outline-offset:4px}
+
+/* ---------- second-language name (optional) ---------- */
+.sub{display:block;line-height:1.15;opacity:.92}
+.sub.en{font-family:var(--font-latin),serif;font-style:var(--latin-style,normal);font-weight:600;letter-spacing:.01em}
+.sub.ko{font-family:var(--font-body),sans-serif;font-weight:700}
+body[data-style="modern"] .sub.en,body[data-style="grill"] .sub.en{text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.line .sub.en{max-width:520px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body[data-style="modern"] .line .sub.en,body[data-style="grill"] .line .sub.en{font-size:calc(.42em / var(--glyph,1))}
+/* ---------- cozy: paper grain + hand-drawn sprigs ---------- */
+body[data-deco="dashed"] main::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.28;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' seed='9'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .4  0 0 0 0 .3  0 0 0 .4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.sprig{position:absolute;z-index:4;pointer-events:none;width:170px;height:170px;background:var(--sprig,var(--accent));opacity:.85;display:none;
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'><path d='M14 90 C34 70 52 48 86 12'/><path d='M30 72 C22 62 22 52 26 44 C34 52 35 62 30 72Z'/><path d='M30 72 C40 74 50 70 56 64 C46 60 37 63 30 72Z'/><path d='M46 54 C38 44 39 34 44 27 C51 36 51 45 46 54Z'/><path d='M46 54 C56 56 66 52 71 45 C61 42 52 45 46 54Z'/><path d='M62 36 C58 28 60 21 64 16 C69 23 68 30 62 36Z'/><path d='M62 36 C70 37 77 34 81 28 C73 26 67 29 62 36Z'/></svg>") center/contain no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'><path d='M14 90 C34 70 52 48 86 12'/><path d='M30 72 C22 62 22 52 26 44 C34 52 35 62 30 72Z'/><path d='M30 72 C40 74 50 70 56 64 C46 60 37 63 30 72Z'/><path d='M46 54 C38 44 39 34 44 27 C51 36 51 45 46 54Z'/><path d='M46 54 C56 56 66 52 71 45 C61 42 52 45 46 54Z'/><path d='M62 36 C58 28 60 21 64 16 C69 23 68 30 62 36Z'/><path d='M62 36 C70 37 77 34 81 28 C73 26 67 29 62 36Z'/></svg>") center/contain no-repeat}
+.sprig.flip{transform:scaleX(-1)}
+body[data-style="cozy"] .sprig{display:block}
+.blob{position:absolute;z-index:1;pointer-events:none;display:none;background:var(--bg2);border-radius:58% 42% 47% 53% / 52% 46% 54% 48%}
+body[data-style="cozy"] .blob{display:block}
+
+/* ---------- origin (원산지, optional, small) ---------- */
+.origin{font-family:var(--font-body),sans-serif;font-weight:500;font-size:20px;line-height:1.4;color:var(--sub);letter-spacing:0;position:relative;z-index:6}
+.m-origin{font-family:var(--font-body),sans-serif;font-weight:500;font-size:19px;color:var(--sub);margin-top:4px;opacity:.9}

@@ -1,0 +1,17 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{{ theme_css|safe }}{{ base_css|safe }}{{ style_css|safe }}</style></head>
+<body data-style="{{ style }}" data-deco="{{ deco }}" data-lang="{{ label_lang }}" data-photo="{{ photo_mode }}" data-layout="big_price"><main>
+  <div class="top">
+    <div class="left">
+      <div class="shop" data-field="shop_name">{{ shop_name }}</div>
+      <div class="txt">
+        <div class="lbl"><span class="en">{{ category_en }}</span><span class="ko">{{ category_ko }}</span></div>
+        <h1 class="title menu" data-field="menu_name">{{ main_name }}</h1>
+        {% if sub_name %}<div class="sub {{ sub_lang }}" data-field="menu_name_sub">{{ sub_name }}</div>{% endif %}
+        {% if body %}<p class="body" data-field="body">{{ body }}</p>{% endif %}
+        {% if origin %}<p class="origin" data-field="origin">원산지 {{ origin }}</p>{% endif %}
+      </div>
+    </div>
+    <div class="media{% if cutout_url %} is-cut{% endif %}">{% if cutout_url %}<i class="halo"></i><img class="food cutout" src="{{ cutout_url }}" alt="">{% elif photo_url %}<img class="food" src="{{ photo_url }}" alt="">{% endif %}</div>
+  </div>
+  {% if price %}<div class="bigprice" data-field="price">{% if price_num %}{% if price_pre %}<span class="pre">{{ price_pre }}</span>{% endif %}<span class="num fit" data-max="236" data-min="120" data-noscale="1">{{ price_num }}</span><span class="won">원</span>{% else %}<span class="num fit" data-max="150" data-min="70" data-noscale="1">{{ price }}</span>{% endif %}</div>{% endif %}
+</main><script>{{ fit_js|safe }}</script></body></html>

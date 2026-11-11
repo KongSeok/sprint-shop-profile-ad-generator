@@ -35,22 +35,42 @@ def test_themes_and_html():
 def chromium_available():
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
-        return Path(os.getenv('RENDER_BROWSER_EXECUTABLE') or p.chromium.executable_path).is_file()
+        edge = Path(os.environ.get('ProgramFiles(x86)', 'C:/Program Files (x86)')) / 'Microsoft/Edge/Application/msedge.exe'
+        return Path(p.chromium.executable_path).is_file() or edge.is_file()
 
 
 def test_real_png_and_overflow():
     if not chromium_available():
         pytest.skip('playwright install chromium 필요')
     profile = ShopProfile(shop_name='한글 가게', business_type='카페')
-    result = render_ad_card(profile, {'name': '라떼'}, {'headline': '긴 문장 ' * 40, 'body': '한글 본문'})
+    result = render_ad_card(profile, {'name': '라떼'}, {'body': '긴 문장 ' * 80})
     assert result.png.startswith(b'\x89PNG\r\n\x1a\n')
     assert struct.unpack('>II', result.png[16:24]) == (1080, 1080)
-    assert '글이 칸을 넘쳤어요: headline' in result.warnings
+    assert '글이 칸을 넘쳤어요: body' in result.warnings
 
 
 def test_api_no_gemini(api_client, monkeypatch, gemini_mock):
     monkeypatch.setattr(renderer, 'render_ad_card', lambda *a: renderer.RenderResult(b'png', ['warning']))
-    result = api_client.post('/render/ad-card', json={'profile': {'shop_name': '가게', 'business_type': '카페'}, 'menu': {'name': '라떼'}, 'headline': '오늘', 'body': '소개'})
+    result = api_client.post('/render/ad-card', json={'profile': {'shop_name': '가게', 'business_type': '카페'}, 'menu': {'name': '라떼'}, 'headline': '오늘', 'body': '소개', 'photo_url': 'data:image/png;base64,AAAA'})
     assert result.status_code == 200 and result.json()['warnings'] == ['warning']
     assert api_client.post('/render/ad-card', json={'shop_id': 999, 'menu': {'name': '라떼'}, 'headline': '오늘', 'body': ''}).status_code == 404
     gemini_mock.assert_not_called()
+
+
+def test_ad_api_requires_photo_before_render(api_client, monkeypatch):
+    from unittest.mock import Mock
+    render = Mock()
+    monkeypatch.setattr(renderer, 'render_ad_card', render)
+    result = api_client.post('/render/ad-card', json={
+        'profile': {'shop_name': '가게', 'business_type': '카페'},
+        'menu': {'name': '라테'},
+    })
+    assert result.status_code == 422
+    assert result.json()['detail'] == '메뉴 사진을 올려 주세요'
+    render.assert_not_called()
+
+
+@pytest.mark.parametrize('layout', ['photo_full', 'cutout_studio', 'receipt', 'big_price'])
+def test_ad_templates_omit_missing_img(layout):
+    html, _ = renderer.fill_html('ad_card', {'shop_name': '가게', 'menu_name': '라테'}, template=layout)
+    assert '<img' not in html

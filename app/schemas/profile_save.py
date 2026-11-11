@@ -3,6 +3,7 @@ from typing import Literal
 from pydantic import Field, field_validator, model_validator
 
 from app.schemas.concept import Concept
+from app.schemas.design import SavedDesign
 from app.schemas.profile import ProfileModel, ShopProfile
 
 REQUIRED_MESSAGE = "가게 이름과 업종은 꼭 적어 주세요"
@@ -34,6 +35,8 @@ class ProfileSaveRequest(ProfileModel):
     shop_id: int | None = Field(default=None, gt=0)
     profile: ShopProfile
     concept: Concept | None = None
+    design: SavedDesign | None = None
+    menu_origins: dict[str, str] | None = None
     source_text: str
     prompt_version: Literal["v1", "v2"] = "v2"
 
@@ -55,6 +58,7 @@ class ProfileSaveRequest(ProfileModel):
 
 class ProfileSaveResponse(ProfileModel):
     shop_id: int
+    concept: Concept | None = None
 
 
 class ShopListItem(ProfileModel):
@@ -68,6 +72,9 @@ class SavedShop(ProfileModel):
     shop_id: int
     profile: ShopProfile
     concept: Concept | None = None
+    design: SavedDesign | None = None
+    menu_names_en: dict[str, str | None] = Field(default_factory=dict)
+    menu_origins: dict[str, str] = Field(default_factory=dict)
     source_text: str
     prompt_version: Literal["v1", "v2"]
     created_at: str

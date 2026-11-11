@@ -2,7 +2,9 @@ import requests
 
 
 class UserApiError(Exception):
-    pass
+    def __init__(self, message, code=None):
+        super().__init__(message)
+        self.code = code
 
 
 def request_api(base_url: str, method: str, path: str, *, payload=None, timeout=10):
@@ -18,12 +20,18 @@ def request_api(base_url: str, method: str, path: str, *, payload=None, timeout=
         code = detail.get("code") if isinstance(detail, dict) else None
         if code == "FEWSHOT_NOT_READY":
             message = "정리에 필요한 예시 데이터가 준비되지 않았어요. 관리자에게 알려 주세요"
+        elif code == "LLM_QUOTA_EXHAUSTED":
+            message = "AI 서비스 잔액 또는 사용 한도가 소진됐어요."
         elif code == "GEMINI_KEY_MISSING":
             message = "서비스 연결 설정을 확인해야 해요. 관리자에게 알려 주세요"
         elif response.status_code == 409 and path == "/profile/suggest-concept":
             message = "이미 분위기·말투가 있어요"
         elif path == "/profile/suggest-concept" and response.status_code == 422:
             message = "입력한 프로필과 메뉴를 확인해 주세요"
+        elif path in {"/image/background", "/image/compose"} and response.status_code in {422, 503} and isinstance(detail, str):
+            message = detail
+        elif path == "/render/ad-card" and response.status_code == 422 and isinstance(detail, str):
+            message = detail
         elif response.status_code == 422:
             message = ("가게 선택과 메뉴 이름을 확인해 주세요" if path == "/copy/generate"
                        else "가게 이름과 업종은 꼭 적어 주세요. 메뉴를 입력했다면 메뉴 이름도 확인해 주세요")
@@ -31,7 +39,7 @@ def request_api(base_url: str, method: str, path: str, *, payload=None, timeout=
             message = "저장된 가게를 찾지 못했어요. 목록을 새로 불러와 주세요"
         else:
             message = "지금은 처리하지 못했어요. 잠시 후 다시 눌러 주세요"
-        raise UserApiError(message)
+        raise UserApiError(message, code)
     try:
         return response.json()
     except ValueError as exc:

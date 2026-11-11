@@ -5,10 +5,11 @@ import pytest
 from google.genai.errors import ClientError
 from pydantic import ValidationError
 from app.core import config
-from app.schemas.concept import Concept, ConceptSuggestions
+from app.schemas.concept import Concept, ConceptSuggestions, ModelSuggestions
 from app.schemas.profile import ShopProfile
 from app.schemas.copy import CopyMenu
-from app.services import concept_suggester, shop_store
+from app.services import shop_store
+from app.services.design_options import default_design
 from app.services.copy_generator import build_copy_prompt
 from app.ui.concept_form import concept_from_form
 
@@ -22,29 +23,35 @@ def concept():
     return Concept(**candidates()[0], source='추천')
 
 
+def model_candidates():
+    return [{**{key: val for key, val in row.items() if key != 'theme'},
+             'design': {**default_design('카페', tone).model_dump(exclude={'source','lang','show_origin'}), 'ad_layout': layout}}
+            for row, tone, layout in zip(candidates(), ('cozy', 'classic', 'pop'),
+                                         ('photo_full', 'cutout_studio', 'photo_full'))]
+
+
 @pytest.mark.parametrize('field', ['mood_strengths', 'tone'])
-def test_existing_preferences_never_call_model(api_client, gemini_mock, field):
-    profile = ShopProfile(shop_name=None, business_type='카페', **{field:'있는 값'})
-    with pytest.raises(concept_suggester.ConceptSuggestionError) as caught:
-        concept_suggester.suggest_concepts(profile)
-    assert caught.value.status_code == 409
+def test_existing_preferences_are_used(api_client, gemini_mock, field):
+    model = gemini_mock.return_value.__enter__.return_value.models.generate_content
+    model.return_value.text = json.dumps({'candidates': model_candidates()})
+    profile = ShopProfile(shop_name='가게', business_type='카페', **{field:'있는 값'})
     response = api_client.post('/profile/suggest-concept', json={'profile':profile.model_dump()})
-    assert response.status_code == 409
-    assert response.json()['detail']['message'] == '이미 분위기·말투가 있어요'
-    gemini_mock.assert_not_called()
+    assert response.status_code == 200
+    assert response.json()['source'] == '추천'
+    assert json.loads(model.call_args.kwargs['contents'])[field] == '있는 값'
 
 
 def test_recommendation_input_settings_and_theme_fallback(api_client, gemini_mock):
     client = gemini_mock.return_value.__enter__.return_value
-    rows = candidates()
-    rows[1]['theme'] = '허용하지 않은 테마'
+    rows = model_candidates()
     client.models.generate_content.return_value.text = json.dumps({'candidates':rows})
     profile = ShopProfile(shop_name='가게', business_type='카페', menus=[{'name':'라떼','price':'5000원'}], location='위치 비공개', other_info=['원문 비공개'])
     response = api_client.post('/profile/suggest-concept', json={'profile':profile.model_dump()})
     assert response.status_code == 200
-    assert len(response.json()['candidates']) == 3 and response.json()['candidates'][1]['theme'] == '기본'
+    assert {row['design']['style'] for row in response.json()['candidates']} == {'cozy', 'classic', 'pop'}
+    assert response.json()['source'] == '추천'
     call = client.models.generate_content.call_args.kwargs
-    assert set(json.loads(call['contents'])) == {'shop_name','business_type','menus'}
+    assert set(json.loads(call['contents'])) == {'shop_name','business_type','menu_name','mood_strengths','tone'}
     assert '위치 비공개' not in call['contents'] and '원문 비공개' not in call['contents']
     assert call['config'].temperature == 0.9
     assert call['config'].response_mime_type == 'application/json'
@@ -56,11 +63,11 @@ def test_recommendation_input_settings_and_theme_fallback(api_client, gemini_moc
 @pytest.mark.parametrize('count', [0,2,4])
 def test_exactly_three_candidates(count):
     with pytest.raises(ValidationError):
-        ConceptSuggestions(candidates=(candidates()*2)[:count])
+        ModelSuggestions(candidates=(model_candidates()*2)[:count])
 
 
 def test_distinct_names_and_moods():
-    rows = candidates()
+    rows = model_candidates()
     rows[1] = rows[0]
     with pytest.raises(ValidationError):
         ConceptSuggestions(candidates=rows)
@@ -69,15 +76,19 @@ def test_distinct_names_and_moods():
 
 
 @pytest.mark.parametrize('status', [429,503,504,400])
-def test_failure_is_safe_and_save_still_available(api_client, gemini_mock, status):
+def test_failure_is_safe_and_save_still_available(api_client, gemini_mock, status, monkeypatch):
     client = gemini_mock.return_value.__enter__.return_value
     client.models.generate_content.side_effect = ClientError(status, {'error':{'message':'test-only-gemini-key'}})
     profile = {'shop_name':'가게','business_type':'카페'}
+    delays = []
+    monkeypatch.setattr("app.services.llm_client.sleep", delays.append)
     response = api_client.post('/profile/suggest-concept', json={'profile':profile})
-    assert response.status_code in (502,503)
-    assert response.json()['detail']['message'] == '잠시 후 다시 눌러 주세요'
+    assert response.status_code == 200
+    assert response.json()['source'] == '기본'
+    assert response.json()['candidates'][0]['design']['style'] == 'cozy'
     assert 'test-only-gemini-key' not in response.text
-    assert client.models.generate_content.call_count == 1
+    assert client.models.generate_content.call_count == (3 if status >= 500 else 1)
+    assert delays == ([5, 15] if status >= 500 else [])
     saved = api_client.post('/profile/save', json={'profile':profile,'source_text':''})
     assert saved.status_code == 200
 
@@ -89,7 +100,7 @@ def test_save_load_clear_and_saved_shop_recommendation(api_client, gemini_mock):
     assert loaded['concept'] == concept().model_dump()
     assert 'concept' not in loaded['profile']
     client = gemini_mock.return_value.__enter__.return_value
-    client.models.generate_content.return_value.text = json.dumps({'candidates':candidates()})
+    client.models.generate_content.return_value.text = json.dumps({'candidates':model_candidates()})
     assert api_client.post('/profile/suggest-concept', json={'shop_id':saved}).status_code == 200
     payload.update(shop_id=saved, concept=None)
     api_client.post('/profile/save', json=payload)

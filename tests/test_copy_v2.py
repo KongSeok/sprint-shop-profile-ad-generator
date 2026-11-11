@@ -146,5 +146,7 @@ def test_short_channels_emit_one_combined_warning(api_client, copy_mock, copy_ou
     })
     assert result.status_code == 200
     assert result.json()['regeneration']['performed']
-    assert any('schema:' in w for w in result.json()['warnings'])
+    warnings = result.json()['warnings']
+    assert warnings.count('문구에 빠진 내용이나 길이가 맞지 않는 부분이 있는지 확인해 주세요.') == 1
+    assert all('schema:' not in warning for warning in warnings)
     assert copy_mock.models.generate_content.call_count == 2

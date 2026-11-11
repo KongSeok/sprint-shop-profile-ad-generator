@@ -1,12 +1,14 @@
 from pydantic import Field, field_validator, model_validator
 from app.schemas.profile import ProfileModel, ShopProfile
 from app.schemas.copy import CopyMenu
+from app.schemas.design import RenderDesign
 
 
 class RenderSource(ProfileModel):
     shop_id: int | None = Field(default=None, gt=0)
     profile: ShopProfile | None = None
-    template: str = 'placeholder'
+    template: str | None = None
+    design: RenderDesign | None = None
     theme: str | None = None
 
     @model_validator(mode='after')
@@ -18,8 +20,17 @@ class RenderSource(ProfileModel):
 
 class AdCardRequest(RenderSource):
     menu: CopyMenu
-    headline: str = Field(min_length=1)
-    body: str
+    headline: str = ''
+    body: str = ""
+    photo_url: str | None = Field(default=None, max_length=24 * 1024 * 1024)
+    cutout_url: str | None = Field(default=None, max_length=24 * 1024 * 1024)
+    menu_name_en: str | None = None
+    origin: str | None = None
+
+
+    background_url: str | None = Field(default=None, max_length=24 * 1024 * 1024)
+    food_mask_url: str | None = Field(default=None, max_length=24 * 1024 * 1024)
+    suggest_original: bool = False
 
 
 class RenderResponse(ProfileModel):
@@ -31,6 +42,9 @@ class BoardMenu(ProfileModel):
     name: str = Field(min_length=1)
     price: str | None = None
     note: str | None = None
+    name_en: str | None = None
+    origin: str | None = None
+    photo_url: str | None = Field(default=None, max_length=24 * 1024 * 1024)
 
     @field_validator('name')
     @classmethod

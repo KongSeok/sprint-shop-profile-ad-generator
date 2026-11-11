@@ -1,0 +1,732 @@
+{
+ "classic": {
+  "label": "고급·정갈",
+  "label_lang": "en",
+  "shop_track": "0.42em",
+  "radius": "0px",
+  "deco": "frame",
+  "price": "text",
+  "fonts": {
+   "serif": {
+    "name": "명조 굵게",
+    "glyph": 1,
+    "title": "Noto Serif KR",
+    "title_weight": 900,
+    "body": "Noto Sans KR",
+    "body_weight": 400,
+    "script": "Cormorant Garamond",
+    "script_style": "italic",
+    "latin": "Cormorant Garamond",
+    "title_scale": 0.86,
+    "title_track": "0.01em"
+   },
+   "myeongjo": {
+    "name": "나눔명조",
+    "glyph": 1,
+    "title": "Nanum Myeongjo",
+    "title_weight": 800,
+    "body": "Nanum Myeongjo",
+    "body_weight": 400,
+    "script": "Playfair Display",
+    "script_style": "italic",
+    "latin": "Playfair Display",
+    "title_scale": 0.9,
+    "title_track": "0em"
+   },
+   "hahmlet": {
+    "name": "함렛",
+    "glyph": 1,
+    "title": "Hahmlet",
+    "title_weight": 900,
+    "body": "Noto Sans KR",
+    "body_weight": 400,
+    "script": "DM Serif Display",
+    "script_style": "italic",
+    "latin": "DM Serif Display",
+    "title_scale": 0.88,
+    "title_track": "-0.01em"
+   }
+  },
+  "palettes": {
+   "ivory_gold": {
+    "name": "아이보리·골드",
+    "bg": "#F7F2E8",
+    "bg2": "#E9DDC6",
+    "ink": "#2A2118",
+    "sub": "#6F604C",
+    "line": "#C9B48A",
+    "accent": "#8C6A2C",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "black_gold": {
+    "name": "블랙·골드",
+    "bg": "#121110",
+    "bg2": "#2B2418",
+    "ink": "#F2E8D5",
+    "sub": "#B3A385",
+    "line": "#6A5835",
+    "accent": "#CDA85F",
+    "accent_ink": "#121110",
+    "photo": "overlay"
+   },
+   "navy_cream": {
+    "name": "네이비·크림",
+    "bg": "#15223F",
+    "bg2": "#22355E",
+    "ink": "#F5EFE3",
+    "sub": "#B8C0D3",
+    "line": "#4A5D88",
+    "accent": "#E3C892",
+    "accent_ink": "#15223F",
+    "photo": "overlay"
+   },
+   "wine_bone": {
+    "name": "와인·본",
+    "bg": "#3A1119",
+    "bg2": "#521A25",
+    "ink": "#F6EBE3",
+    "sub": "#D3B9B4",
+    "line": "#7A3A45",
+    "accent": "#E8C3A0",
+    "accent_ink": "#3A1119",
+    "photo": "overlay"
+   },
+   "forest_brass": {
+    "name": "포레스트·브라스",
+    "bg": "#1C2E26",
+    "bg2": "#2A4237",
+    "ink": "#EFE9DA",
+    "sub": "#B5BFAE",
+    "line": "#45604F",
+    "accent": "#CBA65E",
+    "accent_ink": "#1C2E26",
+    "photo": "overlay"
+   },
+   "pearl_burgundy": {
+    "name": "펄·버건디",
+    "bg": "#FAF7F2",
+    "bg2": "#EEE6DB",
+    "ink": "#2B1C1F",
+    "sub": "#6E5C5F",
+    "line": "#D8C8BC",
+    "accent": "#7A1F2B",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   }
+  },
+  "desc": "명조와 금색 테두리의 차분하고 고급스러운 느낌. 베이커리, 디저트, 와인바, 오마카세, 기념일 손님"
+ },
+ "modern": {
+  "label": "깔끔·모던",
+  "label_lang": "en_upper",
+  "shop_track": "0.08em",
+  "radius": "0px",
+  "deco": "none",
+  "price": "block",
+  "fonts": {
+   "noto": {
+    "name": "노토 산스",
+    "glyph": 1,
+    "title": "Noto Sans KR",
+    "title_weight": 900,
+    "body": "Noto Sans KR",
+    "body_weight": 400,
+    "script": "Noto Sans KR",
+    "script_style": "normal",
+    "latin": "Montserrat",
+    "title_scale": 1.12,
+    "title_track": "-0.045em"
+   },
+   "gothic": {
+    "name": "고딕 A1",
+    "glyph": 1,
+    "title": "Gothic A1",
+    "title_weight": 900,
+    "body": "Gothic A1",
+    "body_weight": 400,
+    "script": "Montserrat",
+    "script_style": "normal",
+    "latin": "Montserrat",
+    "title_scale": 1.1,
+    "title_track": "-0.04em"
+   },
+   "plex": {
+    "name": "IBM 플렉스",
+    "glyph": 1,
+    "title": "IBM Plex Sans KR",
+    "title_weight": 700,
+    "body": "IBM Plex Sans KR",
+    "body_weight": 400,
+    "script": "Montserrat",
+    "script_style": "normal",
+    "latin": "Montserrat",
+    "title_scale": 1.05,
+    "title_track": "-0.03em"
+   }
+  },
+  "palettes": {
+   "white_black": {
+    "name": "화이트·블랙",
+    "bg": "#FFFFFF",
+    "bg2": "#EFEFEF",
+    "ink": "#111111",
+    "sub": "#5E5E5E",
+    "line": "#DADADA",
+    "accent": "#111111",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "concrete_orange": {
+    "name": "콘크리트·오렌지",
+    "bg": "#ECEBE7",
+    "bg2": "#D9D8D3",
+    "ink": "#151515",
+    "sub": "#555555",
+    "line": "#C4C2BB",
+    "accent": "#C2410C",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "sage_ink": {
+    "name": "세이지·잉크",
+    "bg": "#E4EBE2",
+    "bg2": "#CDD9CA",
+    "ink": "#1D2A21",
+    "sub": "#4F5D53",
+    "line": "#B2C2AE",
+    "accent": "#2F5D46",
+    "accent_ink": "#FFFFFF",
+    "photo": "overlay"
+   },
+   "navy_lemon": {
+    "name": "네이비·레몬",
+    "bg": "#1D2B53",
+    "bg2": "#2A3B6B",
+    "ink": "#FFFFFF",
+    "sub": "#C3CBE0",
+    "line": "#3E5088",
+    "accent": "#F7E34B",
+    "accent_ink": "#1D2B53",
+    "photo": "overlay"
+   },
+   "black_lime": {
+    "name": "블랙·라임",
+    "bg": "#111111",
+    "bg2": "#1F1F1F",
+    "ink": "#F2F2F2",
+    "sub": "#A8A8A8",
+    "line": "#333333",
+    "accent": "#C6F24E",
+    "accent_ink": "#111111",
+    "photo": "overlay"
+   },
+   "paper_cobalt": {
+    "name": "페이퍼·코발트",
+    "bg": "#F4F6FB",
+    "bg2": "#E1E6F2",
+    "ink": "#0F1A3A",
+    "sub": "#4B5573",
+    "line": "#C9D1E5",
+    "accent": "#2346E8",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   }
+  },
+  "desc": "굵은 고딕과 넓은 여백의 깔끔한 느낌. 일식, 브런치, 샐러드, 젊은 직장인 손님"
+ },
+ "cozy": {
+  "label": "아늑·감성",
+  "label_lang": "ko",
+  "shop_track": "0.12em",
+  "radius": "28px",
+  "deco": "dashed",
+  "price": "tag",
+  "fonts": {
+   "batang": {
+    "name": "고운바탕",
+    "glyph": 1,
+    "title": "Gowun Batang",
+    "title_weight": 700,
+    "body": "Gowun Batang",
+    "body_weight": 700,
+    "script": "Gaegu",
+    "script_style": "normal",
+    "latin": "Gaegu",
+    "title_scale": 0.95,
+    "title_track": "0em"
+   },
+   "gaegu": {
+    "name": "개구 손글씨",
+    "glyph": 1.12,
+    "title": "Gaegu",
+    "title_weight": 700,
+    "body": "Gowun Dodum",
+    "body_weight": 400,
+    "script": "Nanum Pen Script",
+    "script_style": "normal",
+    "latin": "Caveat",
+    "title_scale": 1.05,
+    "title_track": "0em"
+   },
+   "yeonsung": {
+    "name": "연성 손글씨",
+    "glyph": 1,
+    "title": "Yeon Sung",
+    "title_weight": 400,
+    "body": "Gowun Dodum",
+    "body_weight": 400,
+    "script": "Gamja Flower",
+    "script_style": "normal",
+    "latin": "Caveat",
+    "title_scale": 1.0,
+    "title_track": "0em"
+   }
+  },
+  "palettes": {
+   "cream_terracotta": {
+    "name": "크림·테라코타",
+    "bg": "#F5EBDC",
+    "bg2": "#E8D5BA",
+    "ink": "#433022",
+    "sub": "#735D48",
+    "line": "#D2B999",
+    "accent": "#A84E30",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "milk_pink": {
+    "name": "밀크·핑크",
+    "bg": "#FBF1EE",
+    "bg2": "#F2D9D2",
+    "ink": "#4A2E2A",
+    "sub": "#7E5A54",
+    "line": "#E3BFB5",
+    "accent": "#B9535F",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "oat_sage": {
+    "name": "오트·세이지",
+    "bg": "#F2EEE3",
+    "bg2": "#E0DACA",
+    "ink": "#33392E",
+    "sub": "#5E6452",
+    "line": "#C8C3B0",
+    "accent": "#5B6E42",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "butter_brown": {
+    "name": "버터·브라운",
+    "bg": "#FBF0D2",
+    "bg2": "#F1DDA6",
+    "ink": "#4A3423",
+    "sub": "#765A3F",
+    "line": "#DFC17C",
+    "accent": "#9A5B1E",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "lavender_plum": {
+    "name": "라벤더·플럼",
+    "bg": "#F1ECF5",
+    "bg2": "#E0D5EA",
+    "ink": "#3D2E4A",
+    "sub": "#685A75",
+    "line": "#CBBEDA",
+    "accent": "#7D4A93",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "cocoa_cream": {
+    "name": "코코아·크림",
+    "bg": "#3A2A22",
+    "bg2": "#4D392E",
+    "ink": "#F5E9DA",
+    "sub": "#CDB9A6",
+    "line": "#6E5545",
+    "accent": "#E9A87C",
+    "accent_ink": "#3A2A22",
+    "photo": "overlay"
+   }
+  },
+  "desc": "손글씨와 잎 장식, 종이 질감의 따뜻하고 아늑한 느낌. 동네 카페, 베이커리, 가정식, 가족 손님"
+ },
+ "pop": {
+  "label": "활기·발랄",
+  "label_lang": "ko",
+  "shop_track": "0.04em",
+  "radius": "999px",
+  "deco": "sticker",
+  "price": "sticker",
+  "fonts": {
+   "jua": {
+    "name": "주아",
+    "glyph": 1,
+    "title": "Jua",
+    "title_weight": 400,
+    "body": "Noto Sans KR",
+    "body_weight": 700,
+    "script": "Jua",
+    "script_style": "normal",
+    "latin": "Jua",
+    "title_scale": 1.08,
+    "title_track": "0em"
+   },
+   "bagel": {
+    "name": "베이글 팻",
+    "glyph": 1,
+    "title": "Bagel Fat One",
+    "title_weight": 400,
+    "body": "Noto Sans KR",
+    "body_weight": 700,
+    "script": "Jua",
+    "script_style": "normal",
+    "latin": "Jua",
+    "title_scale": 1.0,
+    "title_track": "0em"
+   },
+   "dongle": {
+    "name": "동글",
+    "glyph": 1.45,
+    "title": "Dongle",
+    "title_weight": 700,
+    "body": "Noto Sans KR",
+    "body_weight": 700,
+    "script": "Jua",
+    "script_style": "normal",
+    "latin": "Jua",
+    "title_scale": 1.45,
+    "title_track": "-0.01em"
+   }
+  },
+  "palettes": {
+   "yellow_red": {
+    "name": "옐로·레드",
+    "bg": "#FFD43B",
+    "bg2": "#FFC21A",
+    "ink": "#2B1A0E",
+    "sub": "#4A3018",
+    "line": "#2B1A0E",
+    "accent": "#D62839",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "mint_pink": {
+    "name": "민트·핑크",
+    "bg": "#BDF0E0",
+    "bg2": "#8FE3CB",
+    "ink": "#173A32",
+    "sub": "#2F5A50",
+    "line": "#173A32",
+    "accent": "#C8245E",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "sky_orange": {
+    "name": "스카이·오렌지",
+    "bg": "#CDE7FF",
+    "bg2": "#A9D4FF",
+    "ink": "#14284B",
+    "sub": "#2E4C78",
+    "line": "#14284B",
+    "accent": "#FF7A1A",
+    "accent_ink": "#14284B",
+    "photo": "panel"
+   },
+   "lime_purple": {
+    "name": "라임·퍼플",
+    "bg": "#D8F55B",
+    "bg2": "#C3E83A",
+    "ink": "#2A1446",
+    "sub": "#41285F",
+    "line": "#2A1446",
+    "accent": "#6A2FE0",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "pink_blue": {
+    "name": "핑크·블루",
+    "bg": "#FFC2DC",
+    "bg2": "#FF9DC6",
+    "ink": "#10235C",
+    "sub": "#2A3D78",
+    "line": "#10235C",
+    "accent": "#2152E8",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "orange_navy": {
+    "name": "오렌지·네이비",
+    "bg": "#FF8A3D",
+    "bg2": "#FF7322",
+    "ink": "#12152E",
+    "sub": "#2B2F52",
+    "line": "#12152E",
+    "accent": "#FFE14D",
+    "accent_ink": "#1A1F3D",
+    "photo": "panel"
+   },
+   "lilac_yellow": {
+    "name": "라일락·옐로",
+    "bg": "#D9C8FF",
+    "bg2": "#C6AEFF",
+    "ink": "#26164A",
+    "sub": "#3E2D66",
+    "line": "#26164A",
+    "accent": "#FFD23F",
+    "accent_ink": "#26164A",
+    "photo": "panel"
+   },
+   "black_neon": {
+    "name": "블랙·네온핑크",
+    "bg": "#161616",
+    "bg2": "#262626",
+    "ink": "#FFFFFF",
+    "sub": "#CFCFCF",
+    "line": "#FFFFFF",
+    "accent": "#FF3E9A",
+    "accent_ink": "#161616",
+    "photo": "overlay"
+   }
+  },
+  "desc": "둥근 글씨와 스티커 가격, 쨍한 색의 발랄한 느낌. 분식, 디저트, 치킨, 학생·포장 손님"
+ },
+ "traditional": {
+  "label": "전통·한식",
+  "label_lang": "ko",
+  "shop_track": "0.3em",
+  "radius": "0px",
+  "deco": "hanji",
+  "price": "stamp",
+  "fonts": {
+   "songmyung": {
+    "name": "송명 + 붓글씨",
+    "glyph": 1,
+    "title": "Song Myung",
+    "title_weight": 400,
+    "body": "Noto Serif KR",
+    "body_weight": 400,
+    "script": "Nanum Brush Script",
+    "script_style": "normal",
+    "latin": "Cormorant Garamond",
+    "title_scale": 1.0,
+    "title_track": "0.02em"
+   },
+   "myeongjo": {
+    "name": "나눔명조 + 독도",
+    "glyph": 1,
+    "title": "Nanum Myeongjo",
+    "title_weight": 800,
+    "body": "Nanum Myeongjo",
+    "body_weight": 400,
+    "script": "East Sea Dokdo",
+    "script_style": "normal",
+    "latin": "Cormorant Garamond",
+    "title_scale": 0.95,
+    "title_track": "0em"
+   },
+   "brush": {
+    "name": "붓글씨 제목",
+    "glyph": 1.25,
+    "title": "Nanum Brush Script",
+    "title_weight": 400,
+    "body": "Noto Serif KR",
+    "body_weight": 400,
+    "script": "Song Myung",
+    "script_style": "normal",
+    "latin": "Cormorant Garamond",
+    "title_scale": 1.25,
+    "title_track": "0em"
+   }
+  },
+  "palettes": {
+   "hanji_red": {
+    "name": "한지·인주",
+    "bg": "#EFE6D2",
+    "bg2": "#E2D4B6",
+    "ink": "#2B2420",
+    "sub": "#5F5345",
+    "line": "#BFAE8C",
+    "accent": "#A3352A",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "ink_black": {
+    "name": "먹·인주",
+    "bg": "#141210",
+    "bg2": "#2E2A25",
+    "ink": "#EDE5D3",
+    "sub": "#ADA28D",
+    "line": "#5A5246",
+    "accent": "#B8372F",
+    "accent_ink": "#FFFFFF",
+    "photo": "overlay"
+   },
+   "celadon": {
+    "name": "청자",
+    "bg": "#DCE5DA",
+    "bg2": "#C6D3C4",
+    "ink": "#23302A",
+    "sub": "#4E5D55",
+    "line": "#A9B9A8",
+    "accent": "#8C3B2E",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "indigo_gold": {
+    "name": "쪽빛·금박",
+    "bg": "#1F2A44",
+    "bg2": "#2C3A5C",
+    "ink": "#EFE7D6",
+    "sub": "#BCB6A8",
+    "line": "#46557A",
+    "accent": "#D4A24C",
+    "accent_ink": "#1F2A44",
+    "photo": "overlay"
+   },
+   "persimmon": {
+    "name": "감·먹",
+    "bg": "#F3E3CC",
+    "bg2": "#E9CFAC",
+    "ink": "#2E2420",
+    "sub": "#5F4E40",
+    "line": "#D2B48A",
+    "accent": "#B4531A",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "plum_blossom": {
+    "name": "매화",
+    "bg": "#F5E8E4",
+    "bg2": "#EAD3CC",
+    "ink": "#2E2224",
+    "sub": "#5E4A4D",
+    "line": "#D6B5AE",
+    "accent": "#9C3346",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   }
+  },
+  "desc": "한지 질감과 붓글씨, 도장 가격의 전통적인 느낌. 한식, 백반, 국밥, 한정식, 어르신·가족 손님"
+ },
+ "grill": {
+  "label": "강렬·숯불",
+  "label_lang": "ko",
+  "shop_track": "0.2em",
+  "radius": "4px",
+  "deco": "slash",
+  "price": "block",
+  "fonts": {
+   "blackhan": {
+    "name": "블랙한산스",
+    "glyph": 1,
+    "title": "Black Han Sans",
+    "title_weight": 400,
+    "body": "Noto Sans KR",
+    "body_weight": 400,
+    "script": "Do Hyeon",
+    "script_style": "normal",
+    "latin": "Montserrat",
+    "title_scale": 1.18,
+    "title_track": "-0.01em"
+   },
+   "gasoek": {
+    "name": "가석원",
+    "glyph": 1,
+    "title": "Gasoek One",
+    "title_weight": 400,
+    "body": "Noto Sans KR",
+    "body_weight": 400,
+    "script": "Do Hyeon",
+    "script_style": "normal",
+    "latin": "Montserrat",
+    "title_scale": 1.05,
+    "title_track": "0em"
+   },
+   "dokdo": {
+    "name": "독도 붓",
+    "glyph": 1.25,
+    "title": "Dokdo",
+    "title_weight": 400,
+    "body": "Noto Sans KR",
+    "body_weight": 400,
+    "script": "Black Han Sans",
+    "script_style": "normal",
+    "latin": "Montserrat",
+    "title_scale": 1.3,
+    "title_track": "0em"
+   }
+  },
+  "palettes": {
+   "charcoal_fire": {
+    "name": "숯·불꽃",
+    "bg": "#141414",
+    "bg2": "#2C1C12",
+    "ink": "#F5F0E8",
+    "sub": "#B5A99A",
+    "line": "#3A3A3A",
+    "accent": "#FF6B1A",
+    "accent_ink": "#141414",
+    "photo": "overlay"
+   },
+   "black_red": {
+    "name": "블랙·레드",
+    "bg": "#0F0F0F",
+    "bg2": "#2A0F0F",
+    "ink": "#FFFFFF",
+    "sub": "#BDBDBD",
+    "line": "#333333",
+    "accent": "#E1262C",
+    "accent_ink": "#FFFFFF",
+    "photo": "overlay"
+   },
+   "smoke_gold": {
+    "name": "연기·골드",
+    "bg": "#2A2A2A",
+    "bg2": "#3C342A",
+    "ink": "#F3EBDD",
+    "sub": "#BFB3A0",
+    "line": "#4A4A4A",
+    "accent": "#F2B33D",
+    "accent_ink": "#1A1A1A",
+    "photo": "overlay"
+   },
+   "brick_amber": {
+    "name": "벽돌·앰버",
+    "bg": "#3A1C14",
+    "bg2": "#53291D",
+    "ink": "#F7EDE2",
+    "sub": "#D2B8A8",
+    "line": "#6E3B2C",
+    "accent": "#F29E38",
+    "accent_ink": "#3A1C14",
+    "photo": "overlay"
+   },
+   "kraft_red": {
+    "name": "크라프트·레드",
+    "bg": "#D4B48C",
+    "bg2": "#C29E73",
+    "ink": "#1E140C",
+    "sub": "#3D2C1C",
+    "line": "#1E140C",
+    "accent": "#A3201A",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   },
+   "bone_black": {
+    "name": "본·블랙",
+    "bg": "#F3EEE7",
+    "bg2": "#E2DACE",
+    "ink": "#1A1A1A",
+    "sub": "#4F4A44",
+    "line": "#CFC5B7",
+    "accent": "#C62B1E",
+    "accent_ink": "#FFFFFF",
+    "photo": "panel"
+   }
+  },
+  "desc": "두꺼운 제목과 사선 장식, 어두운 바탕의 강렬한 느낌. 고깃집, 숯불구이, 술집, 회식 손님"
+ }
+}

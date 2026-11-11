@@ -6,6 +6,7 @@ import httpx
 from google import genai
 from google.genai import errors
 
+from app.services import llm_client
 from app.core import config
 from app.services import profile_extractor
 from app.services.fewshot_loader import load_fewshot_examples
@@ -34,7 +35,7 @@ def test_real_sdk_serializes_pydantic_schema_with_mock_transport(api_client, mon
         kwargs["http_options"].httpx_client = httpx.Client(transport=httpx.MockTransport(respond))
         return REAL_GENAI_CLIENT(**kwargs)
 
-    monkeypatch.setattr(profile_extractor.genai, "Client", offline_client)
+    monkeypatch.setattr(llm_client.genai, "Client", offline_client)
     response = api_client.post("/profile/extract", json={"text": "주말만 무료", "prompt_version": "v1"})
     assert response.status_code == 200
     assert response.json()["parking"] == "주말만 무료"
@@ -50,7 +51,7 @@ def test_real_sdk_serializes_pydantic_schema_with_mock_transport(api_client, mon
 
 
 def test_health_still_works(api_client):
-    assert api_client.get("/health").json() == {"status": "ok"}
+    assert api_client.get("/health").json()["status"] == "ok"
 
 
 def test_v1_calls_gemini_with_schema_and_low_temperature(api_client, gemini_mock):

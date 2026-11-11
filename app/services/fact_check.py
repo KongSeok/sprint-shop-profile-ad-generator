@@ -56,3 +56,23 @@ def merge_warnings(warnings: list[str]) -> list[str]:
             seen.add(identity)
             merged.append(warning)
     return merged
+
+
+ORIGIN_PATTERN = re.compile(r"원산지|국내산|국산|원양산|수입산|미국산|호주산|캐나다산|칠레산|중국산|스페인산|제주산|노르웨이산|브라질산|뉴질랜드산|베트남산|태국산|일본산|대만산")
+
+
+ASSORTED = ("모듬", "모둠", "세트", "정식", "한상", "코스", "플래터", "반반")
+COMMON_INGREDIENTS = ("연어", "참치", "광어", "새우", "장어", "계란", "달걀", "오징어", "문어", "가리비",
+                      "소고기", "돼지고기", "닭고기", "두부", "양파", "치즈", "베이컨", "호두", "버터", "우유")
+
+
+def assorted_menu(menu):
+    return menu is not None and (len(menu.components or []) >= 2 or any(key in menu.name for key in ASSORTED))
+
+
+def component_warnings(menu, text):
+    if not assorted_menu(menu) or not menu.components:
+        return []
+    supplied = " ".join(menu.components)
+    return [f"입력한 메뉴 구성에 없는 재료 '{word}'가 들어갔어요"
+            for word in COMMON_INGREDIENTS if word in text and word not in supplied]

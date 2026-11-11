@@ -11,12 +11,14 @@ from app.services.copy_quality import instagram_facts
 
 
 def candidate(mode='menu'):
-    data = {'instagram': {'body': '가' * 150, 'hashtags': ['#가게', '#메뉴', '#식사', '#오늘', '#시간']}}
+    data = {'instagram': {'body': ('바쁜 하루 사이 마음이 편해지는 순간을 그려요. 이야기 나누며 시간을 보내기에도 좋아요. '
+                                '잠깐의 휴식이 필요한 날이라면 익숙한 자리로 걸음을 옮겨 보세요. '
+                                '여유 있는 식탁에 앉아 작은 즐거움을 만나고, 하루의 속도를 조금 늦춰 보세요. 가벼운 발걸음으로 들르는 순간을 기다려요.'), 'hashtags': ['#가게', '#메뉴', '#식사', '#오늘', '#시간']}}
     if mode == 'menu':
         data['delivery_app'] = {'menu_description': '따뜻한 온기와 바삭한 식감을 담은 한 접시로 소개해요. 향긋한 한입의 맛을 가볍게 즐겨 보세요.'}
     else:
-        data['delivery_app'] = {'shop_intro': '나' * 40 + '. ' + '다' * 40 + '.'}
-        data['naver_place'] = {'body': '우리 가게\n\n' + '라' * 40 + '\n' + '마' * 40 + '\n' + '바' * 40}
+        data['delivery_app'] = {'shop_intro': '편안한 분위기에서 식사를 즐길 수 있도록 정성껏 준비했어요. 가벼운 식사부터 함께 나누는 한 상까지 기분 좋게 즐겨 보세요. 서로의 이야기가 자연스럽게 이어지는 자리예요.'}
+        data['naver_place'] = {'body': '우리 가게\n\n' + '여유를 느끼고 싶을 때 편하게 머물기 좋은 자리를 생각했어요.\n입맛이 당기는 날 한 끼를 부담 없이 즐길 수 있게 준비했어요.\n소중한 사람과 이야기 나누며 기분 좋은 시간을 보내기 좋아요. 차분한 분위기에서 마음을 내려놓아도 좋아요.'}
     return data
 
 
@@ -39,7 +41,7 @@ def test_one_corrective_call_and_clean_second_selected():
     call = Mock(side_effect=[json.dumps(bad), json.dumps(good)])
     result = run_checked_generation(call, 'rules', '{}', {}, ShopProfile(shop_name=None,business_type=None), CopyMenu(name='라떼'), 'menu', [])
     assert call.call_count == 2 and result.regeneration.selected_attempt == 2
-    assert any('editing_note' in issue for issue in result.regeneration.initial_violations)
+    assert '문구에 편집 메모가 들어갔어요.' in result.regeneration.initial_violations
     assert result.warnings == []
     assert '다음 규칙을 어겼어' in call.call_args.args[0]
 
@@ -53,7 +55,7 @@ def test_both_invalid_choose_less_violations_and_warn():
     result = run_checked_generation(call, 'rules', '{}', {}, ShopProfile(shop_name=None,business_type=None), CopyMenu(name='라떼'), 'menu', [])
     assert call.call_count == 2
     assert result.regeneration.selected_attempt == 1
-    assert any('editing_note' in issue for issue in result.warnings)
+    assert '문구에 편집 메모가 들어갔어요.' in result.warnings
 
 
 def test_broken_json_gets_one_repair():
@@ -122,3 +124,32 @@ def test_prompt_inputs_schema_examples_and_style_priority(mode):
     else:
         assert all(e['channel'] != 'naver_place' for e in examples)
         assert 'delivery_app.menu_description' in prompt
+
+
+def test_consecutive_repeat_retries_once_and_trims(caplog):
+    raw = json.dumps({
+        'instagram': {'body': '남아요요요요', 'hashtags': ['#ABABAB', '#111', '#ㅋㅋㅋ']},
+        'delivery_app': {'menu_description': '남아요요요요'},
+    })
+    call = Mock(return_value=raw)
+    result = run_checked_generation(call, 'rules', '{}', {},
+                                    ShopProfile(shop_name=None, business_type=None),
+                                    CopyMenu(name='라테'), 'menu', [])
+    assert call.call_count == 2
+    assert result.delivery_app['menu_description'] == '남아요'
+    assert result.instagram.body == '남아요'
+    assert result.instagram.hashtags == ['#AB', '#111', '#ㅋㅋㅋ']
+    assert '연속해서 반복된 글자는 정리했어요. 문구를 확인해 주세요.' in result.warnings
+    assert all('consecutive_repeat' not in warning and 'delivery_app' not in warning for warning in result.warnings)
+    assert 'consecutive_repeat' in caplog.text
+    assert 'Trimmed consecutive copy repetition' in caplog.text
+
+
+
+def test_repeat_cleanup_preserves_prices_and_units():
+    from app.services.ad_copy import repeated_copy_fields, trim_repeated_copy
+
+    text = {"body": "아메리카노 4,000원 · 10,000원 · 1000g · !!!"}
+    assert repeated_copy_fields(text) == []
+    assert trim_repeated_copy(text) == text
+    assert trim_repeated_copy("남아요요요요") == "남아요"

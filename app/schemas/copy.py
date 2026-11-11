@@ -11,7 +11,10 @@ class CopyMenu(ProfileModel):
     features: str | None = Field(default=None, description="메뉴 특징. 입력된 사실만 사용")
     this_time: str | None = Field(default=None, description="이번만 요청. 기간과 조건을 그대로 사용")
 
-    @field_validator("name", "price", "features", "this_time")
+    components: list[str] | None = None
+    origin: str | None = None
+
+    @field_validator("name", "price", "features", "this_time", "origin")
     @classmethod
     def trim_input(cls, value, info):
         if value is None:
@@ -137,6 +140,7 @@ class GeneratedShopCopy(ProfileModel):
 
 
 class GeneratedMenuCopy(ProfileModel):
+    menu_name_en: str | None = Field(default=None, description="짧은 영어 메뉴명. 재료나 특징을 추가하지 않는다.")
     instagram: InstagramCopyV2
     delivery_app: MenuDelivery
 
@@ -149,6 +153,7 @@ class RegenerationInfo(ProfileModel):
 
 
 class ModeCopyResponse(ProfileModel):
+    menu_name_en: str | None = None
     mode: Literal['shop', 'menu']
     instagram: InstagramResult
     delivery_app: dict[str, str]

@@ -1,0 +1,10 @@
+{
+  "fit_v3": true,
+  "size": {
+    "height": 1080,
+    "width": 1080
+  },
+  "name": "ad_card/cutout_studio",
+  "source": "Claude v3",
+  "license": "프로젝트 라이선스"
+}
