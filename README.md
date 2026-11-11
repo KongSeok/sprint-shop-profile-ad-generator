@@ -10,7 +10,6 @@ Repository: [sprint-shop-profile-ad-generator](https://github.com/KongSeok/sprin
 
 메뉴 하나씩 광고를 만드는 도구가 아니라 가게 전체를 맡는 서비스로 설계했습니다. 가게 정보와 고른 디자인을 저장해 모든 메뉴에 다시 쓰므로, 메뉴마다 가게를 다시 설명할 필요가 없고 말투와 디자인이 따로 놀지 않습니다.
 
-![한 번에 만들기 화면](docs/images/quick_flow.png)
 
 ## 1. 문제 정의
 
